@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Арсенал — Промты для предпринимателей</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden;max-width:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#37352f;line-height:1.6;-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none}
+
+/* Layout */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;min-width:260px;background:#fbfbfa;border-right:1px solid #e9e9e7;position:sticky;top:0;height:100vh;overflow-y:auto;padding:24px 0;display:flex;flex-direction:column}
+.main{flex:1;max-width:860px;padding:48px 56px;overflow-x:hidden}
+
+/* Sidebar */
+.sidebar-logo{padding:0 20px 24px;border-bottom:1px solid #e9e9e7}
+.sidebar-logo .brand{font-size:17px;font-weight:700;color:#37352f;letter-spacing:-0.3px}
+.sidebar-logo .tagline{font-size:12px;color:#9b9b97;margin-top:3px}
+.sidebar-nav{padding:16px 0;flex:1}
+.nav-label{font-size:11px;font-weight:600;color:#9b9b97;text-transform:uppercase;letter-spacing:.8px;padding:0 20px;margin-bottom:6px;margin-top:16px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:7px 20px;cursor:pointer;border-radius:0;font-size:14px;color:#6b6b66;transition:background .12s,color .12s;touch-action:manipulation;border:none;background:transparent;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{background:#f0efed;color:#37352f}
+.nav-item.active{background:#e8e8e5;color:#37352f;font-weight:500}
+.nav-item .icon{font-size:16px;min-width:20px;text-align:center}
+.sidebar-footer{padding:16px 20px;border-top:1px solid #e9e9e7}
+.sidebar-update{font-size:12px;color:#9b9b97;display:flex;align-items:flex-start;gap:6px}
+.sidebar-update .dot{width:7px;height:7px;background:#f59e0b;border-radius:50%;margin-top:5px;flex-shrink:0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* Header */
+.page-header{margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid #e9e9e7}
+.page-header h1{font-size:32px;font-weight:700;letter-spacing:-0.8px;color:#37352f;margin-bottom:10px}
+.page-header p{font-size:16px;color:#6b6b66;max-width:580px;line-height:1.7}
+.header-meta{display:flex;align-items:center;gap:16px;margin-top:20px;flex-wrap:wrap}
+.badge{font-size:12px;font-weight:500;padding:4px 10px;border-radius:20px;background:#f0efed;color:#6b6b66}
+.badge.green{background:#e8f5e9;color:#2d7a3a}
+.lang-toggle{display:flex;align-items:center;gap:2px;background:#f0efed;border-radius:20px;padding:3px;margin-left:auto}
+.lang-btn{font-size:13px;font-weight:500;padding:4px 14px;border-radius:16px;cursor:pointer;border:none;background:transparent;color:#6b6b66;transition:all .15s;touch-action:manipulation}
+.lang-btn.active{background:#fff;color:#37352f;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+/* Category sections */
+.category{margin-bottom:64px;scroll-margin-top:32px}
+.category-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.cat-icon{font-size:24px}
+.cat-title{font-size:22px;font-weight:700;letter-spacing:-0.4px}
+.cat-desc{font-size:14px;color:#9b9b97;margin-top:2px}
+
+/* Prompt cards */
+.prompts-grid{display:flex;flex-direction:column;gap:16px}
+.prompt-card{border:1px solid #e9e9e7;border-radius:10px;overflow:hidden;transition:box-shadow .15s,border-color .15s}
+.prompt-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.07);border-color:#d4d3d0}
+.card-header{padding:14px 18px 12px;display:flex;align-items:flex-start;gap:10px;cursor:pointer;user-select:none;touch-action:manipulation;border:none;background:transparent;width:100%;text-align:left;font-family:inherit}
+.card-num{font-size:11px;font-weight:600;color:#c8c6c0;min-width:20px;margin-top:2px}
+.card-info{flex:1}
+.card-title{font-size:15px;font-weight:600;color:#37352f}
+.card-hint{font-size:13px;color:#9b9b97;margin-top:2px;line-height:1.5}
+.card-chevron{color:#c8c6c0;font-size:13px;transition:transform .2s;margin-top:2px}
+.prompt-card.open .card-chevron{transform:rotate(180deg)}
+.card-body{display:none;border-top:1px solid #f0efed}
+.prompt-card.open .card-body{display:block}
+.prompt-text{padding:16px 18px;font-size:14px;line-height:1.75;color:#37352f;background:#fafaf8;white-space:pre-wrap;word-break:break-word;font-family:'Inter',monospace}
+.card-actions{padding:10px 18px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #f0efed;background:#fff}
+.copy-btn{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:#6b6b66;background:#f0efed;border:none;border-radius:6px;padding:6px 14px;cursor:pointer;transition:all .15s;touch-action:manipulation}
+.copy-btn:hover{background:#e5e4e0;color:#37352f}
+.copy-btn.copied{background:#e8f5e9;color:#2d7a3a}
+.copy-icon{font-size:14px}
+.for-model{font-size:11px;color:#b0aeaa;font-style:italic}
+
+/* CTA Block */
+.cta-block{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%);border-radius:14px;padding:40px;margin:64px 0 32px;color:#fff;position:relative;overflow:hidden}
+.cta-block::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:rgba(255,255,255,.04);border-radius:50%}
+.cta-block::after{content:'';position:absolute;bottom:-60px;right:80px;width:140px;height:140px;background:rgba(255,255,255,.03);border-radius:50%}
+.cta-tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#f59e0b;margin-bottom:12px}
+.cta-title{font-size:26px;font-weight:700;letter-spacing:-0.5px;margin-bottom:10px;line-height:1.3}
+.cta-text{font-size:15px;color:#aaa;line-height:1.7;max-width:520px;margin-bottom:28px}
+.cta-features{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.cta-feat{font-size:13px;color:#ccc;display:flex;align-items:center;gap:6px}
+.cta-feat::before{content:'✓';color:#f59e0b;font-weight:700}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#f59e0b;color:#1a1a1a;font-size:15px;font-weight:700;padding:13px 28px;border-radius:8px;border:none;cursor:pointer;transition:all .15s;text-decoration:none}
+.cta-btn:hover{background:#fbbf24;transform:translateY(-1px)}
+
+/* Update notice */
+.update-notice{border:1px solid #fde68a;background:#fffbeb;border-radius:10px;padding:16px 20px;margin-top:24px;display:flex;gap:12px;align-items:flex-start}
+.update-notice .icon{font-size:18px;margin-top:1px}
+.update-notice h4{font-size:14px;font-weight:600;color:#92400e;margin-bottom:3px}
+.update-notice p{font-size:13px;color:#b45309;line-height:1.6}
+
+/* Footer */
+.footer{border-top:1px solid #e9e9e7;padding:24px 0;margin-top:0}
+.footer-text{font-size:13px;color:#b0aeaa;text-align:center}
+
+/* Mobile */
+.mobile-header{display:none;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #e9e9e7;position:sticky;top:0;background:#fff;z-index:100}
+.mobile-title{font-size:16px;font-weight:700}
+.hamburger{font-size:22px;cursor:pointer;border:none;background:none;color:#37352f;touch-action:manipulation}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;pointer-events:none}
+.sidebar-overlay.show{display:block;pointer-events:auto}
+.sidebar.mobile-open{transform:translateX(0)!important}
+
+@media(max-width:768px){
+  .mobile-header{display:flex}
+  .layout{display:block}
+  .sidebar{position:fixed;top:0;left:0;height:100vh;z-index:300;transform:translateX(-100%);transition:transform .25s}
+  .main{padding:24px 20px;max-width:100%}
+  .page-header h1{font-size:24px}
+  .cta-block{padding:28px 24px}
+  .cta-title{font-size:21px}
+  .lang-toggle{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<div class="mobile-header">
+  <span class="mobile-title">⚡ AI Арсенал</span>
+  <button class="hamburger" onclick="toggleSidebar()">☰</button>
+</div>
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">⚡ AI Арсенал</div>
+    <div class="tagline">Промты для предпринимателей</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">Категории</div>
+    <button class="nav-item active" onclick="goTo('marketing',this)"><span class="icon">🎯</span>Маркетинг и продажи</button>
+    <button class="nav-item" onclick="goTo('hr',this)"><span class="icon">👥</span>HR и команды</button>
+    <button class="nav-item" onclick="goTo('ads',this)"><span class="icon">🎨</span>Реклама и баннеры</button>
+    <button class="nav-item" onclick="goTo('finance',this)"><span class="icon">💰</span>Финансы и аналитика</button>
+    <button class="nav-item" onclick="goTo('tables',this)"><span class="icon">📊</span>Таблицы и данные</button>
+    <button class="nav-item" onclick="goTo('docs',this)"><span class="icon">📄</span>Документы и анализ</button>
+    <button class="nav-item" onclick="goTo('nego',this)"><span class="icon">🤝</span>Переговоры</button>
+    <button class="nav-item" onclick="goTo('productivity',this)"><span class="icon">⚡</span>Личная эффективность</button>
+    <div class="nav-label" style="margin-top:20px">Сообщество</div>
+    <button class="nav-item" onclick="goTo('club',this)"><span class="icon">🚀</span>AI Клуб</button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-update">
+      <div class="dot"></div>
+      <span>Сборник пополняется — следите за обновлениями</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>AI Арсенал</h1>
+    <p>Готовые промты для предпринимателей и экспертов. Копируйте, подставляйте свои данные — и получайте результат за минуты.</p>
+    <div class="header-meta">
+      <span class="badge green">48 промтов</span>
+      <span class="badge">8 категорий</span>
+      <span class="badge">RU + EN</span>
+      <span class="badge">Для Claude</span>
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btn-ru" onclick="setLang('ru')">RU</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== MARKETING =================== -->
+  <section class="category" id="marketing">
+    <div class="category-header">
+      <span class="cat-icon">🎯</span>
+      <div>
+        <div class="cat-title">Маркетинг и продажи</div>
+        <div class="cat-desc">Посты, объявления, скрипты и контент-планы</div>
+      </div>
+    </div>
+    <div class="prompts-grid" id="grid-marketing"></div>
+  </section>
+
+  <!-- =================== HR =================== -->
+  <section class="category" id="hr">
+    <div class="category-header">
+      <span class="cat-icon">👥</span>
+      <div>
+        <div class="cat-title">HR и управление командами</div>
+        <div class="cat-desc">Найм, онбординг, делегирование и отчёты</div>
+      </div>
+    </div>
+    <div class="prompts-grid" id="grid-hr"></div>
+  </section>
+
+  <!-- =================== ADS =================== -->
+  <section class="category" id="ads">
+    <div class="category-header">
+      <span class="cat-icon">🎨</span>
+      <div>
+        <div class="cat-title">Реклама и баннеры</div>
+        <div class="cat-desc">Промты для генерации изображений — ChatGPT / GPT-image-1, Midjourney, Ideogram</div>
+      </div>
+    </div>
+    <div class="prompts-grid" id="grid-ads"></div>
+  </section>
+
+  <!-- =================== FINANCE =================== -->
+  <section class="category" id="finance">
+    <div class="category-header">
+      <span class="cat-icon">💰</span>
+      <div>
+        <div class="cat-title">Финансы и аналитика</div>
+        <div class="cat-desc">Метрики, бюджеты, декомпозиция целей и unit-экономика</div>
+      </div>
+    </div>
+    <div class="prompts-grid" id="grid-finance"></div>
+  </section>
+
+  <!-- =================== TABLES =================== -->
+  <section class="category" id="tables">
+    <div class="category-header">
+      <span class="cat-icon">📊</span>
+      <div>
+        <div class="cat-title">Таблицы и данные</div>
+        <div class="cat-desc">Структурированные таблицы, матрицы и системы KPI</div>
+      </div>
+    </div>
+    <div class="prompts-grid" id="grid-tables"></div>
+  </section>
+
+  <!-- =================== DOCS =================== -->
+  <section class="category" id="docs">
+    <div class="category-header">
+      <span class="cat-icon">📄</span>
+      <div>
+        <div class="cat-title">Документы и анализ</div>
+        <div class="cat-desc">КП, инструкции, ТЗ, договоры и стратегические планы</div>
+      </div>
+    </div>
+    <div class="prompts-grid" id="grid-docs"></div>
+  </section>
+
+  <!-- =================== NEGOTIATIONS =================== -->
+  <section class="category" id="nego">
+    <div class="category-header">
+      <span class="cat-icon">🤝</span>
+      <div>
+        <div class="cat-title">Сложные переговоры</div>
+        <div class="cat-desc">Подготовка, возражения, кризисные скрипты и аутрич</div>
+      </div>
+    </div>
+    <div class="prompts-grid" id="grid-nego"></div>
+  </section>
+
+  <!-- =================== PRODUCTIVITY =================== -->
+  <section class="category" id="productivity">
+    <div class="category-header">
+      <span class="cat-icon">⚡</span>
+      <div>
+        <div class="cat-title">Личная эффективность</div>
+        <div class="cat-desc">Планирование, фокус, принятие решений и работа с информацией</div>
+      </div>
+    </div>
+    <div class="prompts-grid" id="grid-productivity"></div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-block" id="club">
+    <div class="cta-tag">🚀 AI Клуб</div>
+    <div class="cta-title">Вступай в AI Клуб —<br>стань в 100 раз эффективнее</div>
+    <div class="cta-text">Получай свежие и практические знания от живых экспертов-практиков, которые уже научились применять AI в своей работе и бизнесе. Никакой теории — только то что работает прямо сейчас.</div>
+    <div class="cta-features">
+      <div class="cta-feat">Знания от экспертов-практиков</div>
+      <div class="cta-feat">Сильное окружение единомышленников</div>
+      <div class="cta-feat">Новые промты и инструменты каждую неделю</div>
+      <div class="cta-feat">Разборы реальных кейсов из бизнеса</div>
+    </div>
+    <a href="https://t.me/+XDhNXnbTDwE1ZDRi" target="_blank" class="cta-btn">Вступить в AI Клуб →</a>
+  </div>
+
+  <div class="update-notice">
+    <span class="icon">🔔</span>
+    <div>
+      <h4>Сборник регулярно пополняется</h4>
+      <p>Новые промты добавляются каждую неделю. Вступайте в AI Клуб чтобы получать уведомления первыми и не пропустить новые категории и обновления.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">AI Арсенал · Промты для предпринимателей · Обновляется регулярно</div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const data = {
+  marketing: [
+    {
+      title: "Продающий пост для соцсетей",
+      hint: "Пост который продаёт без рекламного давления",
+      ru: `Напиши продающий пост для [Instagram/Telegram] о [продукт/услуга].
+Целевая аудитория: [описание клиентов].
+Цена: [цена].
+
+Структура:
+— Начни с острой боли или ситуации которую узнает клиент
+— Предложи решение и покажи один конкретный результат
+— Заверши призывом к действию
+
+Длина: 150–200 слов. Тон: живой, без рекламных клише.`,
+      en: `Write a sales post for [Instagram/Telegram] about [product/service].
+Target audience: [customer description].
+Price: [price].
+
+Structure:
+— Open with a sharp pain point or relatable situation
+— Present the solution and show one concrete result
+— Close with a clear CTA
+
+Length: 150–200 words. Tone: natural, no clichés.`
+    },
+    {
+      title: "Рекламное объявление — 3 варианта",
+      hint: "Тексты которые останавливают скроллинг",
+      ru: `Напиши 3 варианта рекламного объявления для [продукт/услуга].
+Аудитория: [кто].
+Платформа: [Instagram/Facebook/VK/Telegram].
+
+Каждый вариант включает:
+1. Хук — первая строка которая останавливает скроллинг
+2. Суть предложения — что получает клиент
+3. Призыв к действию
+
+Объём: до 60 слов каждый. Варианты должны отличаться по подходу: через боль, через выгоду, через любопытство.`,
+      en: `Write 3 ad copy variations for [product/service].
+Audience: [who].
+Platform: [Instagram/Facebook/Telegram].
+
+Each variation includes:
+1. Hook — opening line that stops the scroll
+2. Core offer — what the client gets
+3. Call to action
+
+Max 60 words each. Variations should differ in approach: pain-based, benefit-based, curiosity-based.`
+    },
+    {
+      title: "Скрипт первого звонка клиенту",
+      hint: "Структура разговора вместо импровизации",
+      ru: `Напиши скрипт первого звонка потенциальному клиенту для [тип бизнеса].
+
+Включи:
+— Приветствие (5–10 секунд, без воды)
+— 2 открытых вопроса для выявления потребности
+— Переход к презентации предложения
+— Ответ на "мне надо подумать"
+— Ответ на "уже работаем с другими"
+— Закрытие на следующий шаг
+
+Формат: диалог с ремарками. Тон: уверенный, не продавливающий.`,
+      en: `Write a first-call script for a potential client for [business type].
+
+Include:
+— Greeting (5–10 seconds, no filler)
+— 2 open-ended questions to identify needs
+— Transition to the offer
+— Response to "I need to think about it"
+— Response to "We already work with someone"
+— Close on a next step
+
+Format: dialogue with stage directions. Tone: confident, not pushy.`
+    },
+    {
+      title: "Ответ на возражение «Дорого»",
+      hint: "Обосновываешь цену без оправданий",
+      ru: `Клиент говорит: "Слишком дорого" или "У конкурентов дешевле".
+
+Напиши 3 варианта ответа для [тип бизнеса, цена продукта]:
+
+1. Мягкий — через ценность, без давления
+2. Прямой — через конкретное сравнение
+3. Вопросный — выявляет реальную причину сомнения
+
+Без оправданий. Без автоматических скидок. Цель — продолжить диалог и понять настоящее возражение.`,
+      en: `The client says "Too expensive" or "Competitors are cheaper."
+
+Write 3 response scripts for [business type, product price]:
+
+1. Soft — through value, no pressure
+2. Direct — through concrete comparison
+3. Question-based — uncovers the real objection
+
+No apologizing. No automatic discounts. Goal: keep the conversation going and find the real hesitation.`
+    },
+    {
+      title: "Email после покупки",
+      hint: "Превращает разовую покупку в постоянного клиента",
+      ru: `Напиши письмо клиенту через 3 дня после первой покупки [товар/услуга].
+
+Цель письма:
+— Убедиться что всё хорошо
+— Дать 1 практический совет как получить максимум от продукта
+— Мягко упомянуть следующий шаг или дополнительный продукт
+
+Тон: живой, от человека к человеку. Длина: до 120 слов. Без корпоративных штампов.`,
+      en: `Write an email to a client 3 days after their first purchase of [product/service].
+
+Email goals:
+— Check that everything is going well
+— Give 1 practical tip for getting the most from the product
+— Gently mention a next step or complementary product
+
+Tone: human, personal. Max 120 words. No corporate language.`
+    },
+    {
+      title: "Контент-план на месяц",
+      hint: "Больше не думаешь что публиковать — план готов",
+      ru: `Составь контент-план на 30 дней для [Instagram/Telegram/LinkedIn] бизнеса [тип].
+
+Чередуй форматы каждую неделю:
+— Полезный совет или инструкция
+— История или личный опыт
+— Кейс клиента или результат
+— Вовлечение (вопрос, опрос, дискуссия)
+— Продающий пост
+
+Для каждого поста: день недели, тема, формат, 1 предложение о чём пост.
+Готовые тексты не нужны — только структура плана.`,
+      en: `Create a 30-day content plan for [Instagram/Telegram/LinkedIn] for a [business type].
+
+Alternate formats weekly:
+— Useful tip or how-to
+— Story or personal experience
+— Client case study or result
+— Engagement (question, poll, discussion)
+— Sales post
+
+For each post: day of week, topic, format, 1-sentence summary.
+No full texts needed — structure only.`
+    }
+  ],
+
+  hr: [
+    {
+      title: "Описание вакансии",
+      hint: "Привлечёт нужных людей и отсеет лишних",
+      ru: `Напиши описание вакансии [должность] для компании [тип бизнеса].
+
+Формат для публикации в Telegram или hh.ru.
+
+Включи:
+— Чем человек занимается каждый день (3–5 конкретных задач)
+— Что важно в кандидате — ценности и подход, не список навыков
+— Что компания даёт взамен — реально, а не "дружный коллектив"
+— Как откликнуться
+
+Без шаблонных фраз. Пиши как человек, а не как HR-отдел крупной корпорации.`,
+      en: `Write a job posting for [position] at a [business type] company.
+
+Format for Telegram or LinkedIn.
+
+Include:
+— What the person does daily (3–5 specific tasks)
+— What matters in the candidate — values and approach, not a skills checklist
+— What the company offers — honestly, not "great team culture"
+— How to apply
+
+No clichés. Write like a human, not a corporate HR department.`
+    },
+    {
+      title: "Инструкция для нового сотрудника",
+      hint: "Онбординг который работает без тебя",
+      ru: `Напиши инструкцию для нового сотрудника на должность [должность] в [тип бизнеса].
+
+Включи:
+— Что делать в первый рабочий день (пошагово)
+— Главные правила работы и коммуникации в команде
+— К кому обращаться с какими вопросами
+— Типичные ошибки новичков и как их избежать
+— Что считается хорошим результатом в первые 30 дней
+
+Формат: нумерованные блоки, конкретно и без воды.`,
+      en: `Write an onboarding guide for a new [position] at a [business type].
+
+Include:
+— What to do on the first working day (step by step)
+— Key work and communication rules in the team
+— Who to contact for which questions
+— Common new hire mistakes and how to avoid them
+— What counts as a good result in the first 30 days
+
+Format: numbered sections, specific and concise.`
+    },
+    {
+      title: "Регламент рабочего процесса",
+      hint: "То что делаешь сам — теперь может делать сотрудник",
+      ru: `Напиши регламент для процесса "[название процесса]" в [тип бизнеса].
+
+Для каждого шага укажи:
+— Конкретное действие (что именно делается)
+— Кто ответственный
+— Инструмент или канал (мессенджер, CRM, таблица, звонок)
+— Ожидаемый результат шага
+— Срок выполнения
+
+В конце добавь раздел: "Исключения и нестандартные ситуации — что делать если что-то пошло не по плану".`,
+      en: `Write a process regulation for "[process name]" at [business type].
+
+For each step include:
+— Specific action (what exactly is done)
+— Who is responsible
+— Tool or channel (messenger, CRM, spreadsheet, call)
+— Expected outcome of the step
+— Deadline or timeframe
+
+At the end add: "Exceptions and edge cases — what to do when something goes off-plan".`
+    },
+    {
+      title: "Список задач для делегирования",
+      hint: "Видишь что можно отдать прямо сейчас",
+      ru: `Я занимаюсь следующими задачами регулярно:
+[перечисли 10–15 своих задач]
+
+Помоги разделить их на три группы:
+1. Делаю только я — нельзя делегировать (почему?)
+2. Можно делегировать сотруднику прямо сейчас
+3. Можно автоматизировать или убрать совсем
+
+Для группы 2: укажи кому передать каждую задачу (роль), что нужно объяснить при передаче, как проверить что всё сделано правильно.`,
+      en: `I regularly handle the following tasks:
+[list 10–15 of your tasks]
+
+Help me split them into three groups:
+1. Only I can do — cannot delegate (why?)
+2. Can be delegated to a team member now
+3. Can be automated or eliminated entirely
+
+For group 2: specify who should take each task (role), what to explain when handing it off, how to verify it's done correctly.`
+    },
+    {
+      title: "Шаблон еженедельного отчёта",
+      hint: "Понятная картина недели без бесконечных встреч",
+      ru: `Напиши шаблон еженедельного отчёта для команды [тип бизнеса].
+
+Разделы:
+1. Ключевые метрики недели (таблица: показатель / план / факт / отклонение)
+2. Что выполнено (список с результатами)
+3. Что не выполнено и почему (честно, без оправданий)
+4. Блокеры — что мешает двигаться дальше
+5. Приоритеты на следующую неделю (топ-3)
+
+Максимум 1 страница. Никакой воды. Формат удобный для Notion или Google Doc.`,
+      en: `Write a weekly team report template for [business type].
+
+Sections:
+1. Key metrics (table: metric / target / actual / variance)
+2. Completed tasks (list with outcomes)
+3. Uncompleted tasks and reasons (honest, no excuses)
+4. Blockers — what's preventing progress
+5. Next week's priorities (top 3)
+
+Max 1 page. No filler. Format suitable for Notion or Google Doc.`
+    },
+    {
+      title: "Скрипт сложного разговора с сотрудником",
+      hint: "Говоришь о проблеме без обид и конфликта",
+      ru: `Мне нужно провести сложный разговор с сотрудником.
+Ситуация: [опиши — опоздания / низкие результаты / конфликт в команде / другое].
+
+Напиши структуру разговора:
+1. Как начать без обвинений и оценок
+2. Как описать проблему через факты, а не эмоции
+3. Какие вопросы задать чтобы услышать его версию
+4. Как договориться о конкретных изменениях
+5. Как зафиксировать договорённости
+
+Тон: твёрдый, уважительный, без пассивной агрессии.`,
+      en: `I need to have a difficult conversation with an employee.
+Situation: [describe — lateness / poor results / team conflict / other].
+
+Write a structure for this conversation:
+1. How to open without blame or judgment
+2. How to describe the problem using facts, not emotions
+3. Questions to ask to hear their side
+4. How to agree on specific changes
+5. How to document the agreement
+
+Tone: firm, respectful, no passive aggression.`
+    }
+  ],
+
+  ads: [
+    {
+      title: "Рекламный баннер для Instagram",
+      hint: "Промт для ChatGPT / GPT-image-1",
+      model: "ChatGPT · GPT-image-1",
+      ru: `Для ChatGPT (GPT-image-1):
+Создай рекламный баннер для Instagram, квадратный формат 1:1.
+Продукт: [название продукта].
+Главный визуал: [продукт на чистой поверхности / человек с продуктом / минималистичная сцена].
+Стиль: [минимализм / яркий / корпоративный].
+Цвета: [цвета бренда или настроение — тёплый/холодный/нейтральный].
+Вверху оставь пространство для текста: "[заголовок]".
+Фон чистый, без лишних элементов. Профессиональная предметная съёмка, естественный свет.
+Без водяных знаков и текста кроме заголовка.
+
+Для Midjourney (альтернатива):
+product ad banner for Instagram, [product name], [visual], [style], color palette [colors], clean background, soft natural lighting, space for headline text at top --ar 1:1 --style raw --v 6`,
+      en: `For ChatGPT (GPT-image-1):
+Create an Instagram ad banner, square 1:1 format.
+Product: [product name].
+Main visual: [product on clean surface / person with product / minimalist scene].
+Style: [minimalist / bold / corporate].
+Colors: [brand colors or mood — warm/cool/neutral].
+Leave space at the top for text: "[headline]".
+Clean background, no clutter. Professional product photography, natural light.
+No watermarks or extra text besides the headline.
+
+For Midjourney (alternative):
+product ad banner for Instagram, [product name], [visual], [style], color palette [colors], clean background, soft natural lighting, space for headline text at top --ar 1:1 --style raw --v 6`
+    },
+    {
+      title: "Обложка для Telegram-канала",
+      hint: "Промт для ChatGPT / GPT-image-1",
+      model: "ChatGPT · GPT-image-1",
+      ru: `Для ChatGPT (GPT-image-1):
+Создай обложку для Telegram-канала, горизонтальный формат 5:4 (800×640px).
+Тема канала: [тема].
+Стиль: современный, профессиональный, запоминающийся.
+Цвета: [цвета бренда / тёмный / светлый / яркий].
+Главный визуальный элемент: [иконка или символ связанный с темой / абстрактная графика].
+Название канала крупным шрифтом по центру: "[название]".
+Без лишнего текста. Чёткий, читаемый, стильный.
+
+Для Ideogram (альтернатива — лучше работает с текстом):
+Telegram channel cover, topic: [topic], style: [modern/dark/minimal], color scheme: [colors], central icon: [symbol], channel name in large bold font: "[name]", clean professional design, 5:4 ratio`,
+      en: `For ChatGPT (GPT-image-1):
+Create a Telegram channel cover, horizontal 5:4 format (800×640px).
+Channel topic: [topic].
+Style: modern, professional, memorable.
+Colors: [brand colors / dark / light / bold].
+Main visual: [icon or symbol related to topic / abstract graphic].
+Channel name in large font centered: "[name]".
+No extra text. Clear, readable, stylish.
+
+For Ideogram (alternative — handles text better):
+Telegram channel cover, topic: [topic], style: [modern/dark/minimal], color scheme: [colors], central icon: [symbol], channel name in large bold font: "[name]", clean professional design, 5:4 ratio`
+    },
+    {
+      title: "Hero-изображение для сайта",
+      hint: "Промт для ChatGPT / GPT-image-1 — широкий формат",
+      model: "ChatGPT · GPT-image-1",
+      ru: `Для ChatGPT (GPT-image-1):
+Создай hero-изображение для сайта компании [тип бизнеса], горизонтальный формат 16:9.
+Сцена: [опиши — человек использует продукт / продукт на элегантной поверхности / команда за работой / lifestyle-сцена].
+Стиль: фотореалистичный, современный, профессиональный.
+Освещение: мягкое, естественное.
+Слева оставь пространство для заголовка сайта.
+Настроение: [тёплое / холодное / нейтральное / тёмное].
+Без текста на изображении.
+
+Для Midjourney (альтернатива):
+professional hero image for [business type] website, [scene description], photorealistic, natural soft lighting, modern clean aesthetic, negative space left for text, [color mood] --ar 16:9 --style raw --v 6`,
+      en: `For ChatGPT (GPT-image-1):
+Create a hero image for a [business type] website, 16:9 horizontal format.
+Scene: [describe — person using product / product on elegant surface / team working / lifestyle scene].
+Style: photorealistic, modern, professional.
+Lighting: soft, natural.
+Leave space on the left for the site headline.
+Mood: [warm / cool / neutral / dark].
+No text in the image.
+
+For Midjourney (alternative):
+professional hero image for [business type] website, [scene description], photorealistic, natural soft lighting, modern clean aesthetic, negative space left for text --ar 16:9 --style raw --v 6`
+    },
+    {
+      title: "Баннер для Facebook / VK рекламы",
+      hint: "Промт для ChatGPT / GPT-image-1",
+      model: "ChatGPT · GPT-image-1",
+      ru: `Для ChatGPT (GPT-image-1):
+Создай рекламный баннер 1200×628px (формат 1.91:1) для [продукт/услуга].
+
+Структура:
+— Фон: [однотонный / градиент / сцена / текстура]
+— Главный визуал слева: [продукт / персонаж / иллюстрация]
+— Справа: светлая область для текста
+— Заголовок на баннере: "[текст]"
+— Подзаголовок: "[короткий текст]"
+— Кнопка внизу справа: "[текст кнопки]"
+— Стиль: [корпоративный / дружелюбный / энергичный]
+— Цвета бренда: [укажи]
+
+Профессиональный рекламный дизайн, текст читаемый.`,
+      en: `For ChatGPT (GPT-image-1):
+Create a Facebook/VK ad banner 1200×628px (1.91:1 ratio) for [product/service].
+
+Layout:
+— Background: [solid / gradient / scene / texture]
+— Main visual left: [product / character / illustration]
+— Right: light area for text
+— Headline on banner: "[text]"
+— Subheadline: "[short text]"
+— Button bottom right: "[button text]"
+— Style: [corporate / friendly / energetic]
+— Brand colors: [specify]
+
+Professional ad design, all text clearly readable.`
+    },
+    {
+      title: "Иллюстрация для поста в соцсетях",
+      hint: "Промт для ChatGPT / GPT-image-1 — под любую тему",
+      model: "ChatGPT · GPT-image-1",
+      ru: `Создай иллюстрацию для поста в [Instagram/Telegram/LinkedIn].
+Тема поста: [опиши о чём пост].
+
+Стиль (выбери один):
+— Flat illustration (плоские иллюстрации, как в Notion/Stripe)
+— 3D render (объёмные объекты, мягкие тени)
+— Минималистичная фотография (если реальный объект)
+— Абстрактная графика (для концептуальных тем)
+
+Основные элементы на картинке: [опиши что должно быть].
+Цвета: [палитра или настроение].
+Настроение: [вдохновляющее / деловое / спокойное / динамичное].
+Без текста на изображении.`,
+      en: `Create an illustration for a [Instagram/Telegram/LinkedIn] post.
+Post topic: [describe what the post is about].
+
+Style (choose one):
+— Flat illustration (like Notion/Stripe visuals)
+— 3D render (volumetric objects, soft shadows)
+— Minimalist photo (for real objects)
+— Abstract graphic (for conceptual topics)
+
+Main elements in the image: [describe].
+Colors: [palette or mood].
+Mood: [inspiring / professional / calm / dynamic].
+No text in the image.`
+    },
+    {
+      title: "Обложка для презентации",
+      hint: "Промт для ChatGPT / GPT-image-1 — деловой стиль",
+      model: "ChatGPT · GPT-image-1",
+      ru: `Для ChatGPT (GPT-image-1):
+Создай обложку для деловой презентации, формат 16:9.
+Компания / тема: [название или тема].
+Отрасль: [технологии / финансы / ритейл / консалтинг / другое].
+Стиль фона: [тёмный премиальный / светлый минималистичный / яркий брендовый].
+Декоративный элемент: [геометрический паттерн / абстрактные линии / мягкая текстура].
+Акцентный цвет бренда: [укажи].
+По центру — свободное пространство для заголовка презентации.
+Профессиональный корпоративный стиль. Без текста.
+
+Для Midjourney (альтернатива):
+sleek presentation cover for [company/topic], [industry], [dark premium / clean white] background, subtle [geometric / abstract lines / texture] pattern, [brand color] accents, empty center for title text, no text --ar 16:9 --v 6`,
+      en: `For ChatGPT (GPT-image-1):
+Create a business presentation cover, 16:9 format.
+Company/topic: [name or topic].
+Industry: [tech / finance / retail / consulting / other].
+Background style: [dark premium / light minimalist / bold branded].
+Decorative element: [geometric pattern / abstract lines / soft texture].
+Brand accent color: [specify].
+Empty space in center for the presentation title.
+Professional corporate aesthetic. No text.
+
+For Midjourney (alternative):
+sleek presentation cover for [company/topic], [industry], [dark premium / clean white] background, subtle [geometric / abstract lines / texture] pattern, [brand color] accents, empty center for title text, no text --ar 16:9 --v 6`
+    }
+  ],
+
+  finance: [
+    {
+      title: "Декомпозиция цели по выручке",
+      hint: "Большая цифра разбита на понятные ежедневные шаги",
+      ru: `Помоги декомпозировать финансовую цель: [сумма выручки] за [срок].
+
+Мои продукты и цены:
+[перечисли — продукт 1: цена, продукт 2: цена, ...]
+
+Конверсия из лида в покупку: ~[%]
+
+Рассчитай:
+— Сколько продаж нужно по каждому продукту
+— Сколько лидов нужно привлечь суммарно
+— Сколько людей должны увидеть оффер (охват)
+— Сколько продаж нужно в месяц / неделю / день
+
+Оформи таблицей с итоговой строкой. Добавь комментарий: что реалистично, что потребует дополнительных усилий.`,
+      en: `Help me decompose a revenue goal: [target amount] in [timeframe].
+
+My products and prices:
+[list — product 1: price, product 2: price, ...]
+
+Lead-to-sale conversion rate: ~[%]
+
+Calculate:
+— How many sales per product
+— Total leads needed
+— Total reach needed (impressions/views)
+— Sales needed per month / week / day
+
+Format as a table with totals. Add a comment: what's realistic, what will require extra effort.`
+    },
+    {
+      title: "Анализ ключевых метрик бизнеса",
+      hint: "Видишь цифры которые важны, а не все подряд",
+      ru: `Я веду бизнес: [тип бизнеса, краткое описание].
+
+Помоги определить 7–8 ключевых метрик которые мне реально нужно отслеживать.
+
+Для каждой метрики укажи:
+— Название и что она показывает
+— Как считается (формула или описание)
+— Как часто смотреть (ежедневно / еженедельно / ежемесячно)
+— Нормальный диапазон для моей ниши
+— Тревожный сигнал — при каком значении нужно реагировать
+
+Оформи таблицей. В конце — топ-3 метрики которые важнее всего на моём этапе.`,
+      en: `I run: [business type, brief description].
+
+Help me identify 7–8 key metrics I actually need to track.
+
+For each metric:
+— Name and what it shows
+— How to calculate it (formula or description)
+— How often to review (daily / weekly / monthly)
+— Normal range for my niche
+— Red flag — at what value I should take action
+
+Format as a table. End with: top 3 metrics most critical at my current stage.`
+    },
+    {
+      title: "Сравнение двух вариантов инвестиции",
+      hint: "Думаешь структурированно, а не интуитивно",
+      ru: `Помоги выбрать между двумя вариантами вложений для бизнеса.
+
+Вариант А: [название], сумма: [X], ожидаемый результат: [опиши].
+Вариант Б: [название], сумма: [Y], ожидаемый результат: [опиши].
+
+Сравни по критериям:
+— Стоимость и что входит
+— Срок окупаемости
+— Возможные риски
+— Потенциальный ROI (%)
+— Влияние на операционную нагрузку
+— Что будет если не делать ни то ни другое
+
+Оформи таблицей. В конце — конкретная рекомендация с обоснованием.`,
+      en: `Help me choose between two investment options for my business.
+
+Option A: [name], amount: [X], expected result: [describe].
+Option B: [name], amount: [Y], expected result: [describe].
+
+Compare by:
+— Cost and what's included
+— Payback period
+— Potential risks
+— Expected ROI (%)
+— Impact on operational workload
+— What happens if neither is done
+
+Format as a table. End with a concrete recommendation and reasoning.`
+    },
+    {
+      title: "Структура бюджета на квартал",
+      hint: "Распределяешь деньги до того как они пришли",
+      ru: `Помоги составить структуру операционного бюджета на квартал.
+
+Бизнес: [тип бизнеса].
+Плановая выручка: [сумма].
+Известные расходы: [перечисли что уже есть].
+
+Сделай:
+1. Распредели расходы по категориям: маркетинг, команда, операции, инструменты/сервисы, резерв
+2. Для каждой категории — рекомендуемый % от выручки (бенчмарк для моей ниши)
+3. Рассчитай плановую валовую и операционную маржу
+4. Укажи какие статьи гибкие (можно резать), а какие фиксированные
+
+Формат: таблица + короткий комментарий по каждой категории.`,
+      en: `Help me structure an operating budget for a quarter.
+
+Business: [type].
+Planned revenue: [amount].
+Known expenses: [list what you already have].
+
+Provide:
+1. Expense breakdown by category: marketing, team, operations, tools/services, reserve
+2. Recommended % of revenue per category (benchmark for my niche)
+3. Calculated gross and operating margin
+4. Which line items are flexible (can cut) vs. fixed
+
+Format: table + short comment per category.`
+    },
+    {
+      title: "Анализ unit-экономики продукта",
+      hint: "Считаешь зарабатываешь ли ты на одном клиенте",
+      ru: `Помоги посчитать unit-экономику моего продукта.
+
+Продукт: [название].
+Данные:
+— Цена продажи: [X]
+— Себестоимость (COGS): [Y]
+— Стоимость привлечения клиента (CAC): [Z]
+— Среднее количество покупок от одного клиента: [N]
+— Средний чек при повторной покупке: [W]
+
+Рассчитай:
+— Маржу на единицу (Gross Margin)
+— LTV (пожизненная ценность клиента)
+— LTV/CAC соотношение
+— Точку безубыточности
+
+Объясни каждый показатель простым языком без финансового жаргона. Скажи что нужно улучшить в первую очередь.`,
+      en: `Help me calculate the unit economics of my product.
+
+Product: [name].
+Data:
+— Selling price: [X]
+— Cost of goods (COGS): [Y]
+— Customer acquisition cost (CAC): [Z]
+— Average purchases per customer: [N]
+— Average repeat order value: [W]
+
+Calculate:
+— Unit gross margin
+— LTV (customer lifetime value)
+— LTV/CAC ratio
+— Break-even point
+
+Explain each metric in plain language without financial jargon. Tell me what to improve first.`
+    },
+    {
+      title: "Шаблон отчёта о движении денег",
+      hint: "Cash Flow — знаешь где деньги в любой момент",
+      ru: `Составь шаблон отчёта о движении денежных средств (Cash Flow Statement) для малого бизнеса [тип].
+
+Разделы:
+1. Операционная деятельность — поступления от клиентов, выплаты поставщикам, зарплаты, налоги
+2. Инвестиционная деятельность — покупка оборудования, вложения, продажа активов
+3. Финансовая деятельность — кредиты, займы, выплата долгов
+
+Для каждого раздела: типичные статьи и строки для заполнения.
+Итоговые строки: остаток на начало периода / остаток на конец периода.
+
+Формат: готово к переносу в Excel или Google Sheets. Период: месяц.`,
+      en: `Create a Cash Flow Statement template for a small [business type].
+
+Sections:
+1. Operating activities — customer receipts, supplier payments, salaries, taxes
+2. Investing activities — equipment purchases, investments, asset sales
+3. Financing activities — loans received, loan repayments
+
+For each section: typical line items ready to fill in.
+Bottom rows: Opening balance / Closing balance.
+
+Format: ready to paste into Excel or Google Sheets. Period: monthly.`
+    }
+  ],
+
+  tables: [
+    {
+      title: "Сравнительная таблица конкурентов",
+      hint: "Видишь рынок структурированно за 10 минут",
+      ru: `Создай сравнительную таблицу конкурентов для [тип бизнеса].
+
+Конкуренты для анализа: [перечисли 3–5 названий или типов].
+
+Критерии сравнения:
+— Ценовой диапазон
+— Целевая аудитория
+— Ключевые преимущества (что продвигают)
+— Очевидные слабые стороны
+— Каналы продвижения
+— Уникальное торговое предложение
+— Качество отзывов (общее впечатление)
+
+Оформи таблицей: строки — конкуренты + я, столбцы — критерии.
+В конце: 3 вывода — где я сильнее, где слабее, какую нишу можно занять.`,
+      en: `Create a competitor comparison table for [business type].
+
+Competitors to analyze: [list 3–5 names or types].
+
+Comparison criteria:
+— Price range
+— Target audience
+— Key strengths (what they promote)
+— Obvious weaknesses
+— Promotion channels
+— Unique selling proposition
+— Review sentiment (general impression)
+
+Format as a table: rows — competitors + me, columns — criteria.
+At the end: 3 conclusions — where I'm stronger, weaker, and what niche I can own.`
+    },
+    {
+      title: "SWOT-анализ в таблице",
+      hint: "Стратегический взгляд на бизнес за 10 минут",
+      ru: `Проведи SWOT-анализ для [тип бизнеса / продукт / стратегическое решение].
+
+Контекст: [опиши текущую ситуацию, рынок, что происходит в бизнесе сейчас].
+
+Оформи как классическую матрицу 2×2:
+— Сильные стороны (внутренние, позитивные)
+— Слабые стороны (внутренние, негативные)
+— Возможности (внешние, позитивные)
+— Угрозы (внешние, негативные)
+
+5–7 конкретных пунктов в каждом квадранте.
+В конце — 3 стратегических вывода: что использовать, что исправлять, чего избегать.`,
+      en: `Conduct a SWOT analysis for [business type / product / strategic decision].
+
+Context: [describe current situation, market, what's happening in the business now].
+
+Format as a classic 2×2 matrix:
+— Strengths (internal, positive)
+— Weaknesses (internal, negative)
+— Opportunities (external, positive)
+— Threats (external, negative)
+
+5–7 specific points per quadrant.
+At the end — 3 strategic conclusions: what to leverage, what to fix, what to avoid.`
+    },
+    {
+      title: "Матрица продуктов и цен",
+      hint: "Выстраиваешь линейку как систему, а не набор услуг",
+      ru: `Помоги выстроить продуктовую матрицу для [тип бизнеса].
+
+Мои текущие продукты/услуги: [перечисли с ценами].
+
+Распредели по уровням:
+1. Продукт-знакомство — бесплатный или недорогой, снижает барьер входа
+2. Основной продукт — главная ценность, основная выручка
+3. Premium — максимальная ценность и цена
+
+Для каждого уровня:
+— Цена и формат
+— Что включает
+— На какого клиента рассчитан
+— Роль в воронке (привлечь / конвертировать / удержать)
+
+Оформи таблицей. Если в линейке есть пробелы — укажи что добавить.`,
+      en: `Help me build a product matrix for [business type].
+
+My current products/services: [list with prices].
+
+Organize into tiers:
+1. Entry-level — free or low-cost, lowers the entry barrier
+2. Core product — main value, primary revenue
+3. Premium — maximum value and price
+
+For each tier:
+— Price and format
+— What's included
+— Target customer profile
+— Role in the funnel (attract / convert / retain)
+
+Format as a table. If there are gaps in the lineup — suggest what to add.`
+    },
+    {
+      title: "Таблица задач по матрице Эйзенхауэра",
+      hint: "Расставляешь приоритеты системно, а не интуитивно",
+      ru: `Вот мой текущий список задач:
+[вставь список задач — можно неструктурированный]
+
+Помоги расставить приоритеты используя матрицу Эйзенхауэра.
+
+Оформи таблицу с колонками:
+— Задача
+— Срочность (1 — не срочно, 3 — очень срочно)
+— Важность (1 — не важно, 3 — критично)
+— Квадрант: Сделать сейчас / Запланировать / Делегировать / Убрать
+— Рекомендуемое действие
+
+Отсортируй по убыванию приоритета. В конце — комментарий: на что потратить первые 2 часа завтра.`,
+      en: `Here is my current task list:
+[paste your task list — can be unstructured]
+
+Help me prioritize using the Eisenhower Matrix.
+
+Create a table with columns:
+— Task
+— Urgency (1 — not urgent, 3 — very urgent)
+— Importance (1 — not important, 3 — critical)
+— Quadrant: Do Now / Schedule / Delegate / Delete
+— Recommended action
+
+Sort by descending priority. At the end — comment: what to spend the first 2 hours on tomorrow.`
+    },
+    {
+      title: "Система KPI для команды",
+      hint: "Сотрудники знают по чему их оценивают",
+      ru: `Разработай систему KPI для [должность или отдел] в [тип бизнеса].
+
+Для каждого KPI укажи:
+— Название показателя
+— Что именно измеряет
+— Как считается (единица измерения)
+— Целевое значение на [период]
+— Периодичность проверки
+— Вес в общей оценке (%)
+
+Всего 6–8 KPI. Баланс: результатовые метрики (что достигнуто) + процессные (как работает).
+
+В конце:
+— Формула итогового балла за период
+— Что означает 100% / выше 100% / ниже 80%
+
+Оформи таблицей.`,
+      en: `Develop a KPI system for [position or department] at [business type].
+
+For each KPI:
+— Metric name
+— What it measures
+— How to calculate it (unit)
+— Target value for [period]
+— Review frequency
+— Weight in overall score (%)
+
+Total 6–8 KPIs. Balance: outcome metrics (what's achieved) + process metrics (how they work).
+
+At the end:
+— Formula for total score for the period
+— What 100% / above 100% / below 80% means
+
+Format as a table.`
+    },
+    {
+      title: "Таблица контент-планирования",
+      hint: "Готовая система для работы с командой или самостоятельно",
+      ru: `Создай шаблон таблицы для планирования контента на месяц.
+
+Каналы: [перечисли — Instagram, Telegram, LinkedIn, YouTube и т.д.].
+
+Колонки таблицы:
+— Дата и день недели
+— Канал публикации
+— Тип поста: польза / история / кейс / продажа / вовлечение
+— Тема поста (1 предложение)
+— Формат: текст / рилс / карусель / фото / опрос / стория
+— Статус: идея → написан → согласован → опубликован
+— Охват и реакции (заполняется после)
+
+Покажи заполненный пример на 5–7 строк. Формат: готово для Google Sheets.`,
+      en: `Create a content planning table template for one month.
+
+Channels: [list — Instagram, Telegram, LinkedIn, YouTube, etc.].
+
+Table columns:
+— Date and day of week
+— Publication channel
+— Post type: value / story / case study / sales / engagement
+— Post topic (1 sentence)
+— Format: text / reel / carousel / photo / poll / story
+— Status: idea → written → approved → published
+— Reach and reactions (fill after publishing)
+
+Show a filled example for 5–7 rows. Format: ready for Google Sheets.`
+    }
+  ],
+
+  docs: [
+    {
+      title: "Коммерческое предложение",
+      hint: "КП которое читают до конца",
+      ru: `Напиши коммерческое предложение для клиента [тип клиента / название компании].
+
+Услуга / продукт: [описание].
+Контекст: [что знаешь о потребности клиента].
+
+Структура:
+1. Ситуация клиента — покажи что понимаешь его задачу (2–3 предложения)
+2. Моё решение — конкретно что делаю и как
+3. Что получает клиент — результаты, а не процессы
+4. Стоимость — что входит, что нет, условия
+5. Почему я/моя компания — 2–3 конкретных аргумента
+6. Следующий шаг — одно простое действие
+
+Без воды. Без хвастовства. Максимум 1 страница А4.`,
+      en: `Write a commercial proposal for [client type / company name].
+
+Service/product: [description].
+Context: [what you know about the client's need].
+
+Structure:
+1. Client's situation — show you understand their goal (2–3 sentences)
+2. My solution — what specifically I do and how
+3. What the client gets — outcomes, not processes
+4. Pricing — what's included, what's not, terms
+5. Why me/my company — 2–3 concrete arguments
+6. Next step — one simple action
+
+No filler. No bragging. Max 1 A4 page.`
+    },
+    {
+      title: "Анализ обратной связи от клиентов",
+      hint: "Из хаоса мнений — конкретные выводы и действия",
+      ru: `Вот отзывы и комментарии наших клиентов за [период]:
+
+[вставь список отзывов, комментариев или текстов обратной связи]
+
+Проанализируй:
+1. Что клиенты упоминают чаще всего (позитив и негатив)
+2. Какие слова и фразы повторяются
+3. Какие неочевидные инсайты можно извлечь
+
+Оформи результат:
+— Таблица частоты тем (тема / сколько раз / позитив или негатив)
+— Топ-3 сильных стороны глазами клиентов
+— Топ-3 проблемы которые нужно решить
+— 5 конкретных действий на основе данных`,
+      en: `Here are customer reviews and feedback for [period]:
+
+[paste list of reviews, comments, or feedback texts]
+
+Analyze:
+1. What customers mention most often (positive and negative)
+2. Recurring words and phrases
+3. Non-obvious insights that can be extracted
+
+Format the results as:
+— Theme frequency table (theme / count / positive or negative)
+— Top 3 strengths from the customer's perspective
+— Top 3 problems to address
+— 5 concrete actions based on the data`
+    },
+    {
+      title: "Должностная инструкция",
+      hint: "Сотрудник знает что от него ждут без долгих объяснений",
+      ru: `Напиши должностную инструкцию для позиции [должность] в компании [тип бизнеса].
+
+Разделы:
+1. Цель должности — 1 предложение: зачем эта роль существует
+2. Зона ответственности — за что отвечает, что происходит если этого не делать
+3. Ежедневные и еженедельные задачи — конкретный список
+4. Метрики и KPI — по чему оценивается работа
+5. Полномочия — что можно решать самостоятельно, что требует согласования
+6. Взаимодействие — с кем работает и по каким вопросам
+
+Пиши конкретно. Без корпоративного языка.`,
+      en: `Write a job description for [position] at [business type].
+
+Sections:
+1. Role purpose — 1 sentence: why this role exists
+2. Areas of responsibility — what they own, what breaks if they don't
+3. Daily and weekly tasks — specific list
+4. Metrics and KPIs — how performance is measured
+5. Authority — what can be decided independently vs. requires approval
+6. Collaboration — who they work with and on what
+
+Be specific. No corporate language.`
+    },
+    {
+      title: "ТЗ для подрядчика",
+      hint: "Подрядчик понимает задачу с первого раза",
+      ru: `Напиши техническое задание для [тип подрядчика: дизайнер / разработчик / копирайтер / таргетолог / другой].
+
+Задача: [описание того что нужно сделать].
+
+ТЗ должно включать:
+1. Цель и контекст — зачем это нужно, как будет использоваться
+2. Конкретный результат — что именно сдаётся (файл, текст, код)
+3. Требования и ограничения — что обязательно, что нельзя
+4. Технические параметры — форматы, размеры, объём
+5. Референсы — примеры похожих работ (попроси меня предоставить если нет)
+6. Срок и формат сдачи — дедлайн, как принимаем работу`,
+      en: `Write a technical brief for a [contractor type: designer / developer / copywriter / media buyer / other].
+
+Task: [describe what needs to be done].
+
+The brief must include:
+1. Goal and context — why it's needed, how it will be used
+2. Specific deliverable — what exactly is handed over (file, text, code)
+3. Requirements and constraints — what's mandatory, what's forbidden
+4. Technical specifications — formats, sizes, volume
+5. References — examples of similar work (ask me to provide if unavailable)
+6. Deadline and delivery format — due date, how the work is reviewed`
+    },
+    {
+      title: "Структура договора",
+      hint: "Знаешь что прописать чтобы не пожалеть",
+      ru: `Помоги составить структуру договора [тип: оказание услуг / поставка / агентский / NDA].
+
+Стороны: [сторона 1] и [сторона 2].
+Суть сделки: [что именно договариваемся].
+
+Перечисли ключевые разделы и для каждого укажи:
+— О чём этот раздел
+— Что важно прописать чётко (типичные спорные моменты)
+— Чего часто не включают и потом жалеют
+
+Особое внимание: оплата, сроки, ответственность за нарушения, условия досрочного расторжения.
+
+Это не юридическая консультация — это структура для работы с юристом.`,
+      en: `Help me outline a [contract type: service agreement / supply contract / agency agreement / NDA].
+
+Parties: [party 1] and [party 2].
+Substance of the deal: [what we're agreeing on].
+
+List the key sections and for each specify:
+— What this section covers
+— What must be defined clearly (common dispute points)
+— What's often left out and regretted later
+
+Special attention: payment, deadlines, liability for breaches, early termination conditions.
+
+This is not legal advice — it's a structure to work from with a lawyer.`
+    },
+    {
+      title: "Стратегический план на год",
+      hint: "Структура на год которую можно обсуждать с командой",
+      ru: `Помоги составить стратегический план развития [тип бизнеса] на год.
+
+Текущая ситуация: [опиши где сейчас — выручка, команда, продукты, ключевые проблемы].
+Главная цель на год: [что хочешь достичь].
+
+Разбей по кварталам: Q1, Q2, Q3, Q4.
+Для каждого квартала:
+— 3 ключевых приоритета
+— Измеримая цель (что именно и сколько)
+— Ключевые действия для достижения
+— Ресурсы которые нужны
+— Метрика успеха
+
+Формат: таблица + 1–2 предложения о логике перехода между кварталами.`,
+      en: `Help me create a 1-year strategic plan for [business type].
+
+Current situation: [describe where you are now — revenue, team, products, key challenges].
+Main goal for the year: [what you want to achieve].
+
+Break into quarters: Q1, Q2, Q3, Q4.
+For each quarter:
+— 3 key priorities
+— Measurable goal (what and how much)
+— Key actions to achieve it
+— Resources needed
+— Success metric
+
+Format: table + 1–2 sentences on the logic connecting quarters.`
+    }
+  ],
+
+  nego: [
+    {
+      title: "Подготовка к переговорам",
+      hint: "Входишь в переговоры с готовой позицией",
+      ru: `Помоги подготовиться к переговорам.
+
+С кем: [тип партнёра / клиента / поставщика].
+О чём: [суть переговоров].
+Что хочу получить: [идеальный результат].
+
+Составь:
+1. Мою целевую позицию — что прошу в идеале
+2. Минимально приемлемые условия — дно ниже которого не иду
+3. Что готов предложить взамен (обмен уступками)
+4. 5 вопросов которые задам на встрече
+5. Вероятные возражения другой стороны и мои ответы на каждое
+6. Как выглядит провальный сценарий и как его избежать`,
+      en: `Help me prepare for a negotiation.
+
+With whom: [partner / client / supplier type].
+About: [subject of negotiation].
+What I want to achieve: [ideal outcome].
+
+Provide:
+1. My target position — what I ideally ask for
+2. Minimum acceptable terms — the floor I won't go below
+3. What I can offer in exchange (trade-offs)
+4. 5 questions I'll ask at the meeting
+5. Likely objections from the other side and my responses
+6. What a failed scenario looks like and how to avoid it`
+    },
+    {
+      title: "Письмо поставщику с торгом",
+      hint: "Переговоры об условиях без стресса",
+      ru: `Напиши деловое письмо поставщику [тип/название] с переговорами об улучшении условий.
+
+Текущие условия: [цена, сроки оплаты, объём, другое].
+Что хочу изменить: [конкретные условия — скидка, отсрочка, увеличение объёма].
+Моя позиция: я покупаю [объём / частота / срок сотрудничества].
+
+Структура письма:
+1. Благодарность за сотрудничество (1 предложение)
+2. Конкретная просьба с обоснованием
+3. Что я предлагаю взамен
+4. Альтернативный шаг если откажут
+
+Тон: уважительный, конкретный, деловой — не просьба, а предложение взаимной выгоды.`,
+      en: `Write a business letter to a supplier [type/name] negotiating better terms.
+
+Current terms: [price, payment terms, volume, other].
+What I want to change: [specific conditions — discount, payment deferral, volume increase].
+My leverage: I buy [volume / frequency / length of partnership].
+
+Letter structure:
+1. Thank them for the partnership (1 sentence)
+2. Specific request with reasoning
+3. What I offer in return
+4. Alternative step if they decline
+
+Tone: respectful, concrete, professional — not a plea, but a mutual benefit proposal.`
+    },
+    {
+      title: "Работа с возражением «Я подумаю»",
+      hint: "Вместо потери клиента — продолжение диалога",
+      ru: `Клиент говорит: "Мне надо подумать" или "Я вернусь к вам позже".
+
+Бизнес: [тип], цена продукта: [цена].
+
+Напиши 4 варианта ответа:
+1. Мягкий — поддерживающий, без давления, выясняет что смущает
+2. Прямой — задаёт конкретный вопрос о причине сомнения
+3. С ограничением — мягко создаёт срочность без манипуляции
+4. С меньшим шагом — предлагает начать с чего-то меньшего
+
+Цель каждого варианта: не потерять клиента, а выяснить настоящую причину и продолжить разговор.`,
+      en: `The client says: "I need to think about it" or "I'll get back to you later."
+
+Business: [type], product price: [price].
+
+Write 4 response scripts:
+1. Soft — supportive, no pressure, explores what's holding them back
+2. Direct — asks a specific question about the reason for hesitation
+3. With a time element — gently creates urgency without manipulation
+4. With a smaller step — offers to start with something smaller
+
+Goal of each: don't lose the client — find the real reason and continue the conversation.`
+    },
+    {
+      title: "Антикризисный скрипт",
+      hint: "Знаешь что говорить когда что-то пошло не так",
+      ru: `Произошла кризисная ситуация: [опиши — задержка / ошибка / жалоба клиента / форс-мажор].
+
+Напиши скрипт коммуникации с [клиентом / партнёром / командой].
+
+Структура:
+1. Первое сообщение — как сообщить о проблеме (сразу, честно, без паники)
+2. Действия в первые 24 часа — что делаю чтобы решить
+3. Объяснение ситуации — что произошло без лишних оправданий
+4. Решение или компенсация — что предлагаю
+5. Финальное сообщение — когда проблема решена
+
+Тон во всех сообщениях: честный, спокойный, ответственный.`,
+      en: `A crisis has occurred: [describe — delay / mistake / client complaint / force majeure].
+
+Write a communication script for [client / partner / team].
+
+Structure:
+1. First message — how to break the news (immediately, honestly, no panic)
+2. Actions in the first 24 hours — what I'm doing to fix it
+3. Explanation — what happened without excessive excuses
+4. Solution or compensation — what I'm offering
+5. Final message — when the issue is resolved
+
+Tone throughout: honest, calm, accountable.`
+    },
+    {
+      title: "Скрипт холодного аутрича",
+      hint: "Пишешь незнакомым людям так чтобы они отвечали",
+      ru: `Напиши скрипт холодного сообщения потенциальному клиенту.
+
+Кому пишу: [тип — директор компании / владелец бизнеса / эксперт].
+Канал: [Telegram / LinkedIn / Email].
+Что предлагаю: [суть в 1 предложении].
+
+Нужны 3 сообщения:
+1. Первое — до 60 слов, начни с конкретной причины почему пишу именно этому человеку, без продажи в лоб
+2. Follow-up — через 3 дня если нет ответа, другой угол
+3. Финальное — через неделю, короткое, оставляет дверь открытой
+
+Принцип: сначала ценность или конкретика — потом предложение.`,
+      en: `Write a cold outreach script for a potential client.
+
+Who I'm writing to: [type — company director / business owner / expert].
+Channel: [Telegram / LinkedIn / Email].
+What I offer: [one-sentence pitch].
+
+Need 3 messages:
+1. First — max 60 words, open with a specific reason for reaching out to this person, no hard sell
+2. Follow-up — 3 days later if no reply, different angle
+3. Final — one week later, short, leaves the door open
+
+Principle: value or specifics first — offer second.`
+    },
+    {
+      title: "Переговоры о цене с клиентом",
+      hint: "Держишь цену и сохраняешь отношения",
+      ru: `Клиент просит скидку [%] или говорит "у вас дорого".
+
+Моя цена: [цена]. Бизнес: [тип].
+
+Помоги подготовить переговорную стратегию:
+
+1. Как обосновать цену через ценность (без оправданий и агрессии)
+2. Какие уступки могу сделать не снижая цену — бонус, рассрочка, расширение объёма
+3. Моё дно — ниже какой цены не иду и как сказать об этом твёрдо и уважительно
+4. Как завершить переговоры при любом исходе, сохранив отношения
+
+Плюс: 3 конкретные фразы для каждого из пунктов.`,
+      en: `A client is asking for a [%] discount or says "you're too expensive."
+
+My price: [price]. Business: [type].
+
+Help me prepare a negotiation strategy:
+
+1. How to justify the price through value (no apologizing, no aggression)
+2. What concessions I can make without reducing price — bonus, installment plan, expanded scope
+3. My floor — the price I won't go below, and how to say it firmly and respectfully
+4. How to close the negotiation on any outcome while preserving the relationship
+
+Plus: 3 specific phrases for each point.`
+    }
+  ],
+  productivity: [
+    {
+      title: "Планирование дня за 2 минуты",
+      hint: "Начинаешь день с ясной картиной, а не хаосом",
+      ru: `Помоги спланировать мой рабочий день.
+
+Сегодня [дата / день недели].
+Мои задачи и обязательства на сегодня: [перечисли всё что есть в голове].
+Энергия прямо сейчас: [высокая / средняя / низкая].
+Самое важное что должно быть сделано сегодня: [1–2 вещи].
+
+Сделай:
+1. Расставь задачи по приоритету (что делать в первую очередь)
+2. Предложи временные блоки под каждую задачу
+3. Выдели то что можно перенести или отменить без последствий
+4. Оставь буфер 30–60 минут на непредвиденное
+
+Формат: простой список по времени, без лишних слов.`,
+      en: `Help me plan my working day.
+
+Today is [date / day of week].
+My tasks and commitments today: [list everything on your mind].
+Energy level right now: [high / medium / low].
+The most important thing that must get done today: [1–2 things].
+
+Provide:
+1. Tasks ranked by priority (what to do first)
+2. Suggested time blocks for each task
+3. What can be postponed or cancelled without consequence
+4. A 30–60 minute buffer for the unexpected
+
+Format: simple time-based list, no filler.`
+    },
+    {
+      title: "Разбор сложного решения",
+      hint: "Думаешь структурированно когда нужно выбрать",
+      ru: `Мне нужно принять решение: [опиши ситуацию].
+
+Варианты которые я рассматриваю: [перечисли].
+Что меня останавливает: [страхи, сомнения, неизвестность].
+Что важно для меня в этом решении: [ценности, критерии].
+Дедлайн для принятия решения: [когда].
+
+Помоги:
+1. Прояснить что я действительно выбираю (не симптомы, а суть)
+2. Задать мне 3 вопроса которые я ещё не задал себе
+3. Оценить каждый вариант по критериям которые я назвал
+4. Назвать что скорее всего произойдёт если я не решу ничего
+
+Не давай готового ответа — помоги мне думать.`,
+      en: `I need to make a decision: [describe the situation].
+
+Options I'm considering: [list them].
+What's holding me back: [fears, doubts, uncertainties].
+What matters to me in this decision: [values, criteria].
+Decision deadline: [when].
+
+Help me:
+1. Clarify what I'm actually choosing (not symptoms — the core)
+2. Ask me 3 questions I haven't asked myself yet
+3. Evaluate each option by the criteria I named
+4. Name what will likely happen if I decide nothing
+
+Don't give me a ready answer — help me think.`
+    },
+    {
+      title: "Краткое изложение длинного материала",
+      hint: "Усваиваешь книгу, статью или видео за минуты",
+      ru: `[Вставь текст статьи / транскрипт видео / главы книги]
+
+Сделай структурированное изложение:
+1. Главная идея (1–2 предложения — суть всего материала)
+2. Ключевые тезисы (5–7 пунктов — самое важное)
+3. Практические выводы (3–5 конкретных действий которые можно применить)
+4. Цитата или момент который стоит запомнить
+5. Для кого особенно полезен этот материал
+
+Стиль: коротко, без воды, как объяснял бы умный друг за кофе.`,
+      en: `[Paste the article text / video transcript / book chapter]
+
+Create a structured summary:
+1. Core idea (1–2 sentences — the essence of the whole material)
+2. Key points (5–7 bullets — the most important takeaways)
+3. Practical conclusions (3–5 concrete actions you can apply)
+4. Quote or moment worth remembering
+5. Who will benefit most from this material
+
+Style: brief, no filler, as a smart friend would explain it over coffee.`
+    },
+    {
+      title: "Подготовка к важной встрече",
+      hint: "Приходишь подготовленным, а не импровизируешь",
+      ru: `Помоги подготовиться к встрече.
+
+С кем встреча: [имя/роль].
+Цель встречи: [чего хочу достичь].
+Контекст: [что знаю об этом человеке / предыдущие взаимодействия].
+Продолжительность: [сколько минут].
+
+Подготовь:
+1. Мои 3 ключевые цели для этой встречи
+2. 5 вопросов которые стоит задать
+3. Что скорее всего спросят меня — и мои заготовленные ответы
+4. Как открыть встречу (первые 60 секунд)
+5. Как завершить с чётким следующим шагом
+
+Плюс: на что обратить внимание в ходе разговора.`,
+      en: `Help me prepare for a meeting.
+
+Who I'm meeting: [name/role].
+Meeting goal: [what I want to achieve].
+Context: [what I know about this person / previous interactions].
+Duration: [how many minutes].
+
+Prepare:
+1. My 3 key goals for this meeting
+2. 5 questions worth asking
+3. What they'll likely ask me — and my prepared answers
+4. How to open the meeting (first 60 seconds)
+5. How to close with a clear next step
+
+Plus: what to pay attention to during the conversation.`
+    },
+    {
+      title: "Разбор моей недели и выводы",
+      hint: "Еженедельная рефлексия которая даёт рост",
+      ru: `Помоги провести еженедельный разбор.
+
+Неделя: [даты или просто "прошедшая неделя"].
+Что планировал сделать: [список].
+Что фактически сделал: [список].
+Один момент за неделю который меня порадовал: [опиши].
+Один момент который разочаровал или дал урок: [опиши].
+
+Помоги:
+1. Оценить продуктивность недели честно (не критикуя, но и не щадя)
+2. Найти 1–2 паттерна — что повторяется из недели в неделю
+3. Сформулировать 3 приоритета на следующую неделю
+4. Задать мне 1 важный вопрос который я обычно не задаю себе
+
+Формат: разговорный, конкретный, без мотивационных банальностей.`,
+      en: `Help me do a weekly review.
+
+Week: [dates or "last week"].
+What I planned to do: [list].
+What I actually did: [list].
+One moment from the week that made me happy: [describe].
+One moment that disappointed or taught me something: [describe].
+
+Help me:
+1. Honestly assess the week's productivity (no sugarcoating, no harsh judgment)
+2. Find 1–2 patterns — what keeps repeating week after week
+3. Define 3 priorities for next week
+4. Ask me 1 important question I don't usually ask myself
+
+Format: conversational, concrete, no motivational clichés.`
+    },
+    {
+      title: "Моя персональная инструкция для Claude",
+      hint: "Настраиваешь AI под себя — результаты сразу лучше",
+      ru: `Помоги написать системный промт для Claude который я буду использовать постоянно.
+
+Обо мне:
+— Кто я: [должность, роль, чем занимаюсь]
+— Мой стиль общения: [прямой/мягкий/формальный/неформальный]
+— Мои основные задачи в работе: [перечисли 5–7]
+— Что мне важно в ответах: [краткость / подробность / примеры / структура]
+— Чего категорически не хочу: [длинные вступления / очевидные советы / другое]
+— Контекст бизнеса: [ниша, аудитория, продукт]
+
+Напиши системный промт который я добавлю в начало каждого чата. Он должен помочь Claude понять меня с полуслова.`,
+      en: `Help me write a system prompt for Claude that I'll use consistently.
+
+About me:
+— Who I am: [role, position, what I do]
+— My communication style: [direct/soft/formal/informal]
+— My main work tasks: [list 5–7]
+— What I value in responses: [brevity / detail / examples / structure]
+— What I definitely don't want: [long intros / obvious advice / other]
+— Business context: [niche, audience, product]
+
+Write a system prompt I'll add to the beginning of every chat. It should help Claude understand me instantly.`
+    }
+  ]
+};
+
+// ─── RENDER ─────────────────────────────────────────────────────────────────
+let currentLang = 'ru';
+
+function renderAll() {
+  Object.keys(data).forEach(cat => renderCategory(cat));
+}
+
+function renderCategory(cat) {
+  const grid = document.getElementById('grid-' + cat);
+  if (!grid) return;
+  grid.innerHTML = '';
+  data[cat].forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'prompt-card';
+    card.innerHTML = `
+      <button class="card-header" onclick="toggleCard(this.parentElement)">
+        <span class="card-num">${String(i+1).padStart(2,'0')}</span>
+        <div class="card-info">
+          <div class="card-title">${p.title}</div>
+          <div class="card-hint">${p.hint}</div>
+        </div>
+        <span class="card-chevron">▾</span>
+      </button>
+      <div class="card-body">
+        <div class="prompt-text">${escHtml(p[currentLang])}</div>
+        <div class="card-actions">
+          <button class="copy-btn" onclick="copyPrompt(this)">
+            <span class="copy-icon">⎘</span> Скопировать
+          </button>
+          ${p.model ? `<span class="for-model">Для: ${p.model}</span>` : ''}
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toggleCard(card) {
+  card.classList.toggle('open');
+}
+
+function copyPrompt(btn) {
+  const text = btn.closest('.card-body').querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = '<span class="copy-icon">✓</span> Скопировано';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '<span class="copy-icon">⎘</span> Скопировать';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  // Update all open cards
+  document.querySelectorAll('.prompt-card').forEach(card => {
+    const cat = card.closest('.prompts-grid').id.replace('grid-','');
+    const idx = Array.from(card.parentElement.children).indexOf(card);
+    const p = data[cat][idx];
+    if (p) {
+      card.querySelector('.prompt-text').textContent = p[lang];
+    }
+  });
+}
+
+function goTo(id, el) {
+  const target = document.getElementById(id);
+  if (!target) return;
+  target.scrollIntoView({behavior:'smooth', block:'start'});
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  if (window.innerWidth <= 768) toggleSidebar();
+}
+
+function toggleSidebar() {
+  const s = document.getElementById('sidebar');
+  const o = document.getElementById('overlay');
+  s.classList.toggle('mobile-open');
+  o.classList.toggle('show');
+}
+
+// Active nav on scroll
+const sections = ['marketing','hr','ads','finance','tables','docs','nego','productivity'];
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 160) current = id;
+  });
+  if (current) {
+    document.querySelectorAll('.nav-item').forEach(el => {
+      const fn = el.getAttribute('onclick') || '';
+      el.classList.toggle('active', fn.includes("'"+current+"'"));
+    });
+  }
+});
+
+// Init
+renderAll();
+</script>
+</body>
+</html>
