@@ -83,6 +83,15 @@ a{color:inherit;text-decoration:none}
 .cta-btn{display:inline-flex;align-items:center;gap:8px;background:#f59e0b;color:#1a1a1a;font-size:15px;font-weight:700;padding:13px 28px;border-radius:8px;border:none;cursor:pointer;transition:all .15s;text-decoration:none}
 .cta-btn:hover{background:#fbbf24;transform:translateY(-1px)}
 
+/* Telegram block */
+.tg-block{border:1px solid #d3e5f5;background:linear-gradient(135deg,#f2f8fd 0%,#e8f2fb 100%);border-radius:14px;padding:32px 36px;margin:32px 0;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.tg-icon{width:56px;height:56px;min-width:56px;background:#2aabee;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px}
+.tg-info{flex:1;min-width:220px}
+.tg-title{font-size:19px;font-weight:700;letter-spacing:-0.3px;color:#1c3d5a;margin-bottom:6px}
+.tg-text{font-size:14px;color:#4a6b8a;line-height:1.65;max-width:520px}
+.tg-btn{display:inline-flex;align-items:center;gap:8px;background:#2aabee;color:#fff;font-size:14px;font-weight:600;padding:11px 24px;border-radius:8px;border:none;cursor:pointer;transition:all .15s;text-decoration:none;white-space:nowrap}
+.tg-btn:hover{background:#1e96d6;transform:translateY(-1px)}
+
 /* Update notice */
 .update-notice{border:1px solid #fde68a;background:#fffbeb;border-radius:10px;padding:16px 20px;margin-top:24px;display:flex;gap:12px;align-items:flex-start}
 .update-notice .icon{font-size:18px;margin-top:1px}
@@ -141,6 +150,7 @@ a{color:inherit;text-decoration:none}
     <button class="nav-item" onclick="goTo('productivity',this)"><span class="icon">⚡</span>Личная эффективность</button>
     <div class="nav-label" style="margin-top:20px">Сообщество</div>
     <button class="nav-item" onclick="goTo('club',this)"><span class="icon">🚀</span>AI Клуб</button>
+    <button class="nav-item" onclick="goTo('tg',this)"><span class="icon">✈️</span>Telegram-канал</button>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-update">
@@ -277,6 +287,16 @@ a{color:inherit;text-decoration:none}
       <div class="cta-feat">Разборы реальных кейсов из бизнеса</div>
     </div>
     <a href="https://t.me/IldarSagidullin/177" target="_blank" class="cta-btn">Вступить в AI Клуб →</a>
+  </div>
+
+  <!-- TELEGRAM -->
+  <div class="tg-block" id="tg">
+    <div class="tg-icon">✈️</div>
+    <div class="tg-info">
+      <div class="tg-title">Подпишись на мой Telegram-канал</div>
+      <div class="tg-text">Там я делюсь полезными инсайтами, мыслями, пошаговыми инструкциями и актуальными AI-инструментами, которые применяю сам. Всё самое свежее — сначала в канале.</div>
+    </div>
+    <a href="https://t.me/IldarSagidullin" target="_blank" class="tg-btn">Перейти и подписаться →</a>
   </div>
 
   <div class="update-notice">
