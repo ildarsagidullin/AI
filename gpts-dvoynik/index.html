@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как собрать свой GPT: AI-двойник за вечер</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f2ed; color: #222; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 760px; margin: 32px auto 64px; background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,140,180,0.07) 27px, rgba(120,140,180,0.07) 28px), #fdfcf8; border-radius: 8px; box-shadow: 0 2px 14px rgba(0,0,0,0.08); padding: 56px 60px 72px; }
+  @media (max-width: 640px) { .sheet { padding: 32px 20px 48px; margin: 0; border-radius: 0; } }
+  .mascot { image-rendering: pixelated; flex-shrink: 0; mix-blend-mode: multiply; }
+  .header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 8px; }
+  .header-text { flex: 1; }
+  .kicker { color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 10px; }
+  h1 { font-size: 36px; line-height: 1.15; color: #1d4ed8; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .underline { display: block; margin: 2px 0 18px; }
+  .lead { font-size: 18px; color: #444; margin-bottom: 18px; }
+  b, strong { font-weight: 700; color: #111; }
+  .meta { font-size: 13px; color: #999; margin-bottom: 8px; }
+  .meta span + span::before { content: " · "; }
+  .toc { margin: 36px 0 8px; padding: 22px 26px; background: rgba(29,78,216,0.035); border-radius: 10px; }
+  .toc-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 10px; }
+  .toc a { color: #1d4ed8; text-decoration: none; display: block; padding: 3px 0; font-size: 16px; }
+  .toc a:hover { text-decoration: underline; }
+  h2 { font-size: 25px; color: #1d4ed8; font-weight: 800; margin: 52px 0 2px; scroll-margin-top: 20px; }
+  h2 .underline { margin-bottom: 14px; }
+  h3 { font-size: 18px; color: #111; font-weight: 700; margin: 26px 0 10px; }
+  p { margin-bottom: 15px; font-size: 16.5px; }
+  ul.plain, ol.num { margin: 0 0 16px 2px; padding: 0; list-style: none; }
+  ul.plain li, ol.num li { padding-left: 22px; position: relative; margin-bottom: 7px; font-size: 16.5px; }
+  ul.plain li::before { content: "•"; position: absolute; left: 4px; color: #1d4ed8; font-weight: 700; }
+  ol.num { counter-reset: n; }
+  ol.num li { counter-increment: n; padding-left: 30px; }
+  ol.num li::before { content: counter(n) "."; position: absolute; left: 2px; color: #1d4ed8; font-weight: 800; }
+  a { color: #1d4ed8; }
+  .note { background: rgba(29,78,216,0.055); border-left: 3px solid #1d4ed8; border-radius: 0 8px 8px 0; padding: 13px 18px; margin: 22px 0; font-size: 16px; }
+  .note.red { background: rgba(220,38,38,0.06); border-color: #dc2626; }
+  .prompt { position: relative; margin: 14px 0 20px; }
+  .prompt pre { background: #f5f2ea; border: 1px solid #e7e0d2; border-radius: 8px; padding: 16px 18px; padding-right: 96px; font-family: "SF Mono", Consolas, "Courier New", monospace; font-size: 13.5px; line-height: 1.6; color: #333; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
+  .prompt .copy { position: absolute; top: 10px; right: 10px; background: #1d4ed8; color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .prompt .copy:hover { background: #1741b8; }
+  .prompt .copy.done { background: #16a34a; }
+  code { background: #f0ede5; padding: 2px 7px; border-radius: 5px; font-size: 0.88em; color: #1d4ed8; font-family: Consolas, monospace; }
+  figure.screenshot { margin: 20px 0; }
+  figure.screenshot img { max-width: 100%; border: 1px solid #e2ddd2; border-radius: 8px; display: block; }
+  figure.screenshot figcaption { font-size: 13.5px; color: #999; margin-top: 8px; text-align: center; }
+  .ph { border: 2px dashed #cdc6b6; border-radius: 8px; background: #f7f3ea; padding: 30px; text-align: center; color: #a99f88; font-size: 14px; }
+  hr { border: none; border-top: 1px solid #e6e0d3; margin: 44px 0; }
+  .footer-mascot { display: flex; align-items: center; gap: 18px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8e4da; color: #777; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="header">
+    <div class="header-text">
+      <div class="kicker">Гайд · GPTs</div>
+      <h1>Как собрать свой GPT: AI-двойник за вечер</h1>
+      <svg class="underline" width="250" height="10" viewBox="0 0 250 10"><path d="M3 6 C 45 2, 100 8, 145 5 S 220 3, 247 6" stroke="#dc2626" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+      <p class="lead">Я создал двойника Олега Тинькова, пообщался с ним — и за один вечер нашёл, как увеличить выручку в своём проекте. Сейчас покажу, как собрать такого же под себя.</p>
+      <div class="meta"><span>пошаговый конспект</span><span>Ильдар</span></div>
+    </div>
+    <img class="mascot" src="hero.jpg" width="80" alt="">
+  </div>
+
+  <p>Смотрю я как-то интервью Тинькова. И ловлю себя на мысли: блин, вот бы ему пару вопросов задать. А потом думаю — а почему нельзя?</p>
+  <p>Взял все его интервью за последние лет пять, прогнал в транскрибацию. Книги закинул. Собрал из этого базу знаний и упаковал в свой <b>GPT</b>. И всё — у меня теперь сидит Тиньков и отвечает так, как ответил бы он. Ну почти.</p>
+  <p>В этом гайде расскажу, что это за штука, зачем она нужна вообще всем, и пошагово соберём с тобой твоего двойника. Без кода, за вечер. Погнали.</p>
+
+  <div class="toc">
+    <div class="toc-title">Содержание</div>
+    <a href="#s1">Что такое GPTs</a>
+    <a href="#s2">Чем GPT отличается от Проекта</a>
+    <a href="#s3">Для чего он нужен</a>
+    <a href="#s4">Собираем AI-двойника пошагово</a>
+    <a href="#s5">Где брать базу знаний</a>
+    <a href="#s6">Частые проблемы</a>
+    <a href="#s7">Что дальше</a>
+  </div>
+
+  <!-- 1 -->
+  <h2 id="s1">Что такое GPTs</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Короче, <b>GPT — это ChatGPT, настроенный под тебя</b>. Со своей базой знаний, своими инструкциями, которыми ты можешь делиться с друзьями, коллегами или сотрудниками — просто по ссылке.</p>
+  <p>И собирается <b>без кода</b>. Пользоваться готовыми GPT можно бесплатно. А вот чтобы собрать своего — скорее всего нужен платный тариф. У OpenAI это дело постоянно плавает, так что смотри сам, у кого как.</p>
+
+  <!-- 2 -->
+  <h2 id="s2">Чем GPT отличается от Проекта</h2>
+  <svg class="underline" width="230" height="10" viewBox="0 0 230 10"><path d="M3 6 C 42 3, 100 8, 145 5 S 205 3, 227 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Тут народ путается постоянно, давай разложу.</p>
+  <ul class="plain">
+    <li><b>Ссылка.</b> GPT можно кинуть по ссылке: отправил другу, сотруднику, подписчику — он открыл и пользуется. Проект так не раздашь, он приватный.</li>
+    <li><b>Память.</b> В проекте чаты связаны, контекст копится. У GPT каждый новый чат с нуля — помнит только то, что зашито в инструкции и базу.</li>
+    <li><b>Внешние действия.</b> GPT умеет ходить в сторонние сервисы через <b>Actions</b> (подключения к внешним API). У проектов такого нет.</li>
+    <li><b>База знаний.</b> В GPT знания вшиты в самого помощника — для всех, кто зайдёт. В проекте файлы живут только в твоих чатах.</li>
+  </ul>
+  <div class="note">Короче: <b>проект — чтобы держать работу в порядке. GPT — чтобы собрать инструмент и раздать его.</b></div>
+
+  <!-- 3 -->
+  <h2 id="s3">Для чего он нужен</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Да почти для всего, где есть повторяющееся действие и своя база.</p>
+  <ul class="plain">
+    <li><b>Тренажёр.</b> Я так собрал тренажёр по Claude — он по этапам учит промптить и настраивать его под себя. Делюсь им в канале, им уже куча народу пользуется.</li>
+    <li><b>Обучение.</b> Кинул учебник, лекции, книгу — вот тебе преподаватель. Он тебя спрашивает, ты его — так и учишься.</li>
+    <li><b>Онбординг.</b> Новенький сотрудник пришёл в твою компанию, заходит в ChatGPT — и там уже вся внутрянка компании.</li>
+    <li><b>AI-двойник личности.</b> Например, мой Тиньков: загружаешь в него все транскрипты видео, книги и данные — и получаешь консультацию от миллионера. Реально даёт хорошие советы, можешь протестировать его лично — <a href="https://chatgpt.com/g/g-68ef46f0ca7c819191c582e65c3f92df-oleg-iurevich">мой Тиньков</a>.</li>
+  </ul>
+  <p>И собрать это может вообще кто угодно: препод, ученик, предприниматель, маркетолог, блогер. Бесплатно, без технаря за спиной. Инструмент реально универсальный, а говорят про него почему-то мало.</p>
+
+  <!-- 4 -->
+  <h2 id="s4">Собираем AI-двойника пошагово</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Разберём на примере — соберём двойника Тинькова. Ты подставишь любого, у кого есть публичные данные в интернете.</p>
+
+  <h3>Шаг 1. Генерируем промпт-инструкцию</h3>
+  <p>Открываешь ChatGPT и просишь его самого написать промпт для будущего двойника. Копируй:</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Я хочу создать цифрового двойника [имя человека, которого хочешь] — чтобы получать
+консультации по своему бизнесу. Напиши промпт-инструкцию для него.
+
+Для меня важно, чтобы двойник:
+— общался в манере [Олега Тинькова] и отвечал его словами;
+— всегда указывал источник ответа.
+
+Промпт должен содержать примеры ответов [Олега Тинькова], правила и ограничения.</pre></div>
+  <p>В результате получишь готовый промпт целиком.</p>
+
+  <h3>Шаг 2. Сжимаем промпт</h3>
+  <p>Остаёшься в том же чате и просишь его ужать — у инструкций GPT есть лимит (~8000 символов), поэтому загоняем в запас. Копируй:</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Улучши этот промпт. Твоя задача — сжать его до 7500 символов, сохранив все
+инструкции, ограничения и логику работы. Смысл не должен пострадать.
+Ответ дай в формате маркдаун.</pre></div>
+  <p>Теперь ключевое — <b>копируй полученный промпт</b>.</p>
+
+  <h3>Шаг 3. Создаём сам GPT</h3>
+  <ol class="num">
+    <li>Заходишь в <b>Explore GPTs</b> (в левой панели: <b>Больше → GPT</b>) и жмёшь <b>+ Создать</b>.</li>
+    <li>Открываешь вкладку <b>Конфигурация</b>.</li>
+    <li>Даёшь двойнику <b>имя</b> и <b>описание</b>.</li>
+    <li>Вставляешь сжатый промпт в поле <b>Инструкции</b>.</li>
+  </ol>
+  <figure class="screenshot"><img src="screenshots/01.png" alt="Explore GPTs, + Создать"><figcaption>Слева «Больше → GPT», справа вверху — «+ Создать»</figcaption></figure>
+  <figure class="screenshot"><img src="screenshots/02.png" alt="Конфигурация, поле Инструкции"><figcaption>Вкладка «Конфигурация»: имя, описание и промпт в поле «Инструкции»</figcaption></figure>
+
+  <h3>Шаг 4. Даём базу знаний или доступ в интернет</h3>
+  <p>Дальше двойника надо чем-то «напитать». Два пути:</p>
+  <ul class="plain">
+    <li><b>Загрузить материалы</b> — книги, транскрибации интервью, статьи (раздел <b>Знания</b> → «Загрузить файлы», до 20 файлов).</li>
+    <li><b>Дать доступ в интернет</b> — включить <b>Поиск в сети</b> в разделе «Возможности».</li>
+  </ul>
+  <p>Я лично выбираю второе — интернет.</p>
+  <figure class="screenshot"><img src="screenshots/03.png" alt="Знания и Поиск в сети"><figcaption>«Знания → Загрузить файлы» и/или галка «Поиск в сети»</figcaption></figure>
+
+  <h3>Шаг 5. Сохраняем, находим и тестируем</h3>
+  <p>Сохраняешь двойника, выходишь и заходишь обратно — начинаешь тестировать.</p>
+  <p><b>Как найти созданный GPT.</b> Снова заходишь в раздел GPT. В правом верхнем углу рядом с «Создать» есть <b>Мои GPT</b> — жмёшь.</p>
+  <figure class="screenshot"><img src="screenshots/05a.png" alt="Мои GPT в правом верхнем углу"><figcaption>«Мои GPT» — в правом верхнем углу</figcaption></figure>
+  <p>Находишь своего в списке.</p>
+  <figure class="screenshot"><img src="screenshots/05b.png" alt="Список Мои GPT с карандашом"><figcaption>Твой GPT в списке. Справа — значок карандаша для редактирования</figcaption></figure>
+  <p>Открываешь и тестируешь — двойник отвечает в манере оригинала.</p>
+  <figure class="screenshot"><img src="screenshots/04.png" alt="Тестовый чат с двойником Тинькова"><figcaption>«С чего начать бизнес?» — и Тиньков отвечает как Тиньков</figcaption></figure>
+  <p><b>Если работает некорректно.</b> Жми на <b>карандаш</b> — откроется редактирование в <b>двух окнах</b>. В левом окне вверху есть вкладка <b>Создать</b> — прямо там голосом или текстом описываешь, что не так, и ChatGPT сам поправит инструкции.</p>
+  <figure class="screenshot"><img src="screenshots/05c.png" alt="Два окна редактирования, вкладка Создать"><figcaption>Левое окно, вкладка «Создать»: тут вносишь правки голосом или текстом</figcaption></figure>
+  <p>Так ты получаешь личного бизнес-консультанта, обученного на проверенных данных.</p>
+
+  <h3>Шаг 6. Делишься по ссылке</h3>
+  <p>Жмёшь <b>Поделиться</b> вверху билдера.</p>
+  <figure class="screenshot"><img src="screenshots/06a.png" alt="Кнопка Поделиться"><figcaption>Кнопка «Поделиться» — вверху справа</figcaption></figure>
+  <p>Выбираешь видимость <b>«Все, у кого есть ссылка»</b> и жмёшь <b>Копировать ссылку</b>. Отправляешь двойника кому угодно — друг, сотрудник, подписчик открывает ссылку, и GPT появляется у него в меню. Пользоваться им можно бесплатно.</p>
+  <figure class="screenshot"><img src="screenshots/06b.png" alt="Диалог Поделиться GPT"><figcaption>«Все, у кого есть ссылка» → «Копировать ссылку»</figcaption></figure>
+
+  <!-- 5 -->
+  <h2 id="s5">Где брать базу знаний</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Главное правило — <b>только проверенные данные и всегда указывать источник</b> (мы это заложили прямо в промпт на Шаге 1).</p>
+  <ul class="plain">
+    <li><b>Интервью → транскрибация.</b> Прогоняешь все публичные интервью человека в текст.</li>
+    <li><b>Книги и статьи.</b> Всё, что он написал или где его цитируют.</li>
+    <li><b>Публичные выступления, посты, подкасты.</b> Любые открытые данные.</li>
+  </ul>
+  <p>Чем качественнее база — тем ближе двойник к оригиналу.</p>
+
+  <!-- 6 -->
+  <h2 id="s6">Частые проблемы</h2>
+  <svg class="underline" width="180" height="10" viewBox="0 0 180 10"><path d="M3 6 C 35 3, 80 8, 115 5 S 160 3, 177 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <ul class="plain">
+    <li><b>Отвечает не так, как надо.</b> Опиши проблему голосом в билдере (вкладка «Создать») — GPT поправит инструкцию сам.</li>
+    <li><b>Путается, отвечает не в тему.</b> Проверь инструкцию и базу знаний: скорее всего, перегружен контекст или противоречия в правилах.</li>
+    <li><b>Уперся в лимит символов.</b> Вернись к Шагу 2 и сожми промпт сильнее, сохранив логику.</li>
+  </ul>
+
+  <hr>
+
+  <!-- 7 -->
+  <h2 id="s7">Что дальше</h2>
+  <svg class="underline" width="180" height="10" viewBox="0 0 180 10"><path d="M3 6 C 35 3, 80 8, 115 5 S 160 3, 177 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <ul class="plain">
+    <li><b>Telegram-канал</b> — <a href="https://t.me/IldarSagidullin">Ильдар Сагидуллин</a>: гайды, разборы, инструменты.</li>
+    <li><b>Клуб Enterprise</b> — <a href="https://t.me/IldarSagidullin/197">вступить</a>: много полезного — как пользоваться ChatGPT бесплатно и как собирать AI-агентов под рабочие процессы, личные и бизнеса.</li>
+    <li><b>Личная консультация.</b> Настрою под твои рабочие процессы Claude, Gemini или ChatGPT. Консультация — в личку: <a href="https://t.me/ildarssagidullin">@ildarssagidullin</a>, там же вся дополнительная информация.</li>
+  </ul>
+
+  <div class="footer-mascot">
+    <img class="mascot" src="bye.jpg" width="52" alt="">
+    <span>Собери первого GPT сегодня — за вечер. Дальше пойдёт само.</span>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.prompt .copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('pre').innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = 'Скопировано'; btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'Копировать'; btn.classList.remove('done'); }, 1500);
+      });
+    });
+  });
+  document.querySelectorAll('figure.screenshot img').forEach(function (img) {
+    img.addEventListener('error', function () {
+      var fig = img.closest('figure'); if (!fig) return;
+      var ph = document.createElement('div'); ph.className = 'ph';
+      ph.textContent = img.getAttribute('alt') || 'скриншот';
+      img.replaceWith(ph);
+    });
+  });
+</script>
+</body>
+</html>
