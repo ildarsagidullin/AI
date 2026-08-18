@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Свой сайт за вечер без кода (вайбкодинг)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f2ed; color: #222; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 760px; margin: 32px auto 64px; background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,140,180,0.07) 27px, rgba(120,140,180,0.07) 28px), #fdfcf8; border-radius: 8px; box-shadow: 0 2px 14px rgba(0,0,0,0.08); padding: 56px 60px 72px; }
+  @media (max-width: 640px) { .sheet { padding: 32px 20px 48px; margin: 0; border-radius: 0; } }
+  .mascot { image-rendering: pixelated; flex-shrink: 0; mix-blend-mode: multiply; }
+  .header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 8px; }
+  .header-text { flex: 1; }
+  .kicker { color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 10px; }
+  h1 { font-size: 34px; line-height: 1.15; color: #1d4ed8; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .underline { display: block; margin: 2px 0 18px; }
+  .lead { font-size: 18px; color: #444; margin-bottom: 18px; }
+  b, strong { font-weight: 700; color: #111; }
+  .meta { font-size: 13px; color: #999; margin-bottom: 8px; }
+  .meta span + span::before { content: " · "; }
+  .toc { margin: 36px 0 8px; padding: 22px 26px; background: rgba(29,78,216,0.035); border-radius: 10px; }
+  .toc-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 10px; }
+  .toc a { color: #1d4ed8; text-decoration: none; display: block; padding: 3px 0; font-size: 16px; }
+  h2 { font-size: 25px; color: #1d4ed8; font-weight: 800; margin: 52px 0 2px; scroll-margin-top: 20px; }
+  h2 .underline { margin-bottom: 14px; }
+  h3 { font-size: 18px; color: #111; font-weight: 700; margin: 26px 0 10px; }
+  p { margin-bottom: 15px; font-size: 16.5px; }
+  ul.plain, ol.num { margin: 0 0 16px 2px; padding: 0; list-style: none; }
+  ul.plain li, ol.num li { padding-left: 22px; position: relative; margin-bottom: 7px; font-size: 16.5px; }
+  ul.plain li::before { content: "•"; position: absolute; left: 4px; color: #1d4ed8; font-weight: 700; }
+  ol.num { counter-reset: n; }
+  ol.num li { counter-increment: n; padding-left: 30px; }
+  ol.num li::before { content: counter(n) "."; position: absolute; left: 2px; color: #1d4ed8; font-weight: 800; }
+  a { color: #1d4ed8; word-break: break-word; }
+  .note { background: rgba(29,78,216,0.055); border-left: 3px solid #1d4ed8; border-radius: 0 8px 8px 0; padding: 13px 18px; margin: 22px 0; font-size: 16px; }
+  .prompt { position: relative; margin: 14px 0 20px; }
+  .prompt pre { background: #f5f2ea; border: 1px solid #e7e0d2; border-radius: 8px; padding: 16px 18px; padding-right: 96px; font-family: "SF Mono", Consolas, "Courier New", monospace; font-size: 13.5px; line-height: 1.6; color: #333; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
+  .prompt .copy { position: absolute; top: 10px; right: 10px; background: #1d4ed8; color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .prompt .copy.done { background: #16a34a; }
+  code { background: #f0ede5; padding: 2px 7px; border-radius: 5px; font-size: 0.88em; color: #1d4ed8; font-family: Consolas, monospace; }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15px; }
+  th, td { border: 1px solid #e7e0d2; padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: rgba(29,78,216,0.05); color: #111; }
+  .footer-mascot { display: flex; align-items: center; gap: 18px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8e4da; color: #777; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="header">
+    <div class="header-text">
+      <div class="kicker">Гайд · Вайбкодинг</div>
+      <h1>Свой сайт за вечер — без кода и дизайнера</h1>
+      <svg class="underline" width="250" height="10" viewBox="0 0 250 10"><path d="M3 6 C 45 2, 100 8, 145 5 S 220 3, 247 6" stroke="#dc2626" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+      <p class="lead">Два года назад сайт стоил 300 тысяч и три месяца ожидания. Сейчас его можно собрать за вечер — обычными словами, без единой строчки кода.</p>
+      <div class="meta"><span>~2 часа</span><span>Ильдар</span></div>
+    </div>
+    <img class="mascot" src="hero.jpg" width="80" alt="">
+  </div>
+
+  <p>Раньше нужно было найти дизайнера, разработчика и копирайтера, заплатить 50–300 тысяч и ждать неделями — чтобы в итоге получить «ну, нормально, но не совсем то, что я хотел». Теперь ты садишься за ноутбук, пишешь человеческим языком, что нужно, и через пару часов у тебя готовый рабочий сайт. Это называется <b>вайбкодинг</b>.</p>
+
+  <div class="toc">
+    <div class="toc-title">Содержание</div>
+    <a href="#chto">Что такое вайбкодинг</a>
+    <a href="#chto-sobrat">Что можно собрать</a>
+    <a href="#steps">Пошагово: твой первый сайт</a>
+    <a href="#zapros">Как составить хороший запрос</a>
+    <a href="#publish">GitHub и публикация</a>
+    <a href="#skills">Бонус: Skills для качества</a>
+    <a href="#faq">Честный FAQ</a>
+  </div>
+
+  <h2 id="chto">Что такое вайбкодинг</h2>
+  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 140 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Способ создавать цифровые продукты с помощью ИИ: ты описываешь словами, что хочешь, а ИИ генерирует код, дизайн и структуру за тебя. Термин придумал Андрей Карпаты — ты не пишешь код, а задаёшь <b>вайб</b>, направление.</p>
+  <p>Но это не магия, а <b>навык</b> — простой. Нужно уметь формулировать запросы, понимать, из чего состоит сайт, направлять ИИ и видеть, что вышло хорошо, а что доработать. Учится это за дни, а не месяцы.</p>
+  <table>
+    <tr><th></th><th>Раньше</th><th>С вайбкодингом</th></tr>
+    <tr><td><b>Скорость</b></td><td>недели согласований, месяцы разработки</td><td>прототип за час, сайт за вечер</td></tr>
+    <tr><td><b>Стоимость</b></td><td>от 50 000 ₽ за лендинг</td><td>подписка на ИИ ($20/мес)</td></tr>
+    <tr><td><b>Независимость</b></td><td>ждёшь дизайнера и разработчика</td><td>сам решаешь, когда и что менять</td></tr>
+    <tr><td><b>Порог входа</b></td><td>HTML, CSS, JS, фреймворки, деплой</td><td>умение внятно описать, чего хочешь</td></tr>
+  </table>
+
+  <h2 id="chto-sobrat">Что реально можно собрать</h2>
+  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 140 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p><b>Для бизнеса:</b> лендинги, сайты-визитки, интернет-магазины, внутренние инструменты (дашборды, калькуляторы, трекеры), MVP для стартапов. <b>Для себя:</b> портфолио, сайт-поздравление, свадебное приглашение, квиз/игра в подарок, блог. <b>Для заработка:</b> сайты на заказ, лендинги под инфопродукты, автоматизация рутины. Это не «поиграться» — рабочий инструмент, закрывающий задачи, за которые раньше платили много денег.</p>
+
+  <h2 id="steps">Пошагово: твой первый сайт</h2>
+  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 140 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p><b>Шаг 1. Claude Code.</b> Инструмент от Anthropic, позволяет общаться с ИИ и создавать проекты целиком. Зарегистрируйся на <b>claude.ai</b> и оформи подписку <b>Claude Pro ($20/мес)</b> — минимальный тариф с полной мощностью.</p>
+  <p><b>Шаг 2. VS Code.</b> Бесплатный редактор кода (<a href="https://code.visualstudio.com">code.visualstudio.com</a>) — просто место, где лежит проект и виден результат. Установка стандартная. Создай папку (например, <code>reset-fitness</code>), в VS Code: <b>File → Open Folder</b> → выбери её.</p>
+  <p><b>Шаг 3. Расширение Claude в VS Code.</b> Extensions (иконка квадратиков) → поиск «Claude» → Install → войди в аккаунт. Теперь общаешься с ИИ прямо в редакторе, и он создаёт файлы на месте.</p>
+  <p><b>Шаг 4. Подготовь запрос</b> — самый важный шаг (см. раздел ниже).</p>
+  <p><b>Шаг 5. Отправь и получи первую версию.</b> Claude сгенерирует HTML/CSS в файл <code>index.html</code>. Открой его: правая кнопка → «Открыть с помощью» → браузер. Первая версия не идеальна — это нормально: скажи, что поправить («заголовок крупнее», «фон тёмный», «кнопку ярче»). 2–3 итерации — и готово.</p>
+
+  <h2 id="zapros">Как составить хороший запрос</h2>
+  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 140 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Чем точнее опишешь — тем лучше результат. ❌ «Сделай мне сайт, красивый». ✅ Вот так:</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Сделай лендинг для фитнес-клуба «RESET» в Москве. Красные и тёмные тона, жёсткий стиль.
+На странице: заголовок с фото логотипа, блок «о нас» (2 предложения), меню (3 варианта оплаты абонемента), галерея из 4 фото, кнопка «Связаться с нами» со ссылкой на Telegram.
+Адаптивная вёрстка под телефоны. Без сложных анимаций.</pre></div>
+  <p>Ответь на <b>4 вопроса</b>: что это (лендинг/визитка/магазин)? для кого? что должно быть на странице (блоки, кнопки, тексты)? какой стиль (можно дать ссылку на понравившийся сайт)?</p>
+  <div class="note">Сложно описать — попроси Claude помочь: «Я хочу сделать сайт-визитку для [кто ты / чем занимаешься]. Помоги составить подробное описание для генерации сайта: задай мне нужные вопросы». Он задаст 5–7 вопросов и соберёт идеальный промпт сам.</div>
+
+  <h2 id="publish">GitHub и публикация</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p><b>Шаг 6. GitHub.</b> Бесплатное хранилище для проекта (нужно и для публикации, и чтобы код не потерялся). Зарегистрируйся на <b>github.com</b>, создай репозиторий (New repository), загрузи файлы. Лайфхак: Claude сделает это сам — попроси:</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Инициализируй git-репозиторий, создай коммит и загрузи проект на GitHub.</pre></div>
+  <p>Claude часто просит разрешение на операции — как правило, ничего критичного, можно смело разрешать (Enter).</p>
+  <p><b>Шаг 7. Опубликуй сайт.</b></p>
+  <ul class="plain">
+    <li><b>GitHub Pages (бесплатно):</b> Настройки репозитория → <b>Pages</b> → ветка <b>main</b> → Save. Через пару минут обнови страницу — появится ссылка на живой сайт вида <code>username.github.io/имя-репозитория/</code>.</li>
+    <li><b>TimeWeb (почти бесплатно):</b> App Platform → подключи GitHub-репозиторий → импортируй → сайт опубликуется автоматически, получишь бесплатный домен (можно подключить свой .ru/.com).</li>
+  </ul>
+
+  <h2 id="skills">Бонус: Skills — секретное оружие для качества</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Skills — готовые наборы инструкций, которые говорят ИИ, как делать работу качественно (best practices вёрстки, паттерны, структура кода). Как если бы ты нанял опытного разработчика вместо стажёра.</p>
+  <p>Пример: перед тем как просить сайт, загрузи скилл по фронтенд-дизайну — скопируй его содержимое и отправь Claude перед основным запросом. Официальный скилл frontend-design от Anthropic: <a href="https://github.com/anthropics/claude-code/blob/main/plugins/frontend-design/skills/frontend-design/SKILL.md">github.com/anthropics/claude-code/.../frontend-design/SKILL.md</a>. Результат становится заметно современнее: шрифты, дизайн, анимации.</p>
+
+  <h2 id="faq">Честный FAQ</h2>
+  <svg class="underline" width="180" height="10" viewBox="0 0 180 10"><path d="M3 6 C 35 3, 80 8, 115 5 S 160 3, 177 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p><b>«Я далёк от технологий».</b> Вайбкодинг для тебя и создан — пишешь обычным языком, не на Python. Умеешь описать, чего хочешь, — готов.</p>
+  <p><b>«Это только для простых страничек?»</b> Нет — собирают полноценные веб-приложения, дашборды, платформы. Но для старта начни с простого: лендинг, визитка, поздравление.</p>
+  <p><b>«Сколько стоит?»</b> Единственная обязательная трата — Claude Pro $20/мес. VS Code, GitHub, GitHub Pages — бесплатно.</p>
+  <p><b>«А это точно будет выглядеть нормально?»</b> Напишешь «сделай сайт» без контекста — выйдет средненько. Потратишь 10–15 минут на хороший запрос — будет выглядеть как от дизайнера. Освоишь референсы и итерации — конкурирует с профессиональными сайтами. ИИ уже «знает» тысячи паттернов хорошего дизайна — ему нужно правильное направление от тебя.</p>
+
+  <div class="footer-mascot">
+    <img class="mascot" src="bye.jpg" width="52" alt="">
+    <span>Между «я хочу» и «я сделал» больше нет барьера. Открывай VS Code.</span>
+  </div>
+
+</div>
+<script>
+  document.querySelectorAll('.prompt .copy').forEach(function (b){ b.addEventListener('click', function(){ navigator.clipboard.writeText(b.parentElement.querySelector('pre').innerText).then(function(){ b.textContent='Скопировано'; b.classList.add('done'); setTimeout(function(){ b.textContent='Копировать'; b.classList.remove('done'); },1500); }); }); });
+</script>
+</body>
+</html>

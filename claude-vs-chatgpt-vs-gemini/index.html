@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Что выбрать: Claude, ChatGPT или Gemini</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f2ed; color: #222; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 760px; margin: 32px auto 64px; background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,140,180,0.07) 27px, rgba(120,140,180,0.07) 28px), #fdfcf8; border-radius: 8px; box-shadow: 0 2px 14px rgba(0,0,0,0.08); padding: 56px 60px 72px; }
+  @media (max-width: 640px) { .sheet { padding: 32px 20px 48px; margin: 0; border-radius: 0; } }
+  .mascot { image-rendering: pixelated; flex-shrink: 0; mix-blend-mode: multiply; }
+  .header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 8px; }
+  .header-text { flex: 1; }
+  .kicker { color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 10px; }
+  h1 { font-size: 33px; line-height: 1.15; color: #1d4ed8; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .underline { display: block; margin: 2px 0 18px; }
+  .lead { font-size: 18px; color: #444; margin-bottom: 18px; }
+  b, strong { font-weight: 700; color: #111; }
+  .meta { font-size: 13px; color: #999; margin-bottom: 8px; }
+  .meta span + span::before { content: " · "; }
+  .toc { margin: 36px 0 8px; padding: 22px 26px; background: rgba(29,78,216,0.035); border-radius: 10px; }
+  .toc-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 10px; }
+  .toc a { color: #1d4ed8; text-decoration: none; display: block; padding: 3px 0; font-size: 16px; }
+  h2 { font-size: 24px; color: #1d4ed8; font-weight: 800; margin: 50px 0 2px; scroll-margin-top: 20px; }
+  h2 .underline { margin-bottom: 14px; }
+  h3 { font-size: 18px; color: #111; font-weight: 700; margin: 26px 0 10px; }
+  p { margin-bottom: 15px; font-size: 16.5px; }
+  ul.plain, ol.num { margin: 0 0 16px 2px; padding: 0; list-style: none; }
+  ul.plain li, ol.num li { padding-left: 22px; position: relative; margin-bottom: 7px; font-size: 16.5px; }
+  ul.plain li::before { content: "•"; position: absolute; left: 4px; color: #1d4ed8; font-weight: 700; }
+  ol.num { counter-reset: n; }
+  ol.num li { counter-increment: n; padding-left: 30px; }
+  ol.num li::before { content: counter(n) "."; position: absolute; left: 2px; color: #1d4ed8; font-weight: 800; }
+  a { color: #1d4ed8; }
+  .note { background: rgba(29,78,216,0.055); border-left: 3px solid #1d4ed8; border-radius: 0 8px 8px 0; padding: 13px 18px; margin: 22px 0; font-size: 16px; }
+  .prompt { position: relative; margin: 14px 0 20px; }
+  .prompt pre { background: #f5f2ea; border: 1px solid #e7e0d2; border-radius: 8px; padding: 16px 18px; padding-right: 96px; font-family: "SF Mono", Consolas, "Courier New", monospace; font-size: 13px; line-height: 1.55; color: #333; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
+  .prompt .copy { position: absolute; top: 10px; right: 10px; background: #1d4ed8; color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .prompt .copy.done { background: #16a34a; }
+  code { background: #f0ede5; padding: 2px 7px; border-radius: 5px; font-size: 0.88em; color: #1d4ed8; font-family: Consolas, monospace; }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  th, td { border: 1px solid #e7e0d2; padding: 8px 11px; text-align: left; vertical-align: top; }
+  th { background: rgba(29,78,216,0.05); color: #111; }
+  .footer-mascot { display: flex; align-items: center; gap: 18px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8e4da; color: #777; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="header">
+    <div class="header-text">
+      <div class="kicker">Гайд · Выбор нейросети</div>
+      <h1>Что выбрать: Claude, ChatGPT или Gemini</h1>
+      <svg class="underline" width="250" height="10" viewBox="0 0 250 10"><path d="M3 6 C 45 2, 100 8, 145 5 S 220 3, 247 6" stroke="#dc2626" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+      <p class="lead">Разберём, какую нейросеть выбрать под свои задачи — для текстов, бизнеса, картинок, документов, кода и жизни. С готовыми промптами и рабочими связками.</p>
+      <div class="meta"><span>~15 минут</span><span>Ильдар</span></div>
+    </div>
+    <img class="mascot" src="hero.jpg" width="80" alt="">
+  </div>
+
+  <p>Большинство выбирают нейросеть так: увидел в Twitter «Claude всех порвал» — пошёл платить за Claude; увидел, что ChatGPT делает картинки — платит за ChatGPT. В итоге либо платят за 2–3 подписки, либо прыгают между ними, либо бросают. Логику выбора можно использовать долго, а конкретные модели/тарифы перед оплатой проверяй прямо в интерфейсе — они меняются постоянно.</p>
+
+  <div class="toc">
+    <div class="toc-title">Содержание</div>
+    <a href="#glavnoe">Главное правило</a>
+    <a href="#chatgpt">Когда ChatGPT</a>
+    <a href="#claude">Когда Claude</a>
+    <a href="#gemini">Когда Gemini</a>
+    <a href="#tasktable">Какая задача — какая ИИ</a>
+    <a href="#test">Как протестировать за 30 минут</a>
+    <a href="#svyazki">Рабочие связки</a>
+    <a href="#tarif">Какой тариф брать</a>
+    <a href="#prompts">Промпты для выбора</a>
+    <a href="#oshibki">Частые ошибки</a>
+  </div>
+
+  <h2 id="glavnoe">Главное правило: не выбирай «лучшую нейросеть»</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Нет нейросети, которая лучше во всём. Это как спрашивать «что лучше — ноутбук, телефон или камера?». У каждого своя сила:</p>
+  <ul class="plain">
+    <li><b>ChatGPT</b> — универсальный помощник на каждый день: повседневные задачи, картинки, быстрые идеи, файлы, анализ данных, ресёрч.</li>
+    <li><b>Claude</b> — сильный рабочий мозг: длинные тексты, структура, документы, глубокий анализ, код, проекты, бизнес-логика.</li>
+    <li><b>Gemini</b> — нейросеть внутри экосистемы Google: Gmail, Docs, Drive, Sheets, YouTube, большие документы и видео.</li>
+  </ul>
+  <div class="note">Самая важная мысль: <b>важно, как ты управляешь моделью и под какую задачу её берёшь</b>. Плохой запрос в самой мощной модели даст мусор. Хорошо поставленная задача в «не самой хайповой» модели сэкономит часы.</div>
+  <table>
+    <tr><th>Твоя задача</th><th>Что выбрать в первую очередь</th></tr>
+    <tr><td>Один универсальный ИИ на каждый день</td><td>ChatGPT</td></tr>
+    <tr><td>Тексты, документы, методички, лендинги, сценарии</td><td>Claude</td></tr>
+    <tr><td>Длинные материалы, файлы, исследования</td><td>Claude или Gemini</td></tr>
+    <tr><td>Картинки, визуалы, креативы, быстрые идеи</td><td>ChatGPT или Gemini</td></tr>
+    <tr><td>Работа в Gmail, Docs, Drive, Sheets, Calendar</td><td>Gemini (в ChatGPT/Claude — через коннекторы)</td></tr>
+    <tr><td>Сайты, приложения, автоматизации</td><td>Claude Code / ChatGPT Codex</td></tr>
+    <tr><td>Дешевле и без лишних подписок</td><td>Одна платная + остальные тестируй бесплатно</td></tr>
+  </table>
+
+  <h2 id="chatgpt">Когда выбирать ChatGPT</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Самый простой выбор для большинства: закрывает кучу задач в одном месте. Силён в: быстрых идеях и креативе (20 черновиков, из которых выберешь 2–3); картинках и визуалах; работе с файлами и таблицами (PDF, Excel, CSV); роли повседневного ассистента. Главный плюс — <b>редко бывает совсем бесполезен</b>. Минус: иногда уверенно пишет ерунду и, без ограничений, скатывается в роботизированный «ИИшный» стиль.</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Ты — мой универсальный AI-помощник.
+
+Моя задача: [опиши задачу].
+
+Сначала уточни, какой результат мне нужен, если данных не хватает.
+Потом предложи 3 варианта решения:
+1. Быстрый — за 10 минут.
+2. Нормальный — качественно за 1–2 часа.
+3. Продвинутый — если хочу выжать максимум.
+
+Пиши простым языком. Не уходи в теорию. В конце дай конкретный следующий шаг.</pre></div>
+
+  <h2 id="claude">Когда выбирать Claude</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Для серьёзной работы: сесть и сделать нормальный документ, структуру, сценарий, лендинг, стратегию. Силён в: длинных текстах и структуре; работе с твоим стилем (загрузи примеры своих текстов в Projects — начнёт писать почти как ты); аналитике и сложных документах; коде и вайбкодинге (Claude Code); настройке под роль/процесс. Слабее: генерация картинок (ChatGPT/Gemini), работа внутри Gmail/Docs (Gemini), быстро поболтать/30 идей за минуту (ChatGPT).</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Ты — мой рабочий AI-ассистент для сложных задач.
+
+Контекст:
+[кто я, чем занимаюсь, какая задача, для кого результат]
+
+Что нужно сделать:
+[конкретная задача]
+
+Требования:
+— пиши структурно;
+— не используй воду и общие фразы;
+— если данных не хватает, сначала задай вопросы;
+— если можно сделать лучше, предложи улучшения;
+— в конце дай готовую версию, которую можно сразу использовать.
+
+Формат ответа:
+[таблица / текст / план / документ / список шагов / промпт / ТЗ]</pre></div>
+
+  <h2 id="gemini">Когда выбирать Gemini</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Часто недооценивают. Главная сила — <b>связка с экосистемой Google</b>. Силён в: Google Workspace (почта, документы, таблицы, календарь); длинном контексте (большие PDF, много источников); видео и мультимодальности; учёбе и ресёрче (особенно связка с NotebookLM). Минусы: иногда менее «человечный» текст, ответы надо сильнее проверять, не все функции доступны во всех странах.</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Ты — мой помощник по работе с Google Workspace.
+
+Мне нужно разобраться с материалами по задаче:
+[описание задачи]
+
+Используй доступные данные из [Gmail / Drive / Docs / Sheets / Calendar], если это возможно.
+
+Сделай:
+1. Краткую сводку — что важно.
+2. Список задач, которые нужно выполнить.
+3. Риски или моменты, которые я могу пропустить.
+4. Черновик ответа / плана / документа.
+
+Не выдумывай. Если источник не найден или информации не хватает — прямо напиши об этом.</pre></div>
+
+  <h2 id="tasktable">Какая задача — какую ИИ использовать</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Сохрани — убирает 80% сомнений.</p>
+  <table>
+    <tr><th>Задача</th><th>Первый выбор</th><th>Второй</th></tr>
+    <tr><td>Написать пост, письмо, лендинг</td><td>Claude</td><td>ChatGPT</td></tr>
+    <tr><td>Придумать 30 идей для контента</td><td>ChatGPT</td><td>Claude</td></tr>
+    <tr><td>Сделать картинку / обложку</td><td>ChatGPT</td><td>Gemini</td></tr>
+    <tr><td>Разобрать большой PDF</td><td>Claude</td><td>Gemini</td></tr>
+    <tr><td>Работать с Gmail и Drive</td><td>Gemini</td><td>ChatGPT/Claude через коннекторы</td></tr>
+    <tr><td>Составить коммерческое предложение</td><td>Claude</td><td>ChatGPT</td></tr>
+    <tr><td>Быстро объяснить сложную тему</td><td>ChatGPT</td><td>Claude</td></tr>
+    <tr><td>Сделать сайт / лендинг кодом</td><td>Claude Code</td><td>Codex</td></tr>
+    <tr><td>Почистить таблицу / найти инсайты</td><td>ChatGPT</td><td>Claude</td></tr>
+    <tr><td>Составить стратегию запуска</td><td>Claude</td><td>ChatGPT</td></tr>
+    <tr><td>Сделать ресёрч по теме</td><td>ChatGPT / Gemini</td><td>Claude</td></tr>
+    <tr><td>Подготовить урок / методичку</td><td>Claude</td><td>Gemini</td></tr>
+    <tr><td>Работать с YouTube / видео</td><td>Gemini</td><td>ChatGPT</td></tr>
+    <tr><td>Собрать базу знаний по файлам</td><td>Gemini + NotebookLM</td><td>Claude Projects</td></tr>
+    <tr><td>Настроить рабочий процесс под себя</td><td>Claude Projects</td><td>Custom GPTs</td></tr>
+  </table>
+  <p>Не пытайся засунуть все задачи в одну нейросеть — это как заставить одного человека быть дизайнером, бухгалтером, копирайтером и разработчиком сразу.</p>
+
+  <h2 id="test">Как протестировать за 30 минут</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Частая ошибка — тестировать на случайной задаче («напиши пост про пользу ИИ»). Так проверяешь не нейросеть, а генератор банальностей. Тестируй на <b>своих реальных задачах</b>.</p>
+  <ol class="num">
+    <li>Выбери 3 реальные задачи (текст для лендинга; разбор PDF/таблицы; план по бизнес-задаче).</li>
+    <li>Дай всем нейросетям одинаковый нормальный контекст.</li>
+    <li>Оцени по 5 критериям: точность (поняла задачу?), глубина (смысл или общие слова?), практичность (можно использовать сразу?), стиль (похоже на нужное?), скорость правок.</li>
+    <li>Не смотри только на первый ответ — сделай 2–3 итерации, потом сравнивай.</li>
+  </ol>
+  <p>Промпт для теста (в каждую модель):</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Я тестирую, подходишь ли ты мне для регулярной работы.
+
+Мой контекст:
+[кто я, чем занимаюсь, какие задачи повторяются]
+
+Тестовая задача:
+[вставь реальную задачу]
+
+Сделай результат так, чтобы я мог использовать его в работе.
+
+Требования:
+— не пиши общие советы;
+— давай конкретные формулировки;
+— если данных не хватает, задай до 5 вопросов;
+— в конце объясни, какие ограничения у результата и как его улучшить.</pre></div>
+  <p>Потом каждой модели: «Оцени свой ответ по 10-балльной шкале и честно скажи, что слабое. Затем улучши до 9/10». Вот тут видно, кто реально помогает.</p>
+
+  <h2 id="svyazki">Рабочие связки</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <ul class="plain">
+    <li><b>Предприниматель / эксперт:</b> Claude (стратегия, тексты, КП, лендинги) + ChatGPT (идеи, картинки, анализ таблиц) + Gemini (почта, Drive, документы). Ещё проще — подключить Google-коннекторы прямо в Claude/ChatGPT.</li>
+    <li><b>Маркетолог / SMM:</b> ChatGPT (30 идей, хуки, картинки) → Claude (5 лучших в сильные посты в твоём стиле) → Gemini (факты и кейсы из документов клиента).</li>
+    <li><b>Вайбкодинг:</b> Claude Code (сборка проекта) → Codex (ревью и отладка — Codex часто лучше проверяет код) → Gemini (материалы клиента из Drive) → назад в Claude Code за правками.</li>
+    <li><b>Учёба / аналитика:</b> Gemini + NotebookLM (база источников, конспекты) + Claude (структура выводов, отчёт) + ChatGPT (объяснить простым языком, вопросы).</li>
+    <li><b>Жизнь:</b> ChatGPT (планирование, рецепты, картинки) + Gemini (календарь, почта) + Claude (важные письма, сложные решения).</li>
+  </ul>
+
+  <h2 id="tarif">Какой тариф брать</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Не усложняй. <b>Бесплатные версии</b> — попробовать интерфейс и логику. <b>~$20/мес</b> — оптимум для большинства. <b>$100+</b> — когда реально упираешься в лимиты. Не покупай самый дорогой «на всякий случай».</p>
+  <ul class="plain">
+    <li><b>Для старта:</b> одна подписка за $20.</li>
+    <li><b>Для активной работы:</b> одна основная подписка + бесплатные версии остальных.</li>
+    <li><b>Профессионально:</b> две подписки, если закрывают разные задачи.</li>
+    <li><b>Команда / агенты / код:</b> тарифы $100+ и API.</li>
+  </ul>
+  <div class="note">Подписка сама по себе результата не даёт. Результат даёт процесс: <b>задача → контекст → правильная модель → итерации → внедрение</b>.</div>
+
+  <h2 id="prompts">Промпты для выбора и маршрутизации</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p><b>Какая нейросеть мне нужна</b> (вставь в любую):</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Помоги мне выбрать, какую нейросеть использовать: Claude, ChatGPT или Gemini.
+
+Мой контекст:
+— я занимаюсь: [кто ты / сфера]
+— мои регулярные задачи: [5–10 задач]
+— где лежат мои материалы: [Google Drive / Notion / Telegram / файлы / почта]
+— что мне важнее: [скорость / качество текста / картинки / код / документы / ресёрч / цена]
+— бюджет на подписки: [0 / $20 / $40 / $100+]
+
+Сделай:
+1. Рекомендацию — какую подписку взять первой.
+2. Какие задачи отдавать ChatGPT.
+3. Какие задачи отдавать Claude.
+4. Какие задачи отдавать Gemini.
+5. Что не оплачивать пока рано.
+6. Мини-план на 7 дней, чтобы протестировать выбор.
+
+Не пиши общими словами. Дай конкретный рабочий стек под меня.</pre></div>
+  <p><b>Маршрутизация задач</b> (когда уже есть 2–3 инструмента):</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>У меня есть доступ к ChatGPT, Claude и Gemini.
+
+Я буду присылать тебе задачи. Для каждой определяй:
+— какую нейросеть использовать первой;
+— почему именно её;
+— какой результат запросить;
+— какой промпт лучше использовать;
+— когда подключить вторую нейросеть для проверки или доработки.
+
+Первая задача: [вставь задачу]</pre></div>
+
+  <h2 id="oshibki">Частые ошибки</h2>
+  <svg class="underline" width="180" height="10" viewBox="0 0 180 10"><path d="M3 6 C 35 3, 80 8, 115 5 S 160 3, 177 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <ul class="plain">
+    <li><b>Искать «самую умную» модель.</b> Сегодня одна лучше в коде, завтра другая догнала. Развивай навык вокруг постановки задач — тогда всё равно, что вышло вчера.</li>
+    <li><b>Короткие пустые запросы</b> («сделай мне стратегию»). Нормальный запрос: роль, задача, контекст, ограничения, формат.</li>
+    <li><b>Не давать примеры.</b> Хочешь текст в своём стиле — покажи свои тексты; хочешь дизайн — покажи референсы. ИИ не читает мысли.</li>
+    <li><b>Каждый раз новый чат.</b> Сам обнуляешь контекст. Веди отдельные чаты/проекты: контент, клиенты, продукт, документы, код, личное.</li>
+    <li><b>Не проверять результат.</b> ИИ ошибается в фактах, цифрах, юридических и финансовых нюансах. Ускоряет работу, но ответственность на тебе.</li>
+  </ul>
+
+  <div class="note"><b>ChatGPT</b> — быстрый умный напарник на каждый день. <b>Claude</b> — спокойный умный сотрудник для сложных задач. <b>Gemini</b> — помощник, встроенный в твою цифровую жизнь (Google). Победитель — не тот, у кого подписка на самую дорогую модель, а тот, кто знает сильные стороны каждой и ловко жонглирует ими.</div>
+
+  <div class="footer-mascot">
+    <img class="mascot" src="bye.jpg" width="52" alt="">
+    <span>Возьми одну подписку под понятную задачу — идеальную связку соберёшь позже.</span>
+  </div>
+
+</div>
+<script>
+  document.querySelectorAll('.prompt .copy').forEach(function (b){ b.addEventListener('click', function(){ navigator.clipboard.writeText(b.parentElement.querySelector('pre').innerText).then(function(){ b.textContent='Скопировано'; b.classList.add('done'); setTimeout(function(){ b.textContent='Копировать'; b.classList.remove('done'); },1500); }); }); });
+</script>
+</body>
+</html>

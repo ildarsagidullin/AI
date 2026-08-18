@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как не сжечь все токены в Claude Code</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f2ed; color: #222; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 760px; margin: 32px auto 64px; background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,140,180,0.07) 27px, rgba(120,140,180,0.07) 28px), #fdfcf8; border-radius: 8px; box-shadow: 0 2px 14px rgba(0,0,0,0.08); padding: 56px 60px 72px; }
+  @media (max-width: 640px) { .sheet { padding: 32px 20px 48px; margin: 0; border-radius: 0; } }
+  .mascot { image-rendering: pixelated; flex-shrink: 0; mix-blend-mode: multiply; }
+  .header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 8px; }
+  .header-text { flex: 1; }
+  .kicker { color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 10px; }
+  h1 { font-size: 34px; line-height: 1.15; color: #1d4ed8; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .underline { display: block; margin: 2px 0 18px; }
+  .lead { font-size: 18px; color: #444; margin-bottom: 18px; }
+  b, strong { font-weight: 700; color: #111; }
+  .meta { font-size: 13px; color: #999; margin-bottom: 8px; }
+  .meta span + span::before { content: " · "; }
+  .toc { margin: 36px 0 8px; padding: 22px 26px; background: rgba(29,78,216,0.035); border-radius: 10px; }
+  .toc-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 10px; }
+  .toc a { color: #1d4ed8; text-decoration: none; display: block; padding: 3px 0; font-size: 16px; }
+  h2 { font-size: 25px; color: #1d4ed8; font-weight: 800; margin: 52px 0 2px; scroll-margin-top: 20px; }
+  h2 .underline { margin-bottom: 14px; }
+  h3 { font-size: 18px; color: #111; font-weight: 700; margin: 26px 0 10px; }
+  p { margin-bottom: 15px; font-size: 16.5px; }
+  ul.plain, ol.num { margin: 0 0 16px 2px; padding: 0; list-style: none; }
+  ul.plain li, ol.num li { padding-left: 22px; position: relative; margin-bottom: 7px; font-size: 16.5px; }
+  ul.plain li::before { content: "•"; position: absolute; left: 4px; color: #1d4ed8; font-weight: 700; }
+  a { color: #1d4ed8; }
+  .note { background: rgba(29,78,216,0.055); border-left: 3px solid #1d4ed8; border-radius: 0 8px 8px 0; padding: 13px 18px; margin: 22px 0; font-size: 16px; }
+  .note.red { background: rgba(220,38,38,0.06); border-color: #dc2626; }
+  .prompt { position: relative; margin: 14px 0 20px; }
+  .prompt pre { background: #f5f2ea; border: 1px solid #e7e0d2; border-radius: 8px; padding: 16px 18px; padding-right: 96px; font-family: "SF Mono", Consolas, "Courier New", monospace; font-size: 13px; line-height: 1.55; color: #333; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
+  .prompt .copy { position: absolute; top: 10px; right: 10px; background: #1d4ed8; color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .prompt .copy.done { background: #16a34a; }
+  code { background: #f0ede5; padding: 2px 7px; border-radius: 5px; font-size: 0.88em; color: #1d4ed8; font-family: Consolas, monospace; }
+  .footer-mascot { display: flex; align-items: center; gap: 18px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8e4da; color: #777; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="header">
+    <div class="header-text">
+      <div class="kicker">Гайд · Claude Code</div>
+      <h1>Как не сжечь все токены в Claude Code</h1>
+      <svg class="underline" width="250" height="10" viewBox="0 0 250 10"><path d="M3 6 C 45 2, 100 8, 145 5 S 220 3, 247 6" stroke="#dc2626" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+      <p class="lead">Начал собирать проект — а через пару часов красное «You've reached your usage limit». Разберём, почему это происходит и как растянуть тот же план в 3–5 раз.</p>
+      <div class="meta"><span>Pro / Max</span><span>Ильдар</span></div>
+    </div>
+    <img class="mascot" src="hero.jpg" width="80" alt="">
+  </div>
+
+  <p>Гайд для подписки <b>Pro ($20), Max 5× ($100) или Max 20× ($200)</b>. Если сидишь на API — там другие правила.</p>
+
+  <div class="toc">
+    <div class="toc-title">Содержание</div>
+    <a href="#pochemu">Почему токены сжигаются так быстро</a>
+    <a href="#kuda">Куда уходят токены (7 источников)</a>
+    <a href="#steps">9 шагов, что делать</a>
+    <a href="#checklist">Главное, что запомнить</a>
+    <a href="#gde">Где ещё это работает</a>
+  </div>
+
+  <h2 id="pochemu">Почему токены сжигаются так быстро</h2>
+  <svg class="underline" width="230" height="10" viewBox="0 0 230 10"><path d="M3 6 C 42 3, 100 8, 145 5 S 205 3, 227 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Дело не в том, что ты «много пишешь». <b>Claude Code — это не чат.</b> В обычном чате улетает только твоё сообщение. В Claude Code на <b>каждый Enter</b> заново улетает вся история переписки целиком, плюс системный промпт Claude Code, плюс все MCP-серверы, плюс CLAUDE.md, плюс описания всех инструментов.</p>
+  <p>Это <b>stateless API</b> — без состояния. Представь друга с очень короткой памятью: чтобы поддерживать беседу, каждый раз пересказываешь ему всё с начала. Поэтому 30-е сообщение стоит не как 1-е, а в 10–30 раз дороже. Реальные логи: 1-е сообщение ~15 тыс. токенов, 15-е ~100 тыс., 30-е ~167 тыс. — и срабатывает auto-compact.</p>
+  <div class="note">Открой <code>/context</code> прямо сейчас. На пустой сессии, до первой буквы, уже занято: системный промпт Claude Code (6–24 тыс.), описания инструментов и MCP (10–80 тыс.), буфер на auto-compact (33–45 тыс.), твой CLAUDE.md. Реальный кейс: 143 тыс. из 200 тыс. заняты до первого сообщения; отключил 3 ненужных MCP — освободилось 38% окна одним движением.</div>
+  <p><b>Что в плане (примерно):</b> Pro ~44 тыс. токенов в 5-часовое окно (10–45 сообщений), Max 5× ~88 тыс., Max 20× ~220 тыс. Окно сбрасывается через 5 часов от <b>первого</b> сообщения, не от полуночи. Есть и недельные лимиты — упёрся в них, ждать 5 часов бесполезно. В пик (примерно с обеда до вечера) лимит сгорает быстрее — <b>работать утром выгоднее</b>.</p>
+
+  <h2 id="kuda">Куда уходят токены — 7 источников</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <ul class="plain">
+    <li><b>1. Системный промпт Claude Code</b> (14–24 тыс. на сообщение) — плата за вход, не чинится.</li>
+    <li><b>2. Раздутый CLAUDE.md</b> — грузится на КАЖДОМ сообщении. 10 тыс. токенов × 30 сообщений = платишь 30 раз. Правило: <b>меньше 200 строк / 2000 токенов</b>.</li>
+    <li><b>3. История чата</b> — к 30-му сообщению вся переписка в контексте. Решение: <b><code>/clear</code> между задачами</b> (по словам Anthropic — самый эффективный рычаг и для качества, и для цены).</li>
+    <li><b>4. Read целиком</b> — читает весь файл (800 строк = все 800 в контекст, +70% на нумерацию строк) и держит до конца сессии. Давай точные задачи: не «посмотри логин», а «открой <code>src/auth/login.ts</code> строки 40–80».</li>
+    <li><b>5. Куча включённых MCP</b> — каждый добавляет описания инструментов на каждое сообщение (3 MCP ≈ 82 тыс. токенов сверху). Держи включёнными только нужные сейчас — отключай через <code>/mcp</code>.</li>
+    <li><b>6. Subagents</b> — multi-agent в 4–7 раз дороже, Agent Teams — в 15 раз. Кейс: Claude сам создал 5 агентов — лимит Pro кончился за 15 минут. Включай осознанно, только под объёмные параллельные задачи.</li>
+    <li><b>7. Чинить один баг 10 раз в одном чате</b> — каждая попытка тащит старый код, ошибку и предыдущие попытки (10 циклов ≈ миллион токенов). Попробовал дважды и не работает — <code>/clear</code> и новый промпт с нуля.</li>
+  </ul>
+
+  <h2 id="steps">9 шагов — что делать</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p><b>Шаг 1. Диагностика.</b> <code>/context</code> (что занимает окно), <code>/usage</code> (сколько осталось от окна и недели), <code>/cost</code> (сколько сожрала сессия). MCP жрут >5 тыс. — сигнал №1; CLAUDE.md >5 тыс. — сигнал №2.</p>
+  <p><b>Шаг 2. <code>/clear</code> между задачами.</b> Самый дешёвый и эффективный шаг. Нюансы: <code>/clear</code> не стирает чекпоинты (вернёшься через <code>/rewind</code>); перед <code>/clear</code> попроси записать состояние в <code>PROGRESS.md</code>; <code>/btw</code> — «боковой» вопрос, не засоряющий сессию.</p>
+  <p><b>Шаг 3. Сократи CLAUDE.md.</b> Оставь: команды билда/тестов/линта, нестандартный стиль кода, архитектурные решения, переменные окружения, подводные камни. Удали: всё, что Claude поймёт из кода, стандартные конвенции, «пиши чистый код», описания каждого файла.</p>
+  <p><b>Шаг 4. Выключи лишние MCP</b> (<code>/mcp</code>) — держи только нужные сейчас. Приём: <b>CLI вместо MCP</b> где можно (например, <code>gh</code> вместо GitHub MCP — работает через Bash, не грузит системный промпт). Можно ли CLI — спроси у Claude.</p>
+  <p><b>Шаг 5. Поставь <code>.claudeignore</code></b> — как <code>.gitignore</code>, только для контекста. Реальный кейс: стартовый расход упал с 347 тыс. до 19.8 тыс. токенов. Минимум:</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre># Зависимости
+node_modules/
+vendor/
+.venv/
+
+# Сборка
+dist/
+build/
+.next/
+.nuxt/
+coverage/
+
+# Логи
+*.log
+logs/
+
+# Lockfile (часто >20K токенов)
+package-lock.json
+yarn.lock
+
+# Секреты
+.env
+.env.*
+*.pem
+
+# Большие данные
+*.sqlite
+data/raw/</pre></div>
+  <p><b>Шаг 6. Поставь Sonnet по умолчанию</b> (<code>/model sonnet</code>). Opus — «архитектор», планирует сложное, стоит как ×5 Sonnet; Sonnet закрывает 90% задач; Haiku — мелочь. Сидишь на Opus постоянно на Pro — сожжёшь лимит за пару часов. Переход Opus→Sonnet: −30–40% расхода. <b>Не переключай модель в середине сессии</b> — ломает кэш.</p>
+  <p><b>Шаг 7. Plan mode для сложного</b> (<code>/plan</code>) — Claude только читает и думает, потом пишет код. Workflow: Explore → Plan → Implement → Commit. Даёт −50–70% на сложных задачах. Применяй, если задача больше трёх файлов / рефакторинг / незнакомая база. Не нужно для тривиальных правок (правило одного предложения).</p>
+  <p><b>Шаг 8. Точечные запросы.</b> Не «проверь логин, там что-то не так», а «открой <code>src/auth/login.ts</code>, функция verifyUser на строке 42 возвращает null вместо ошибки — поправь». Используй <b>@-ссылки</b>: <code>@src/components/Button.tsx</code>, <code>@README.md</code>.</p>
+  <p><b>Шаг 9. Не ломай кэш.</b> Claude кэширует системный промпт, CLAUDE.md и историю (cache hit в 10 раз дешевле; 95% токенов — это хиты, за счёт этого Pro и работает). Ломают кэш: смена модели, подключение/отключение MCP или правка CLAUDE.md в середине сессии, перерыв >5 мин (Pro) / >1 ч (Max). Все настройки делай на старте и не меняй до конца.</p>
+
+  <h2 id="checklist">Главное, что запомнить</h2>
+  <svg class="underline" width="230" height="10" viewBox="0 0 230 10"><path d="M3 6 C 42 3, 100 8, 145 5 S 205 3, 227 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <div class="note">Подписка Pro работает только за счёт <b>prompt caching</b> (95% трафика по скидке 90%). Всё, что ломает кэш или раздувает контекст, стреляет тебе в ногу. Главный сдвиг: думать не «сколько сообщений я задал», а <b>«насколько чистый и точный контекст в сессии»</b>. Один грязный промпт с чтением 50 файлов = 30 чистых точечных запросов. Дисциплина <code>/clear</code> + <code>/context</code> + точные пути даёт 40–70% экономии.</div>
+
+  <h2 id="gde">Где ещё это работает</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Те же принципы — везде, где есть LLM, контекст и платный токен. <b>Обычный Claude в браузере:</b> длинные сессии копят историю — начинай новый чат под новую тему. <b>Cursor, Windsurf, Continue:</b> биллинг свой, архитектура та же. <b>API-интеграции:</b> платишь за каждый токен напрямую, без скидок — особенно важно. <b>ChatGPT:</b> те же привычки — точные промпты, чистый контекст, разделение задач между чатами.</p>
+
+  <div class="footer-mascot">
+    <img class="mascot" src="bye.jpg" width="52" alt="">
+    <span>Дни бездумного сжигания токенов закончились. Выживают те, кто понимает, что под капотом.</span>
+  </div>
+
+</div>
+<script>
+  document.querySelectorAll('.prompt .copy').forEach(function (b){ b.addEventListener('click', function(){ navigator.clipboard.writeText(b.parentElement.querySelector('pre').innerText).then(function(){ b.textContent='Скопировано'; b.classList.add('done'); setTimeout(function(){ b.textContent='Копировать'; b.classList.remove('done'); },1500); }); }); });
+</script>
+</body>
+</html>

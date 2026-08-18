@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Регистрация и оплата Claude / ChatGPT из РФ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f2ed; color: #222; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 760px; margin: 32px auto 64px; background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,140,180,0.07) 27px, rgba(120,140,180,0.07) 28px), #fdfcf8; border-radius: 8px; box-shadow: 0 2px 14px rgba(0,0,0,0.08); padding: 56px 60px 72px; }
+  @media (max-width: 640px) { .sheet { padding: 32px 20px 48px; margin: 0; border-radius: 0; } }
+  .mascot { image-rendering: pixelated; flex-shrink: 0; mix-blend-mode: multiply; }
+  .header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 8px; }
+  .header-text { flex: 1; }
+  .kicker { color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 10px; }
+  h1 { font-size: 34px; line-height: 1.15; color: #1d4ed8; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .underline { display: block; margin: 2px 0 18px; }
+  .lead { font-size: 18px; color: #444; margin-bottom: 18px; }
+  b, strong { font-weight: 700; color: #111; }
+  .meta { font-size: 13px; color: #999; margin-bottom: 8px; }
+  .meta span + span::before { content: " · "; }
+  .toc { margin: 36px 0 8px; padding: 22px 26px; background: rgba(29,78,216,0.035); border-radius: 10px; }
+  .toc-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 10px; }
+  .toc a { color: #1d4ed8; text-decoration: none; display: block; padding: 3px 0; font-size: 16px; }
+  .toc a:hover { text-decoration: underline; }
+  h2 { font-size: 25px; color: #1d4ed8; font-weight: 800; margin: 52px 0 2px; scroll-margin-top: 20px; }
+  h2 .underline { margin-bottom: 14px; }
+  h3 { font-size: 18px; color: #111; font-weight: 700; margin: 26px 0 10px; }
+  p { margin-bottom: 15px; font-size: 16.5px; }
+  ul.plain, ol.num { margin: 0 0 16px 2px; padding: 0; list-style: none; }
+  ul.plain li, ol.num li { padding-left: 22px; position: relative; margin-bottom: 7px; font-size: 16.5px; }
+  ul.plain li::before { content: "•"; position: absolute; left: 4px; color: #1d4ed8; font-weight: 700; }
+  ol.num { counter-reset: n; }
+  ol.num li { counter-increment: n; padding-left: 30px; }
+  ol.num li::before { content: counter(n) "."; position: absolute; left: 2px; color: #1d4ed8; font-weight: 800; }
+  a { color: #1d4ed8; }
+  .note { background: rgba(29,78,216,0.055); border-left: 3px solid #1d4ed8; border-radius: 0 8px 8px 0; padding: 13px 18px; margin: 22px 0; font-size: 16px; }
+  .note.red { background: rgba(220,38,38,0.06); border-color: #dc2626; }
+  code { background: #f0ede5; padding: 2px 7px; border-radius: 5px; font-size: 0.88em; color: #1d4ed8; font-family: Consolas, monospace; }
+  hr { border: none; border-top: 1px solid #e6e0d3; margin: 44px 0; }
+  .footer-mascot { display: flex; align-items: center; gap: 18px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8e4da; color: #777; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="header">
+    <div class="header-text">
+      <div class="kicker">Гайд · Доступ из РФ</div>
+      <h1>Регистрация и оплата Claude / ChatGPT из РФ</h1>
+      <svg class="underline" width="250" height="10" viewBox="0 0 250 10"><path d="M3 6 C 45 2, 100 8, 145 5 S 220 3, 247 6" stroke="#dc2626" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+      <p class="lead">Как зарегистрироваться и оплатить подписку в Claude и ChatGPT, если ты из РФ — и максимально снизить риски блокировок, отвалившихся оплат и переплат.</p>
+      <div class="meta"><span>актуально: 2026</span><span>Ильдар</span></div>
+    </div>
+    <img class="mascot" src="hero.jpg" width="80" alt="">
+  </div>
+
+  <p><b>Честная картина.</b> Россия и Беларусь не входят в список стран, где Anthropic (Claude) и OpenAI (ChatGPT) работают официально (из СНГ поддерживаются Казахстан, Армения, Грузия, Узбекистан, Кыргызстан, Молдова). Российские Visa/Mastercard заблокированы для этих платежей ещё с 2022. Блокировки аккаунтов — массовые, шанс на успешную апелляцию низкий. Поэтому любой доступ отсюда — на свой страх и риск. Этот гайд — набор рабочих практик, снижающих риски, а не гарантия.</p>
+
+  <div class="toc">
+    <div class="toc-title">Содержание</div>
+    <a href="#след">Главный принцип: цифровой след</a>
+    <a href="#vpn">Шаг 1. VPN — фундамент</a>
+    <a href="#infra">Шаг 2. Инфраструктура: почта и номер</a>
+    <a href="#reg">Шаг 3. Регистрация</a>
+    <a href="#pay">Шаг 4. Оплата подписки</a>
+    <a href="#progrev">Шаг 5. Прогрев аккаунта</a>
+    <a href="#nelzya">Чего категорически нельзя</a>
+  </div>
+
+  <h2 id="след">Главный принцип: цифровой след</h2>
+  <svg class="underline" width="230" height="10" viewBox="0 0 230 10"><path d="M3 6 C 42 3, 100 8, 145 5 S 205 3, 227 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Самая важная часть. Без неё все шаги бессмысленны. Сервисы смотрят не только на IP при заходе — они анализируют десятки параметров: <b>IP-адрес, страну карты, биллинг-адрес, страну номера телефона, страну Google-аккаунта, отпечаток браузера</b> и стабильность всего этого во времени.</p>
+  <p>Если параметры указывают на одну страну (или пару связанных разрешённых регионов) — ты выглядишь обычным пользователем, аккаунт в безопасности. Если противоречивы (IP сегодня в США, завтра в Германии, карта индонезийская, номер казахский) — система видит подозрительный паттерн и может не пропустить оплату или заблокировать.</p>
+  <div class="note red"><b>Главное правило: настроил один раз — ничего не меняй.</b> Не прыгай между странами, не заходи с разных IP, не оплачивай разными картами, не передавай аккаунт друзьям. К этому будем возвращаться на каждом шаге.</div>
+
+  <h2 id="vpn">Шаг 1. VPN — твой фундамент</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Без VPN ничего не работает — Claude и ChatGPT не пускают с российских IP даже на страницу регистрации. <b>Бесплатные VPN не подходят:</b> их IP общие на тысячи людей и заносятся в чёрные списки целиком — банят разом всех.</p>
+  <p>Нужен <b>платный VPN с выбором страны и (в идеале) выделенным IP</b>. Лучшие страны — «чистые» европейские: Финляндия, Германия, Нидерланды, Польша (можно и США).</p>
+  <ul class="plain">
+    <li>Выбрал страну — навсегда. Не прыгай США → Германия → Япония.</li>
+    <li>Никогда не выключай VPN на устройстве, где открыт Claude/ChatGPT. Один промельк российского IP — риск бана.</li>
+    <li>Заходи с одного устройства и одного браузерного профиля.</li>
+    <li>Проверь <b>WebRTC leak</b> на <code>browserleaks.com/webrtc</code> — если виден реальный российский IP, отключи WebRTC (в Chrome — расширением «WebRTC Leak Prevent»).</li>
+  </ul>
+  <p>Максимальная защита: <b>ISP-прокси</b> (выделенный IP реального провайдера — выглядит как домашний пользователь) или <b>свой VPS в Европе</b> (от $10/мес, где ты единственный пользователь).</p>
+
+  <h2 id="infra">Шаг 2. Подготовка инфраструктуры</h2>
+  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 140 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <h3>Отдельный Gmail</h3>
+  <p>ИИ-сервисы больше всего доверяют Google-аккаунтам — через Google-вход выше шанс пройти без проверок. Заведи <b>отдельный Gmail</b> (не личный, без персональных данных). При регистрации: включи VPN с нужной страной и укажи <b>ту же страну</b> в настройках Google-аккаунта.</p>
+  <h3>Иностранный номер для SMS</h3>
+  <p>Claude (и иногда ChatGPT) просит подтвердить номер — российский не принимается. Варианты: <b>одноразовый номер</b> (сервисы приёма SMS, пополнение от $1–5, номер для Claude стоит копейки) или <b>постоянный</b> (eSIM Казахстана / свой номер другой страны). Страну бери ту же, что у VPN, или близкую. SMS не приходит — попробуй другую страну.</p>
+
+  <h2 id="reg">Шаг 3. Регистрация аккаунта</h2>
+  <svg class="underline" width="210" height="10" viewBox="0 0 210 10"><path d="M3 6 C 40 3, 92 8, 135 5 S 188 3, 207 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <h3>Claude</h3>
+  <ol class="num">
+    <li>Включи VPN на правильной стране.</li>
+    <li>Зайди на <b>claude.ai</b> в инкогнито или новом браузерном профиле.</li>
+    <li>«Continue with Google» → выбери новый Gmail.</li>
+    <li>Попросят SMS — введи иностранный номер, подтверди код.</li>
+  </ol>
+  <div class="note">На этом этапе <b>ничего не оплачивай</b> — сначала прогрев (Шаг 5). Если попросит KYC-верификацию (документы, селфи) — это фича Anthropic для активации платных подписок: либо проходишь по своим документам, либо идёшь к вариантам оплаты, где верификация встроена в карту (крипто-карта / банковская карта СНГ).</div>
+  <h3>ChatGPT</h3>
+  <p>Попроще — базовый сайт часто открывается и с российских IP. Всё равно включи VPN (пригодится для оплаты) → <b>Sign Up</b> → email → подтверди по ссылке → введи иностранный номер. Бесплатный аккаунт готов.</p>
+
+  <h2 id="pay">Шаг 4. Оплата подписки</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p><b>Вариант А (лайт) — через сервис-посредник.</b> Платишь рублями через СБП, посредник оплачивает подписку зарубежной картой и активирует её на твой аккаунт. Проще всего, но обычно с наценкой. Выбирай продавца по рейтингу и отзывам.</p>
+  <p><b>Вариант Б (средний) — своя виртуальная карта.</b> Заводишь виртуальную карту, пополняешь через СБП или крипту, платишь напрямую с сайта. Нюансы: не все карты работают для всех сервисов (готовься тестировать); <b>одноразовые карты не подходят для подписок</b> (нужны регулярные списания); <b>одна карта — один аккаунт</b> (пять подписок с одной карты система прочитает как перепродажу → бан).</p>
+  <p><b>Вариант В (профи) — крипто-карта или банковская карта СНГ.</b> Самый стабильный вариант надолго. Крипто-карта (например, Bybit): регистрация + KYC, регион Казахстан/Кыргызстан, загранпаспорт РФ подходит, казахстанский номер, потом закидываешь USDT и платишь. Банковская карта СНГ (Kaspi и др.) — дороже и сложнее (личный визит или удалённое открытие), зато полноценная карта под Apple/Google Pay.</p>
+  <div class="note"><b>Лайфхак — оплата через App Store.</b> Добавляешь карту в Apple Pay, Apple выступает посредником: сервис видит платёж от Apple, а не с твоей карты напрямую. Иногда цена чуть выше, но способ часто хорошо работает (пример: турецкий App Store + ChatGPT Plus дешевле прямой оплаты).</div>
+
+  <h2 id="progrev">Шаг 5. Прогрев аккаунта</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Самый игнорируемый шаг — и одна из главных причин бана. Свежий аккаунт, который сразу после регистрации делает кучу действий, — это паттерн бота (регистрация → оплата → 1000 запросов за час). Покажи системе, что ты живой человек. Прогрев занимает <b>2 дня</b>.</p>
+  <p><b>День 1 — знакомство (без оплаты):</b> VPN включён, страна та же. Задай 5–10 обычных вопросов, создай 1–2 проекта, загрузи PDF/txt и поспрашивай по нему, проведи 2–3 диалога по 5+ сообщений. Подписку не оплачивай — пользуешься free-версией.</p>
+  <p><b>День 2 — оплата и плавный переход:</b> утром 2–3 коротких диалога → оплачиваешь подписку → ещё 3–5 диалогов. Через 2–3 часа можно активнее. Первый день после оплаты — без рекордов (не запускай Claude Code на 8 часов сразу). Через неделю стабильного использования аккаунт считается «своим».</p>
+
+  <h2 id="nelzya">Чего категорически нельзя</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <ul class="plain">
+    <li><b>Шарить аккаунт с друзьями.</b> Трое с разных IP на одном Claude Pro → бан без возврата (система видит перепродажу).</li>
+    <li><b>Прыгать между странами VPN.</b> Германия → США → Япония — прямой путь к блокировке.</li>
+    <li><b>Покупать дешёвые аккаунты с маркетплейсов.</b> Часто это семейные/корпоративные с общей квотой → бан за 1–2 недели.</li>
+    <li><b>Подключать подписку к сторонним IDE-обёрткам.</b> С 2026 Anthropic банит за эмуляцию официального API — только официальный Claude Code / официальные интеграции.</li>
+    <li><b>Менять регион подписки задним числом.</b> Оплатил с USA-биллингом — не меняй потом на другой регион.</li>
+    <li><b>Использовать одноразовые виртуальные карты для подписки</b> — отвалится через месяц.</li>
+    <li><b>Выключать VPN там, где открыт Claude/ChatGPT.</b> Один российский IP — риск бана.</li>
+  </ul>
+
+  <div class="note red">Важно понимать: даже идеально настроенный сетап иногда улетает в бан — финальное решение всегда за Anthropic и OpenAI. Не экономь на VPN (экономия 200₽ может стоить аккаунта за $100). Не оплачивай год вперёд — помесячно безопаснее. Платформы постоянно меняют правила: один способ оплаты отваливается, другой появляется.</div>
+
+  <div class="footer-mascot">
+    <img class="mascot" src="bye.jpg" width="52" alt="">
+    <span>Настрой один раз аккуратно — и получишь доступ к самым сильным ИИ-инструментам.</span>
+  </div>
+
+</div>
+</body>
+</html>

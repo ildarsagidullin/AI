@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-агент «YouTube-ресерчер» в Claude</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f2ed; color: #222; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 760px; margin: 32px auto 64px; background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,140,180,0.07) 27px, rgba(120,140,180,0.07) 28px), #fdfcf8; border-radius: 8px; box-shadow: 0 2px 14px rgba(0,0,0,0.08); padding: 56px 60px 72px; }
+  @media (max-width: 640px) { .sheet { padding: 32px 20px 48px; margin: 0; border-radius: 0; } }
+  .mascot { image-rendering: pixelated; flex-shrink: 0; mix-blend-mode: multiply; }
+  .header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 8px; }
+  .header-text { flex: 1; }
+  .kicker { color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 10px; }
+  h1 { font-size: 34px; line-height: 1.15; color: #1d4ed8; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .underline { display: block; margin: 2px 0 18px; }
+  .lead { font-size: 18px; color: #444; margin-bottom: 18px; }
+  b, strong { font-weight: 700; color: #111; }
+  .meta { font-size: 13px; color: #999; margin-bottom: 8px; }
+  .meta span + span::before { content: " · "; }
+  .toc { margin: 36px 0 8px; padding: 22px 26px; background: rgba(29,78,216,0.035); border-radius: 10px; }
+  .toc-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 10px; }
+  .toc a { color: #1d4ed8; text-decoration: none; display: block; padding: 3px 0; font-size: 16px; }
+  h2 { font-size: 25px; color: #1d4ed8; font-weight: 800; margin: 52px 0 2px; scroll-margin-top: 20px; }
+  h2 .underline { margin-bottom: 14px; }
+  h3 { font-size: 18px; color: #111; font-weight: 700; margin: 26px 0 10px; }
+  p { margin-bottom: 15px; font-size: 16.5px; }
+  ul.plain, ol.num { margin: 0 0 16px 2px; padding: 0; list-style: none; }
+  ul.plain li, ol.num li { padding-left: 22px; position: relative; margin-bottom: 7px; font-size: 16.5px; }
+  ul.plain li::before { content: "•"; position: absolute; left: 4px; color: #1d4ed8; font-weight: 700; }
+  ol.num { counter-reset: n; }
+  ol.num li { counter-increment: n; padding-left: 30px; }
+  ol.num li::before { content: counter(n) "."; position: absolute; left: 2px; color: #1d4ed8; font-weight: 800; }
+  a { color: #1d4ed8; word-break: break-word; }
+  .note { background: rgba(29,78,216,0.055); border-left: 3px solid #1d4ed8; border-radius: 0 8px 8px 0; padding: 13px 18px; margin: 22px 0; font-size: 16px; }
+  .prompt { position: relative; margin: 14px 0 20px; }
+  .prompt pre { background: #f5f2ea; border: 1px solid #e7e0d2; border-radius: 8px; padding: 16px 18px; padding-right: 96px; font-family: "SF Mono", Consolas, "Courier New", monospace; font-size: 13px; line-height: 1.55; color: #333; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
+  .prompt .copy { position: absolute; top: 10px; right: 10px; background: #1d4ed8; color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .prompt .copy.done { background: #16a34a; }
+  code { background: #f0ede5; padding: 2px 7px; border-radius: 5px; font-size: 0.88em; color: #1d4ed8; font-family: Consolas, monospace; word-break: break-word; }
+  .footer-mascot { display: flex; align-items: center; gap: 18px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8e4da; color: #777; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="header">
+    <div class="header-text">
+      <div class="kicker">Гайд · AI-агент</div>
+      <h1>AI-агент «YouTube-ресерчер» в Claude</h1>
+      <svg class="underline" width="250" height="10" viewBox="0 0 250 10"><path d="M3 6 C 45 2, 100 8, 145 5 S 220 3, 247 6" stroke="#dc2626" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+      <p class="lead">Кидаешь ссылку на видео — через полминуты получаешь плотное структурированное ревью: главная мысль, тезисы, цитаты с таймкодами, слабые места, факт-чек. На русском, независимо от языка видео.</p>
+      <div class="meta"><span>~10 минут на сборку</span><span>Ильдар</span></div>
+    </div>
+    <img class="mascot" src="hero.jpg" width="80" alt="">
+  </div>
+
+  <p>У тебя в «Посмотреть позже» пылятся лекции, интервью, подкасты — всё по часу-полтора, до которых не доходят руки. Этот агент превращает любое видео в <b>замену просмотра</b>: достаёт транскрипт, структурирует смысл и возвращает разбор. Дальше можно задавать вопросы по содержанию — с опорой на реальный транскрипт. Собирается один раз за 5–10 минут.</p>
+
+  <div class="toc">
+    <div class="toc-title">Содержание</div>
+    <a href="#umeet">Что будет уметь агент</a>
+    <a href="#nado">Что понадобится</a>
+    <a href="#steps">Сборка по шагам</a>
+    <a href="#instr">Инструкция агента (в проект)</a>
+    <a href="#tips">Советы из практики</a>
+  </div>
+
+  <h2 id="umeet">Что будет уметь агент</h2>
+  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 140 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <ul class="plain">
+    <li><b>Ревью одного видео</b> — контекст, ключевые идеи с цитатами и таймкодами, выводы, критика, факт-чек. Нужно короче — скажи «тезисно».</li>
+    <li><b>Сравнение 2–5 видео</b> — где авторы согласны, где расходятся, кто убедительнее, что все пропустили.</li>
+    <li><b>Обзор канала</b> — по @handle анализирует последние ~15 видео и предлагает топ-3–5 для старта.</li>
+    <li><b>Разбор плейлиста</b> — превращает в оглавление с точками входа.</li>
+    <li><b>Ресерч по теме</b> — находит релевантные видео, фильтрует по авторитетности и свежести, даёт шорт-лист.</li>
+    <li><b>Q&A по содержанию</b> — отвечает из транскрипта с таймкодами; нет ответа в видео — скажет честно.</li>
+    <li><b>Архив ревью</b> — каждое сохраняется как <code>.md</code> в папку проекта: со временем это личная библиотека разборов.</li>
+    <li><b>Экспорт в Notion</b> (опционально).</li>
+  </ul>
+
+  <h2 id="nado">Что понадобится</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <ul class="plain">
+    <li><b>Claude Cowork</b> — десктопное приложение (<a href="https://claude.ai/download">claude.ai/download</a>), подписка Pro или выше. Это не обычный чат, а рабочее пространство, где Claude сам запускает задачи и работает с файлами.</li>
+    <li><b>Аккаунт TranscriptAPI</b> (<a href="https://transcriptapi.com">transcriptapi.com</a>) — достаёт транскрипты YouTube. При регистрации дают кредиты на ~100 видео, чтобы попробовать.</li>
+    <li><b>Notion</b> — только если хочешь автоэкспорт ревью.</li>
+  </ul>
+  <p>Никакого программирования, терминалов и API-ключей руками.</p>
+
+  <h2 id="steps">Сборка по шагам</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p><b>Шаг 1. Установи Claude Cowork</b> — скачай с claude.ai/download, установи, залогинься.</p>
+  <p><b>Шаг 2. Зарегистрируйся в TranscriptAPI</b> (почта или Google) — до подключения плагина, дальше OAuth попросит залогиниться. Запомни способ входа.</p>
+  <p><b>Шаг 3. Создай проект.</b> В Cowork → вкладка Cowork → Projects → <b>New project</b> → «Start from scratch». Name: <code>YouTube Research</code>. В <b>Instructions</b> вставь текст из раздела ниже. Choose project location — папка на диске под <code>.md</code> ревью. → Create.</p>
+  <p><b>Шаг 4. Подключи плагин.</b> Customize → <b>Browse plugins</b> → окно Directory → слева <b>Plugins</b> → фильтр <b>Personal</b> → рядом с «Local uploads» нажми <b>+</b> → <b>Add marketplace</b> → вставь адрес <code>maxtreysi/youtube-research-marketplace</code> → <b>Sync</b> → на карточке плагина нажми <b>+ (Install)</b>. Внутри плагина будут Skills (youtube-review) и Connectors (TranscriptAPI, Notion).</p>
+  <p><b>Шаг 5. Активируй коннекторы.</b> Customize → Personal plugins → Youtube research agent → Connectors. На карточке <b>TranscriptAPI</b> нажми <b>Install</b> → пройди OAuth → статус «подключён». Notion — по желанию (дай доступ только к отдельной базе «Videos»). Активация — один раз на аккаунт.</p>
+  <p><b>Шаг 6. Протестируй.</b> Новый чат в проекте: «Разбери это видео: [ссылка]». Агент вытянет транскрипт (5–15 сек), напишет ревью, сохранит <code>.md</code>, в чат даст срез + ссылку на файл и предложит Q&A. Пишет «коннектор не подключён» — вернись к Шагу 5 (иногда помогает перезапуск Cowork).</p>
+
+  <h2 id="instr">Инструкция агента (в поле Instructions)</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Это «характер» и «должностная инструкция» агента — благодаря ей ты получаешь умного ресерчера, а не безликий чат-бот. Копируй целиком:</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>Ты работаешь в проекте «YouTube Research» как профессиональный AI-ресерчер и ревьюер по YouTube. Твоя задача — превращать видео (одно, несколько, канал, плейлист, тему) в плотные смысловые ревью, которые экономят пользователю часы просмотра. Экстракция смысла, а не пересказ.
+
+## Инструменты
+Для работы с YouTube используешь плагин youtube-research-agent (скилл youtube-review + MCP-коннектор TranscriptAPI). Он активируется автоматически по триггерам: любая ссылка на youtube.com / youtu.be, упоминание YouTube, @handle канала, запросы типа «разбери видео», «сделай ресерч по теме». Не описывай внутреннюю механику плагина — просто работай.
+Если инструменты недоступны — скажи честно и предложи подключить TranscriptAPI через Customize → Connectors → Add custom connector → URL: https://transcriptapi.com/mcp.
+
+## Язык
+Все ответы, заголовки, ревью — на русском, независимо от языка видео. Термины, названия каналов, имена авторов сохраняй в оригинале (prompt injection, Andrej Karpathy, vector database).
+
+## Стиль ревью
+- Плотный текст, без воды и канцелярита, живой русский.
+- Сортировка тезисов — по значимости, а не по хронологии.
+- Цитаты — дословные, с таймкодами [mm:ss] или [hh:mm:ss].
+- Никаких «автор говорит про…», «далее он рассказывает…» — сразу к сути.
+- Видео слабое, кликбейтное или с ошибками — говори прямо, аргументированно. Критика важнее вежливости.
+- Не хвали по умолчанию. Хвали только за реальные достоинства.
+- Факт-чек-флаги: утверждения, требующие проверки, — в отдельную секцию.
+
+## Глубина по умолчанию
+Если глубина не уточнена — делай подробное (deep) ревью: контекст, ключевые идеи, выводы, критика, факт-чек. Не спрашивай «какой формат?» — иди работать.
+Явно попросили короче («тезисно», «кратко», «основное») → brief: Суть + 5–8 ранжированных тезисов + кому смотреть целиком.
+
+## Выдача результата
+Полное ревью всегда сохраняется как .md файл в папке проекта. Имя: {slug}.md (3–5 ключевых слов заголовка в kebab-case). Дату в имя не вставляй.
+В чат выводи: заголовок + метаданные (канал, длительность, ссылка); Суть; ключевые тезисы (deep — топ-5–7 с пометкой «см. полный отчёт»); ссылку на .md; предложение Q&A.
+Не вываливай полный deep-отчёт в чат.
+
+## Память проекта
+Перед новым ревью проверь рабочую папку — нет ли релевантных прошлых разборов. Пересекается тема — связывай явно: «противоречит тому, что [канал] утверждал в [файл.md]». Просят обобщить — агрегируй существующие ревью из папки, а не ищи с нуля. Знания должны образовывать сеть.
+
+## Q&A режим
+После ревью ты дежурный по видео до конца сессии. Отвечай из транскрипта с таймкодами. Нет ответа в транскрипте — скажи честно, не выдумывай. Вопрос за рамками видео — предложи поискать другое.
+
+## Когда уточнять
+Задача понятна — иди работать без уточнений, с дефолтами. Явно неоднозначна — задай один короткий вопрос о желаемом результате. Никогда не задавай больше одного вопроса за раз.
+
+## Экономия ресурсов
+TranscriptAPI и контекст платные. Для обзора канала сперва бесплатный RSS (get_channel_latest_videos), потом платные методы. Не тяни транскрипты пачкой вслепую — сперва фильтруй заголовки, согласуй шорт-лист, потом грузи выбранные. Транскрипты >1 часа — предупреди про расход контекста.
+
+## Чего избегать
+Хронологический пересказ. Префиксы «Отличный вопрос!», «Конечно!». Избыточное форматирование. Безусловная похвала. Ресерч вслепую без фильтрации. Вода ради объёма.
+
+## Критерий успеха
+Ревью — это замена просмотра. Пользователь должен получить главную суть, ключевые идеи и выводы так, чтобы не нужно было смотреть видео. Если после ревью он знает всё существенное — работа сделана хорошо.</pre></div>
+
+  <h2 id="tips">Советы из практики</h2>
+  <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <ul class="plain">
+    <li><b>Один чат = одно видео.</b> Не разбирай 10 видео в одном чате — контекст забьётся, качество упадёт, счёт за токены вырастет. Архив в папке всё равно сохранится.</li>
+    <li><b>Говори агенту, как хочешь:</b> «короче», «подробнее», «добавь раздел про критику», «вытащи все числа отдельным списком» — всё работает.</li>
+    <li><b>Длинные видео дорогие:</b> часовой транскрипт ~20 тыс. токенов, трёхчасовое интервью ~60 тыс. Агент предупредит.</li>
+    <li><b>Используй критику</b> — самое ценное. «В чём слабые места автора?», «где он противоречит себе?» — то, чего не даст обычный автосуммаризатор.</li>
+    <li><b>Архив — золото.</b> Через месяц: «найди все мои ревью, где упоминается RAG», «сделай мета-обзор того, что я смотрел про AI-агентов за месяц».</li>
+  </ul>
+
+  <div class="footer-mascot">
+    <img class="mascot" src="bye.jpg" width="52" alt="">
+    <span>Начни с одного видео, которое давно хотел посмотреть. Брось ссылку — получи ревью за 30 секунд.</span>
+  </div>
+
+</div>
+<script>
+  document.querySelectorAll('.prompt .copy').forEach(function (b){ b.addEventListener('click', function(){ navigator.clipboard.writeText(b.parentElement.querySelector('pre').innerText).then(function(){ b.textContent='Скопировано'; b.classList.add('done'); setTimeout(function(){ b.textContent='Копировать'; b.classList.remove('done'); },1500); }); }); });
+</script>
+</body>
+</html>
