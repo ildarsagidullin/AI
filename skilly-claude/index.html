@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Скиллы для Claude: полный гайд</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f2ed; color: #222; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  .sheet { max-width: 760px; margin: 32px auto 64px; background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,140,180,0.07) 27px, rgba(120,140,180,0.07) 28px), #fdfcf8; border-radius: 8px; box-shadow: 0 2px 14px rgba(0,0,0,0.08); padding: 56px 60px 72px; }
+  @media (max-width: 640px) { .sheet { padding: 32px 20px 48px; margin: 0; border-radius: 0; } }
+  .mascot { image-rendering: pixelated; flex-shrink: 0; mix-blend-mode: multiply; border-radius: 8px; }
+  .header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 8px; }
+  .header-text { flex: 1; }
+  .kicker { color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 10px; }
+  h1 { font-size: 38px; line-height: 1.15; color: #1d4ed8; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .underline { display: block; margin: 2px 0 18px; }
+  .lead { font-size: 18px; color: #444; margin-bottom: 18px; }
+  b, strong { font-weight: 700; color: #111; }
+  .meta { font-size: 13px; color: #999; margin-bottom: 8px; }
+  .meta span + span::before { content: " · "; }
+  .toc { margin: 36px 0 8px; padding: 22px 26px; background: rgba(29,78,216,0.035); border-radius: 10px; }
+  .toc-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 10px; }
+  .toc a { color: #1d4ed8; text-decoration: none; display: block; padding: 3px 0; font-size: 16px; }
+  .toc a:hover { text-decoration: underline; }
+  h2 { font-size: 25px; color: #1d4ed8; font-weight: 800; margin: 52px 0 2px; scroll-margin-top: 20px; }
+  h2 .underline { margin-bottom: 14px; }
+  h3 { font-size: 18px; color: #111; font-weight: 700; margin: 26px 0 10px; }
+  .letter { color: #1d4ed8; }
+  p { margin-bottom: 15px; font-size: 16.5px; }
+  ul.plain, ol.num { margin: 0 0 16px 2px; padding: 0; list-style: none; }
+  ul.plain li, ol.num li { padding-left: 22px; position: relative; margin-bottom: 7px; font-size: 16.5px; }
+  ul.plain li::before { content: "•"; position: absolute; left: 4px; color: #1d4ed8; font-weight: 700; }
+  ol.num { counter-reset: n; }
+  ol.num li { counter-increment: n; padding-left: 30px; }
+  ol.num li::before { content: counter(n) "."; position: absolute; left: 2px; color: #1d4ed8; font-weight: 800; }
+  .note { background: rgba(29,78,216,0.055); border-left: 3px solid #1d4ed8; border-radius: 0 8px 8px 0; padding: 13px 18px; margin: 22px 0; font-size: 16px; }
+  .note.red { background: rgba(220,38,38,0.06); border-color: #dc2626; }
+  .note.green { background: rgba(22,163,74,0.07); border-color: #16a34a; }
+  .prompt { position: relative; margin: 14px 0 20px; }
+  .prompt pre { background: #f5f2ea; border: 1px solid #e7e0d2; border-radius: 8px; padding: 16px 18px; padding-right: 96px; font-family: "SF Mono", Consolas, "Courier New", monospace; font-size: 13.5px; line-height: 1.6; color: #333; white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
+  .prompt .copy { position: absolute; top: 10px; right: 10px; background: #1d4ed8; color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .prompt .copy:hover { background: #1741b8; }
+  .prompt .copy.done { background: #16a34a; }
+  code { background: #f0ede5; padding: 2px 7px; border-radius: 5px; font-size: 0.88em; color: #1d4ed8; font-family: Consolas, monospace; }
+  .illus { text-align: center; margin: 24px 0; }
+  .illus img { max-width: min(100%, 560px); border-radius: 10px; display: inline-block; box-shadow: 0 1px 6px rgba(0,0,0,0.06); border: 1px solid #e7e0d2; }
+  .illus.wide img { max-width: 100%; }
+  .illus figcaption { font-size: 13.5px; color: #999; margin-top: 8px; }
+  .shot { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #dc2626; display: block; margin-bottom: 4px; }
+  table.tbl { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 15.5px; }
+  table.tbl th, table.tbl td { border: 1px solid #e2dccc; padding: 10px 13px; text-align: left; vertical-align: top; }
+  table.tbl th { background: rgba(29,78,216,0.06); font-weight: 700; color: #1d4ed8; }
+  table.tbl td code { font-size: 0.85em; }
+  hr { border: none; border-top: 1px solid #e6e0d3; margin: 44px 0; }
+  .ps { background: rgba(220,38,38,0.05); border-radius: 10px; padding: 20px 24px; margin: 28px 0 0; font-size: 16.5px; }
+  .footer-mascot { display: flex; align-items: center; gap: 18px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8e4da; color: #777; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="header">
+    <div class="header-text">
+      <div class="kicker">Гайд · Скиллы Claude</div>
+      <h1>Скиллы для Claude: полный гайд</h1>
+      <svg class="underline" width="270" height="10" viewBox="0 0 270 10"><path d="M3 6 C 50 2, 110 8, 160 5 S 235 3, 267 6" stroke="#dc2626" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+      <p class="lead">Что такое скиллы, зачем они, чем отличается установка в Claude и в Claude Code, как создать, протестировать, обновить и удалить свой. Всё пошагово, со скриншотами.</p>
+      <div class="meta"><span>пошаговый гайд</span><span>обновлено: август 2026</span><span>Ильдар</span></div>
+    </div>
+    <img class="mascot" src="hero.jpg" width="80" alt="">
+  </div>
+
+  <p>Скиллы — это то, что превращает Claude из «умного чата» в <b>специалиста под твою задачу</b>. Один раз настроил — и он делает работу по твоим правилам, сам, каждый раз одинаково хорошо.</p>
+  <p>В этом гайде разберём всё по порядку: что это, кто их делает, почему они лежат на GitHub, и — главное — <b>как поставить их себе</b>, отдельно в приложение Claude и отдельно в Claude Code. Плюс как собрать свой, проверить, обновлять и удалить, если не зашло.</p>
+  <p>Сохраняй и держи под рукой. Погнали.</p>
+
+  <div class="toc">
+    <div class="toc-title">Содержание</div>
+    <a href="#s1">1. Что такое скилл и зачем он нужен</a>
+    <a href="#s2">2. Кто их делает и почему они на GitHub</a>
+    <a href="#s3">3. Claude или Claude Code — в чём разница установки</a>
+    <a href="#s4">4. Установка в приложение Claude (claude.ai)</a>
+    <a href="#s5">5. Установка в Claude Code</a>
+    <a href="#s6">6. Как создать свой скилл</a>
+    <a href="#s7">7. Как протестировать и отредактировать</a>
+    <a href="#s8">8. Как часто обновлять скиллы</a>
+    <a href="#s9">9. Как удалить или отключить скилл</a>
+    <a href="#s10">10. Безопасность: чему нельзя доверять</a>
+    <a href="#s11">11. С чего начать</a>
+  </div>
+
+  <!-- 1 -->
+  <h2 id="s1">1. Что такое скилл и зачем он нужен</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Скилл (Agent Skill) — это <b>папка с инструкциями</b>, которую Claude подхватывает, когда она нужна. Внутри — файл <code>SKILL.md</code> (что делать и когда), а рядом по желанию скрипты, шаблоны, примеры и справочники.</p>
+  <p>Представь <b>папку-методичку для нового сотрудника</b>: «вот как мы оформляем документы», «вот как разбираем заявки», «вот наш стиль текста». Claude открывает эту методичку ровно в тот момент, когда взялся за подходящую задачу — и делает по ней.</p>
+
+  <h3>Чем скилл отличается от обычного промпта</h3>
+  <p>Промпт ты пишешь заново каждый раз. Скилл создаёшь <b>один раз</b> — и дальше Claude сам его достаёт, когда задача совпадает. Не надо копировать одну и ту же простыню инструкций в каждый чат.</p>
+
+  <h3>Почему это не перегружает Claude</h3>
+  <p>Хитрость в том, что скиллы грузятся <b>послойно</b> (это называют «progressive disclosure» — постепенное раскрытие). Claude держит в голове только название и короткое описание каждого скилла — это копейки. А полную инструкцию читает, только когда скилл реально понадобился.</p>
+  <table class="tbl">
+    <tr><th>Слой</th><th>Когда грузится</th><th>Цена</th></tr>
+    <tr><td><b>Название + описание</b></td><td>всегда</td><td>~100 токенов на скилл</td></tr>
+    <tr><td><b>Инструкция (тело SKILL.md)</b></td><td>когда скилл сработал</td><td>обычно до 5к токенов</td></tr>
+    <tr><td><b>Файлы и скрипты</b></td><td>только если понадобились</td><td>0, пока не открыты</td></tr>
+  </table>
+  <p>Поэтому можно держать <b>десятки скиллов</b> сразу — и это почти не ест контекст. Claude берёт нужный, остальные лежат и ждут.</p>
+
+  <h3>Что скиллы дают на практике</h3>
+  <ul class="plain">
+    <li><b>Специализация.</b> Claude становится экспертом под твою задачу — по твоим правилам и стилю.</li>
+    <li><b>Ноль повторов.</b> Настроил один раз — работает во всех чатах автоматически.</li>
+    <li><b>Повторяемый результат.</b> Одинаково хорошо каждый раз, а не «как повезёт».</li>
+    <li><b>Комбинируются.</b> Несколько скиллов складываются в сложные многошаговые процессы.</li>
+  </ul>
+
+  <!-- 2 -->
+  <h2 id="s2">2. Кто их делает и почему они лежат на GitHub</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+
+  <h3>Кто делает скиллы</h3>
+  <ul class="plain">
+    <li><b>Anthropic</b> (создатели Claude) — официальные скиллы: работа с Word/Excel/PowerPoint/PDF, конструктор скиллов, сборка MCP.</li>
+    <li><b>Крупные компании</b> — под свои продукты: Vercel (React/Next.js), Supabase (Postgres), Google, OpenAI, Firecrawl, Sentry.</li>
+    <li><b>Сообщество</b> — тысячи людей делают скиллы под маркетинг, контент, YouTube, автоматизацию и что угодно ещё.</li>
+  </ul>
+
+  <h3>Почему именно GitHub</h3>
+  <p>Скилл — это по сути <b>папка с текстовыми файлами</b>. А GitHub — стандартное место, где такие штуки удобно хранить, обновлять и раздавать. Причин три:</p>
+  <ul class="plain">
+    <li><b>Раздача.</b> Дал ссылку — и любой поставил себе. Не нужен ни магазин, ни установщик.</li>
+    <li><b>Версии.</b> Автор правит скилл — видно, что менялось, и можно откатиться. Ты всегда берёшь свежую версию.</li>
+    <li><b>Открытость.</b> Скилл — это инструкции и код, которые получат доступ к твоим файлам. На GitHub его <b>видно насквозь</b>: можно прочитать перед установкой и убедиться, что там нет дичи. Про безопасность — в разделе 10.</li>
+  </ul>
+  <div class="note">Скиллы работают по открытому стандарту <b>Agent Skills</b> (agentskills.io) — один и тот же скилл понимают Claude, Cursor, Codex, Gemini CLI и другие. То есть это не «фишка только Claude», а общий формат.</div>
+
+  <!-- 3 -->
+  <h2 id="s3">3. Claude или Claude Code — в чём разница установки</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Это первое, что путает новичков. Скиллы можно ставить в двух разных местах, и они <b>не связаны между собой</b>.</p>
+  <table class="tbl">
+    <tr><th></th><th>Приложение Claude<br>(claude.ai / десктоп)</th><th>Claude Code<br>(в терминале)</th></tr>
+    <tr><td><b>Где живёт скилл</b></td><td>в облаке Anthropic, привязан к твоему аккаунту</td><td>папкой на твоём компьютере</td></tr>
+    <tr><td><b>Как ставится</b></td><td>загружаешь ZIP через настройки</td><td>кладёшь папку / плагин / одной командой</td></tr>
+    <tr><td><b>Доступ к файлам</b></td><td>песочница, доступ ограничен</td><td>полный доступ к твоим файлам и интернету</td></tr>
+    <tr><td><b>Что нужно</b></td><td>план Pro / Max / Team / Enterprise + включённое «выполнение кода»</td><td>установленный Claude Code</td></tr>
+    <tr><td><b>Встроенные готовые</b></td><td>Word, Excel, PowerPoint, PDF — из коробки</td><td>их нет (но есть свои встроенные команды)</td></tr>
+    <tr><td><b>Для кого</b></td><td>работа с документами, обычные задачи в чате</td><td>код, автоматизация, работа с проектами и файлами</td></tr>
+  </table>
+  <div class="note red">Скиллы <b>не синхронизируются</b> между приложением и Claude Code. Загрузил в claude.ai — в Claude Code его нет, и наоборот. В каждое место ставишь отдельно.</div>
+  <p>Дальше — по шагам для каждого. Ставь туда, где реально работаешь.</p>
+
+  <!-- 4 -->
+  <h2 id="s4">4. Установка в приложение Claude (claude.ai)</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+
+  <h3>Шаг 1. Включи «выполнение кода»</h3>
+  <p>Без этого скиллов вообще не будет видно. Заходишь в <b>Настройки → Возможности</b> (Settings → Capabilities) и включаешь тумблер <b>«Выполнение кода и создание файлов»</b> (Code execution and file creation).</p>
+  <figure class="illus"><span class="shot">Скриншот 1</span><img src="img/01.png" alt="Настройки → Возможности → тумблер «Выполнение кода и создание файлов»"><figcaption>Настройки → Возможности → включаем «Выполнение кода и создание файлов»</figcaption></figure>
+  <div class="note">На Team/Enterprise это должен сначала включить владелец рабочего пространства в настройках организации. Если раздел скиллов серый или его нет — почти всегда дело именно в невключённом выполнении кода.</div>
+
+  <h3>Шаг 2. Открой список скиллов</h3>
+  <p>Идёшь в <b>Настроить → Скиллы</b> (Customize → Skills). Здесь список: сверху — готовые скиллы Anthropic (Word, Excel, PowerPoint, PDF), их можно включать тумблером. Они и так срабатывают сами, когда ты просишь сделать документ.</p>
+  <figure class="illus"><span class="shot">Скриншот 2</span><img src="img/02.png" alt="Настроить → Скиллы: список скиллов с тумблерами"><figcaption>Настроить → Скиллы — список с тумблерами вкл/выкл</figcaption></figure>
+
+  <h3>Шаг 3. Загрузи свой скилл (ZIP)</h3>
+  <p>Чтобы добавить скилл со стороны, его надо <b>запаковать в ZIP</b>. Дальше на странице скиллов жмёшь <b>«+» → Создать скилл → Загрузить скилл</b> (Upload a skill) и выбираешь ZIP-файл.</p>
+  <figure class="illus"><span class="shot">Скриншот 3</span><img src="img/03.png" alt="Кнопка + → Создать скилл → Загрузить скилл, окно выбора ZIP"><figcaption>«+» → Создать скилл → Загрузить скилл → выбираешь ZIP</figcaption></figure>
+  <div class="note red">Главное про ZIP: внутри архива должна лежать <b>папка скилла с файлом SKILL.md внутри</b>, а не голые файлы и не лишняя обёртка сверху. Имя папки должно совпадать с именем скилла. Если структура кривая — загрузка не пройдёт.</div>
+  <p>Если качаешь скилл с GitHub: жмёшь <b>Code → Download ZIP</b>, при необходимости распаковываешь и запаковываешь <b>именно папку нужного скилла</b> (ту, где лежит SKILL.md), а не весь репозиторий целиком.</p>
+  <div class="note">Загрузка своих скиллов доступна на планах <b>Pro, Max, Team и Enterprise</b> при включённом выполнении кода. Скиллы в claude.ai <b>персональные</b> — у каждого свои, между сотрудниками не расшариваются.</div>
+
+  <!-- 5 -->
+  <h2 id="s5">5. Установка в Claude Code</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Тут проще: скилл — это <b>просто папка на компе</b>. Есть три способа поставить, от ручного до «одной командой».</p>
+
+  <h3>Куда вообще кладутся скиллы</h3>
+  <table class="tbl">
+    <tr><th>Тип</th><th>Путь</th><th>Где работает</th></tr>
+    <tr><td><b>Личный</b></td><td><code>~/.claude/skills/имя/SKILL.md</code></td><td>во всех твоих проектах</td></tr>
+    <tr><td><b>Проектный</b></td><td><code>.claude/skills/имя/SKILL.md</code></td><td>только в этом проекте (можно закоммитить в репо для команды)</td></tr>
+  </table>
+  <div class="note">На Windows <code>~</code> — это твоя папка пользователя, то есть <code>C:\Users\Имя\.claude\skills\</code>.</div>
+
+  <h3>Способ 1. Вручную — положить папку</h3>
+  <p>Скачал скилл с GitHub → положил папку скилла (в которой <code>SKILL.md</code>) в <code>~/.claude/skills/</code>. Всё. Claude Code <b>подхватывает изменения на лету</b>, без перезапуска.</p>
+  <figure class="illus"><span class="shot">Скриншот 4</span><img src="img/04.png" alt="Папка ~/.claude/skills в проводнике со скиллами внутри"><figcaption>Папка <code>~/.claude/skills/</code> — каждый скилл лежит своей папкой</figcaption></figure>
+
+  <h3>Способ 2. Через плагины и маркетплейс</h3>
+  <p>В Claude Code встроен магазин плагинов. Пишешь в терминале команду <code>/plugin</code> — открывается браузер плагинов, вкладка <b>Discover</b> со списком. Выбираешь — Enter — ставится.</p>
+  <figure class="illus"><span class="shot">Скриншот 5</span><img src="img/05.png" alt="Команда /plugin — браузер плагинов, вкладка Discover"><figcaption>Команда <code>/plugin</code> → вкладка Discover со списком плагинов</figcaption></figure>
+  <p>По умолчанию там только официальный маркетплейс Anthropic. Чтобы добавить чужой (например, из GitHub-репозитория) — командой:</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>/plugin marketplace add владелец/репозиторий</pre></div>
+  <figure class="illus"><span class="shot">Скриншот 6</span><img src="img/06.png" alt="Команда /plugin marketplace add и результат добавления маркетплейса"><figcaption>Добавляем сторонний маркетплейс — его плагины появятся в Discover</figcaption></figure>
+  <p>При установке Claude Code спросит <b>масштаб</b>: <b>User</b> — для всех твоих проектов (<code>~/.claude/skills/</code>), <b>Project</b> — только для текущего (<code>.claude/skills/</code>). Обычно выбираешь User, если это не командная настройка под конкретный проект.</p>
+  <figure class="illus"><span class="shot">Скриншот 7</span><img src="img/07.png" alt="Выбор масштаба установки: User или Project"><figcaption>Выбор масштаба: User (везде) или Project (только этот проект)</figcaption></figure>
+
+  <h3>Способ 3. Одной командой (npx skills)</h3>
+  <p>Многие скиллы из подборок ставятся одной строкой — прямо из папки проекта в терминале:</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>npx skills add владелец/репозиторий</pre></div>
+  <p>Например, <code>npx skills add google-labs-code/stitch-skills</code>. Команда сама скачает скилл и положит его куда надо. У каждого скилла в его репозитории обычно написана точная команда установки — бери оттуда.</p>
+
+  <!-- 6 -->
+  <h2 id="s6">6. Как создать свой скилл</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Создать скилл проще, чем кажется. Минимум — это <b>один файл</b> <code>SKILL.md</code>. Всё остальное по желанию.</p>
+
+  <h3>Из чего состоит SKILL.md</h3>
+  <p>Файл делится на две части: <b>шапка</b> в тройных дефисах (YAML-фронтматтер) — где сказано, когда скилл применять; и <b>тело</b> — сами инструкции. Вот минимальный рабочий пример:</p>
+  <div class="prompt"><button class="copy">Копировать</button><pre>---
+name: razbor-pisem
+description: Разбирает входящие письма и готовит черновики ответов в моём стиле. Использовать, когда прошу разобрать почту, ответить на письма или навести порядок во входящих.
+---
+
+# Разбор писем
+
+Когда я прошу разобрать почту:
+1. Раздели письма на важные, обычные и спам.
+2. По важным подготовь черновики ответов в деловом, но живом тоне.
+3. Ничего не отправляй сам — только черновики.
+4. В конце дай короткий список, что требует моего решения.</pre></div>
+
+  <h3>Два обязательных поля в шапке</h3>
+  <table class="tbl">
+    <tr><th>Поле</th><th>Что это</th><th>Правила</th></tr>
+    <tr><td><code>name</code></td><td>имя скилла (и команда для вызова)</td><td>до 64 символов, только строчные буквы, цифры и дефисы; без слов «claude» и «anthropic»</td></tr>
+    <tr><td><code>description</code></td><td><b>что</b> скилл делает и <b>когда</b> его применять</td><td>до 1024 символов, обязательно не пустое</td></tr>
+  </table>
+  <div class="note red"><b>Описание решает всё.</b> Именно по нему Claude понимает, что пора достать твой скилл. Пиши в нём и что скилл делает, и <b>когда</b> его включать — с конкретными фразами-триггерами («когда прошу…», «если речь про…»). Размытое описание = скилл не сработает сам никогда.</div>
+
+  <h3>Где создать файл</h3>
+  <p>В Claude Code — просто создай папку и файл: <code>~/.claude/skills/razbor-pisem/SKILL.md</code>. Claude Code увидит его сразу, без перезапуска.</p>
+  <figure class="illus"><span class="shot">Скриншот 8</span><img src="img/08.png" alt="Файл SKILL.md открыт в редакторе с шапкой и телом"><figcaption>Так выглядит готовый SKILL.md: шапка в дефисах + инструкции ниже</figcaption></figure>
+
+  <h3>Ленивый способ — скилл, который делает скиллы</h3>
+  <p>Не хочешь возиться руками — есть официальный <b>skill-creator</b> от Anthropic. Он берёт у тебя интервью, сам подбирает настройки и пишет готовый <code>SKILL.md</code> в нужную папку. Просто попроси Claude Code создать скилл под твою задачу — и он проведёт тебя за руку.</p>
+  <div class="note">Держи тело скилла коротким — до 500 строк. Большие справочники выноси в отдельные файлы рядом и ссылайся на них из SKILL.md: Claude откроет их, только когда понадобятся.</div>
+
+  <!-- 7 -->
+  <h2 id="s7">7. Как протестировать и отредактировать</h2>
+  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 135 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+
+  <h3>Как проверить, что скилл работает</h3>
+  <p>В Claude Code два пути:</p>
+  <ul class="plain">
+    <li><b>Пусть сработает сам.</b> Напиши обычный запрос, который подходит под описание («разбери мою почту»). Если описание нормальное — Claude сам подтянет скилл.</li>
+    <li><b>Вызови вручную.</b> Набери <code>/имя-скилла</code> (для примера выше — <code>/razbor-pisem</code>). Скилл запустится принудительно.</li>
+  </ul>
+  <figure class="illus"><span class="shot">Скриншот 9</span><img src="img/09.png" alt="Вызов /имя-скилла в Claude Code и ответ"><figcaption>Вызов <code>/имя-скилла</code> — быстрый способ проверить скилл</figcaption></figure>
+  <p>Посмотреть все установленные скиллы можно командой <code>/skills</code> — там видно, что откуда пришло (личное, проект, плагин).</p>
+  <figure class="illus"><span class="shot">Скриншот 10</span><img src="img/10.png" alt="Команда /skills — список всех установленных скиллов"><figcaption>Команда <code>/skills</code> — список всех доступных скиллов и их источник</figcaption></figure>
+
+  <h3>Как отредактировать</h3>
+  <p>Просто открой <code>SKILL.md</code> в любом редакторе и правь текст. Claude Code <b>ловит изменения на лету</b> — сохранил файл, и новая версия работает в той же сессии. Перезапускать ничего не надо.</p>
+  <div class="note">В приложении claude.ai по-другому: там скилл живёт в облаке. Чтобы обновить — правишь файлы, снова пакуешь в ZIP и загружаешь заново (либо удаляешь старый и грузишь новый).</div>
+
+  <!-- 8 -->
+  <h2 id="s8">8. Как часто обновлять скиллы</h2>
+  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 135 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Короткий ответ: <b>по расписанию — не надо</b>. Скиллы сами не обновляются, и гоняться за апдейтами каждый день смысла нет. Обновляй в двух случаях:</p>
+  <ul class="plain">
+    <li><b>Автор выпустил новую версию</b> — исправил ошибки, добавил возможности.</li>
+    <li><b>Изменилось то, с чем скилл работает</b> — обновился сервис, поменялся его интерфейс или API, и старая инструкция стала неточной.</li>
+  </ul>
+  <h3>Как обновлять — по способу установки</h3>
+  <table class="tbl">
+    <tr><th>Как ставил</th><th>Как обновить</th></tr>
+    <tr><td>Скачал папку с GitHub</td><td>скачай свежую версию и замени папку (или <code>git pull</code>, если клонировал)</td></tr>
+    <tr><td>Через <code>npx skills add</code></td><td>запусти ту же команду ещё раз — подтянет свежую</td></tr>
+    <tr><td>Через плагин <code>/plugin</code></td><td>обновление приходит, когда автор поднимает версию; обновляешь из меню <code>/plugin</code></td></tr>
+    <tr><td>Загрузил ZIP в claude.ai</td><td>скачай новую версию и загрузи заново</td></tr>
+  </table>
+  <div class="note">Практика: если сильно зависишь от скилла — раз в месяц загляни в его репозиторий, посмотри, не вышло ли обновление. Свои личные скиллы правишь тогда, когда сам замечаешь, что Claude стал делать не то.</div>
+
+  <!-- 9 -->
+  <h2 id="s9">9. Как удалить или отключить скилл</h2>
+  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 135 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Не зашёл скилл — убираешь за секунду. Способ зависит от того, куда ставил.</p>
+
+  <h3>В приложении Claude (claude.ai)</h3>
+  <p><b>Отключить:</b> в <b>Настроить → Скиллы</b> просто выключи тумблер у скилла — он останется, но не будет срабатывать.</p>
+  <p><b>Удалить совсем:</b> кликни на скилл → кнопка <b>«...»</b> рядом с тумблером → <b>Удалить</b> → подтверди.</p>
+  <figure class="illus"><span class="shot">Скриншот 11</span><img src="img/11.png" alt="Меню «...» у скилла в claude.ai с пунктом Удалить"><figcaption>claude.ai: «...» у скилла → Удалить</figcaption></figure>
+
+  <h3>В Claude Code</h3>
+  <table class="tbl">
+    <tr><th>Что за скилл</th><th>Как убрать</th></tr>
+    <tr><td>Личный или проектный</td><td>удали его папку: <code>~/.claude/skills/имя/</code> или <code>.claude/skills/имя/</code></td></tr>
+    <tr><td>Из плагина</td><td>отключи или снеси плагин: <code>/plugin uninstall имя-плагина@маркетплейс</code></td></tr>
+    <tr><td>Хочешь оставить, но чтобы не срабатывал сам</td><td>добавь в шапку SKILL.md строку <code>disable-model-invocation: true</code> — тогда только ты вызываешь его вручную</td></tr>
+  </table>
+  <div class="note">Claude Code уберёт скилл из текущей сессии сразу, как удалишь папку — перезапуск не нужен.</div>
+
+  <!-- 10 -->
+  <h2 id="s10">10. Безопасность: чему нельзя доверять</h2>
+  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Важный раздел, не проскакивай. Скилл даёт Claude <b>новые инструкции и код</b>, а в Claude Code — ещё и доступ к твоим файлам. Плохой скилл может увести данные или наделать дел.</p>
+  <div class="note red">Ставь скиллы <b>только из источников, которым доверяешь</b>: свои собственные или от Anthropic и известных компаний. Чужой скилл из ниоткуда — сначала открой и прочитай.</div>
+  <ul class="plain">
+    <li><b>Читай перед установкой.</b> На GitHub всё видно: открой <code>SKILL.md</code> и скрипты, глянь, нет ли странных сетевых запросов или доступа к тому, что задаче не нужно.</li>
+    <li><b>Особо осторожно со скиллами, которые лезут в интернет</b> — подтягивают данные с внешних адресов. Туда может прилететь чужая вредная инструкция.</li>
+    <li><b>Относись как к установке программы.</b> Скилл — это код. Не запускал бы левую программу — не ставь и левый скилл, особенно там, где есть доступ к важным данным.</li>
+  </ul>
+
+  <!-- 11 -->
+  <h2 id="s11">11. С чего начать</h2>
+  <svg class="underline" width="180" height="10" viewBox="0 0 180 10"><path d="M3 6 C 35 3, 80 8, 115 5 S 160 3, 177 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Не пытайся освоить всё сразу. Сделай так:</p>
+  <ol class="num">
+    <li>Реши, где работаешь — в <b>приложении Claude</b> или в <b>Claude Code</b>. Ставь туда.</li>
+    <li>Поставь <b>один</b> готовый скилл под свою реальную задачу и проверь его в деле.</li>
+    <li>Когда поймёшь логику — собери <b>свой</b> первый скилл из одного SKILL.md. Даже маленький.</li>
+  </ol>
+  <p>Скиллы — это не про «технично». Это про то, чтобы <b>перестать каждый раз объяснять Claude одно и то же</b> и переложить повторяющуюся работу на систему.</p>
+
+  <div class="ps">
+    <b>P.S.</b> Начни с одного скилла под задачу, которую делаешь чаще всего. Настроил один раз — экономишь время каждый день. Это выгоднее, чем сто сохранённых видео «про ИИ», которые ты так и не открыл.
+  </div>
+
+  <div class="footer-mascot">
+    <img class="mascot" src="bye.jpg" width="52" alt="">
+    <span>Поставил первый — дальше пойдёт само.</span>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.prompt .copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('pre').innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = 'Скопировано'; btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'Копировать'; btn.classList.remove('done'); }, 1500);
+      });
+    });
+  });
+  document.querySelectorAll('.illus img').forEach(function (img) {
+    img.addEventListener('error', function () {
+      var fig = img.closest('figure'); if (!fig) return;
+      var ph = document.createElement('div');
+      ph.style.cssText = 'border:2px dashed #cdc6b6;border-radius:8px;background:#f7f3ea;padding:34px 20px;color:#a99f88;font-size:14px;font-weight:600';
+      ph.textContent = '📷 ' + (img.getAttribute('alt') || 'скриншот');
+      img.replaceWith(ph);
+    });
+  });
+</script>
+</body>
+</html>
