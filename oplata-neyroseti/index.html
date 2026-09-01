@@ -69,6 +69,7 @@
 
   <div class="toc">
     <div class="toc-title">Содержание</div>
+    <a href="#tldr">Кратко: все способы разом</a>
     <a href="#s1">1. Российские API-агрегаторы</a>
     <a href="#s2">2. Виртуальные зарубежные карты</a>
     <a href="#s3">3. Ключи с маркетплейсов</a>
@@ -81,18 +82,49 @@
     <a href="#sravnenie">Сравнение и с чего начать</a>
   </div>
 
+  <h2 id="tldr">Кратко: все способы разом</h2>
+  <svg class="underline" width="230" height="10" viewBox="0 0 230 10"><path d="M3 6 C 42 3, 100 8, 145 5 S 205 3, 227 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <p>Если читать некогда — вот выжимка по всем девяти способам. Ниже каждый разобран подробно.</p>
+  <ul class="plain">
+    <li><b>1. API-агрегаторы</b> (ProxyAPI, Polza.ai, GPTunnel) — платишь рублями, наценка 5–15%. Для API и чтобы пощупать модели без подписки.</li>
+    <li><b>2. Виртуальные зарубежные карты</b> — выпускаешь карту и платишь подписку на сайте. Наценка 10–30%.</li>
+    <li><b>3. Ключи с маркетплейсов</b> (Plati, GGsel, FunPay) — быстро, но рискованно, вариант «на короткую».</li>
+    <li><b>4. Российские платёжные окна</b> (МТС, Ozon, RuStore) — легально, с чеком, наценка 20–50%.</li>
+    <li><b>5. Avito / Telegram-продавцы</b> — только проверенный контакт, иначе развод.</li>
+    <li><b>6. Друг за границей</b> — дёшево и надёжно, если есть кому.</li>
+    <li><b>7. Своя зарубежная карта</b> (Казахстан, Армения…) — разово вложился, дальше платишь как местный.</li>
+    <li><b>8. Крипто-карта</b> (Bybit) — платишь с USDT, бывает кэшбэк.</li>
+    <li><b>9. Подарочные карты</b> (Apple / Google Play) — для мобильных подписок.</li>
+  </ul>
+
   <h2 id="s1">1. Российские API-агрегаторы</h2>
   <svg class="underline" width="230" height="10" viewBox="0 0 230 10"><path d="M3 6 C 42 3, 100 8, 145 5 S 205 3, 227 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <p>Это сервисы-посредники (ProxyAPI, Polza.ai, Vsegpt и подобные), которые дают доступ к <b>API</b> нейросетей за рубли. VPN не нужен, платишь картой РФ прямо им. Наценка примерно <b>5–15%</b>.</p>
-  <div class="pm plus">👍 Проще всего, если тебе нужен именно API — для кода, ботов, автоматизаций.</div>
-  <div class="pm minus">👎 Для обычного чата на сайте (ChatGPT, Claude) не подходит — это про API, а не про подписку.</div>
+  <p>Это сервисы-посредники, которые покупают API нейросетей оптом и перепродают тебе за рубли. Платишь картой РФ (часто через СБП), VPN не нужен. Наценка примерно <b>5–15%</b>.</p>
+  <div class="pm plus">👍 Проще всего, если нужен именно API — для кода, ботов, автоматизаций.</div>
+  <div class="pm minus">👎 Для обычного чата на сайте (ChatGPT, Claude) не подходит — это про API, а не про GUI-подписку.</div>
+  <table class="tbl">
+    <tr><th>Сервис</th><th>Модели</th><th>Мин. платёж</th><th>Юрлицу</th><th>Без VPN</th><th>Сайт</th></tr>
+    <tr><td>ProxyAPI</td><td>OpenAI, Anthropic, Google, DeepSeek (через OpenRouter)</td><td>от 100 ₽</td><td>да, НДС 5%</td><td>да</td><td>proxyapi.ru</td></tr>
+    <tr><td>Polza.ai</td><td>400+ моделей через единый OpenAI-совместимый API</td><td>от 100 ₽</td><td>да</td><td>да</td><td>polza.ai</td></tr>
+    <tr><td>Vsegpt</td><td>OpenAI, Anthropic, Gemini, Midjourney, Stable Diffusion</td><td>от 500 ₽</td><td>да</td><td>да</td><td>vsegpt.ru</td></tr>
+    <tr><td>SYNTX AI</td><td>90+ нейросетей в одном интерфейсе (подписка)</td><td>от 990 ₽/мес</td><td>для ИП/ООО есть</td><td>да</td><td>syntx.ai</td></tr>
+    <tr><td>GPTunnel</td><td>100+ моделей через API</td><td>от 300 ₽</td><td>да</td><td>да</td><td>gptunnel.ru</td></tr>
+  </table>
+  <p><b>Отдельно про GPTunnel.</b> Он удобен не только разработчикам, но и обычным пользователям. Все модели доступны <b>без подписки</b>: просто закидываешь баланс через СБП и платишь по факту — сколько наработал, столько и потратил. Хорошо заходит, если пользуешься <b>3–5 сервисами сразу</b> или хочешь протестировать каждую модель под себя — GPT, Claude, генерацию видео или картинок — не оформляя на каждую отдельную подписку.</p>
 
   <h2 id="s2">2. Виртуальные зарубежные карты</h2>
   <svg class="underline" width="230" height="10" viewBox="0 0 230 10"><path d="M3 6 C 42 3, 100 8, 145 5 S 205 3, 227 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
   <p>Выпускаешь виртуальную карту иностранного банка и платишь ей подписку напрямую с сайта сервиса. Переплата примерно <b>10–30%</b> (выпуск + пополнение).</p>
   <div class="pm plus">👍 Работает для подписок на официальных сайтах — ChatGPT Plus, Claude Pro и т.д.</div>
   <div class="pm minus">👎 Не каждая карта проходит в каждом сервисе — готовься немного потестировать.</div>
-  <p>Быстрее всего выпустить такую карту — через <a href="https://t.me/antarctic_wallet_bot/app?startapp=ref_ffa42534b4" target="_blank" rel="noopener" class="ref">Antarctic Wallet</a>: виртуальная зарубежная карта примерно за 9 $, всё делается прямо в Telegram.</p>
+  <p>Сервисов выпуска карт много. Первые два я <b>пробовал сам — работают нормально</b>:</p>
+  <ul class="plain">
+    <li><a href="https://t.me/antarctic_wallet_bot/app?startapp=ref_ffa42534b4" target="_blank" rel="noopener" class="ref">Antarctic Wallet</a> — виртуальная зарубежная карта примерно за 9 $, всё в Telegram. <b>✅ пробовал — работает</b></li>
+    <li><a href="https://platipomiru.com/?code=VPPUZK3K" target="_blank" rel="noopener" class="ref">Плати по миру</a> — карты в EUR/USD, разные тарифы под задачи. <b>✅ пробовал — работает</b></li>
+    <li>WantToPay — оформление через Telegram-бота за пару минут.</li>
+    <li>Heleket — с пополнением криптой (USDT).</li>
+  </ul>
+  <div class="note">Держи <b>две-три карты разных эмитентов</b>. У каждого сервиса свои блок-листы: карта, которая не прошла в одном сервисе, спокойно проходит в другом — тогда просто платишь другой.</div>
 
   <h2 id="s3">3. Ключи и доступы с маркетплейсов</h2>
   <svg class="underline" width="230" height="10" viewBox="0 0 230 10"><path d="M3 6 C 42 3, 100 8, 145 5 S 205 3, 227 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
