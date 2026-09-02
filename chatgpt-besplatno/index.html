@@ -3,360 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Как пользоваться ChatGPT бесплатно</title>
+<title>Гайд в закрытом чате</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f2ed; color: #222; line-height: 1.7; -webkit-font-smoothing: antialiased; }
-  .sheet { max-width: 760px; margin: 32px auto 64px; background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,140,180,0.07) 27px, rgba(120,140,180,0.07) 28px), #fdfcf8; border-radius: 8px; box-shadow: 0 2px 14px rgba(0,0,0,0.08); padding: 56px 60px 72px; }
-  @media (max-width: 640px) { .sheet { padding: 32px 20px 48px; margin: 0; border-radius: 0; } }
-  .mascot { image-rendering: pixelated; flex-shrink: 0; mix-blend-mode: multiply; border-radius: 8px; }
-  .header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 8px; }
-  .header-text { flex: 1; }
-  .kicker { color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 10px; }
-  h1 { font-size: 38px; line-height: 1.15; color: #1d4ed8; font-weight: 800; margin-bottom: 6px; letter-spacing: -0.01em; }
-  .underline { display: block; margin: 2px 0 18px; }
-  .lead { font-size: 18px; color: #444; margin-bottom: 18px; }
-  b, strong { font-weight: 700; color: #111; }
-  .meta { font-size: 13px; color: #999; margin-bottom: 8px; }
-  .meta span + span::before { content: " · "; }
-  .toc { margin: 36px 0 8px; padding: 22px 26px; background: rgba(29,78,216,0.035); border-radius: 10px; }
-  .toc-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 10px; }
-  .toc a { color: #1d4ed8; text-decoration: none; display: block; padding: 3px 0; font-size: 16px; }
-  .toc a:hover { text-decoration: underline; }
-  h2 { font-size: 25px; color: #1d4ed8; font-weight: 800; margin: 52px 0 2px; scroll-margin-top: 20px; }
-  h2 .underline { margin-bottom: 14px; }
-  h3 { font-size: 18px; color: #111; font-weight: 700; margin: 26px 0 10px; }
-  .letter { color: #1d4ed8; }
-  p { margin-bottom: 15px; font-size: 16.5px; }
-  ul.plain, ol.num { margin: 0 0 16px 2px; padding: 0; list-style: none; }
-  ul.plain li, ol.num li { padding-left: 22px; position: relative; margin-bottom: 7px; font-size: 16.5px; }
-  ul.plain li::before { content: "•"; position: absolute; left: 4px; color: #1d4ed8; font-weight: 700; }
-  ol.num { counter-reset: n; }
-  ol.num li { counter-increment: n; padding-left: 30px; }
-  ol.num li::before { content: counter(n) "."; position: absolute; left: 2px; color: #1d4ed8; font-weight: 800; }
-  .note { background: rgba(29,78,216,0.055); border-left: 3px solid #1d4ed8; border-radius: 0 8px 8px 0; padding: 13px 18px; margin: 22px 0; font-size: 16px; }
-  .note.red { background: rgba(220,38,38,0.06); border-color: #dc2626; }
-  .note.green { background: rgba(22,163,74,0.07); border-color: #16a34a; }
-  code { background: #f0ede5; padding: 2px 7px; border-radius: 5px; font-size: 0.88em; color: #1d4ed8; font-family: Consolas, monospace; }
-  .illus { text-align: center; margin: 20px 0; }
-  .illus img { max-width: min(100%, 460px); border-radius: 10px; display: inline-block; box-shadow: 0 1px 6px rgba(0,0,0,0.06); border: 1px solid #e7e0d2; }
-  table.tbl { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 15.5px; }
-  table.tbl th, table.tbl td { border: 1px solid #e2dccc; padding: 10px 13px; text-align: left; vertical-align: top; }
-  table.tbl th { background: rgba(29,78,216,0.06); font-weight: 700; color: #1d4ed8; }
-  table.tbl td code { font-size: 0.85em; }
-  .step { display: flex; gap: 16px; margin: 22px 0; align-items: flex-start; }
-  .step-n { flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; background: #1d4ed8; color: #fff; font-weight: 800; font-size: 17px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
-  .step-body { flex: 1; }
-  .step-body h3 { margin-top: 0; }
-  hr { border: none; border-top: 1px solid #e6e0d3; margin: 44px 0; }
-  .ps { background: rgba(220,38,38,0.05); border-radius: 10px; padding: 20px 24px; margin: 28px 0 0; font-size: 16.5px; }
-  .footer-mascot { display: flex; align-items: center; gap: 18px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #e8e4da; color: #777; font-size: 15px; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #f4f2ed; color: #222; line-height: 1.7; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .card { max-width: 560px; width: 100%; background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,140,180,0.07) 27px, rgba(120,140,180,0.07) 28px), #fdfcf8; border-radius: 12px; box-shadow: 0 2px 14px rgba(0,0,0,0.08); padding: 48px 44px; text-align: center; }
+  @media (max-width: 560px) { .card { padding: 36px 24px; } }
+  .lock { font-size: 44px; margin-bottom: 12px; }
+  .kicker { color: #999; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 14px; }
+  h1 { font-size: 28px; line-height: 1.2; color: #1d4ed8; font-weight: 800; margin-bottom: 8px; }
+  .underline { display: block; margin: 4px auto 20px; }
+  p { font-size: 16.5px; color: #444; margin-bottom: 14px; }
+  b { color: #111; }
+  .list { text-align: left; display: inline-block; margin: 6px auto 22px; font-size: 16px; line-height: 2; }
+  .btn { display: inline-block; background: #1d4ed8; color: #fff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 17px; }
+  .btn:hover { background: #1741b8; }
+  .price { font-size: 20px; font-weight: 800; color: #111; margin-bottom: 14px; }
+  .small { font-size: 13.5px; color: #999; margin-top: 18px; }
 </style>
 </head>
 <body>
-<div class="sheet">
-
-  <div class="header">
-    <div class="header-text">
-      <div class="kicker">Гайд · ChatGPT бесплатно</div>
-      <h1>Как пользоваться ChatGPT бесплатно</h1>
-      <svg class="underline" width="300" height="10" viewBox="0 0 300 10"><path d="M3 6 C 55 2, 120 8, 175 5 S 260 3, 297 6" stroke="#dc2626" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
-      <p class="lead">Оплачиваешь ChatGPT, Netflix, Spotify и другие подписки картой Bybit — и получаешь кэшбэк вплоть до 100% обратно. Разберём по шагам: как из РФ оформить такую карту и как ей заплатить за подписку.</p>
-      <div class="meta"><span>пошаговый гайд</span><span>актуально: август 2026</span><span>Ильдар</span></div>
+  <div class="card">
+    <div class="lock">🔒</div>
+    <div class="kicker">Закрытый гайд</div>
+    <h1>Как оформить ChatGPT и Claude за $0</h1>
+    <svg class="underline" width="200" height="10" viewBox="0 0 200 10"><path d="M3 6 C 38 3, 88 8, 128 5 S 178 3, 197 6" stroke="#dc2626" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>
+    <p>Полный пошаговый гайд по карте <b>Bybit</b> — регистрация, оплата подписки и возврат её стоимости кэшбэком (вплоть до 100%) — лежит в моём <b>закрытом чате</b>.</p>
+    <div class="list">
+      📚 17+ свежих гайдов по ИИ<br>
+      💬 Чат с поддержкой — подскажу, если застрял<br>
+      🔄 Каждую неделю — новые гайды<br>
+      💸 Скидка 50% на личные консультации
     </div>
-    <img class="mascot" src="hero.jpg" width="80" alt="">
+    <div class="price">Вступить — 1450 ₽</div>
+    <a class="btn" href="https://t.me/tribute/app?startapp=s10cg" target="_blank" rel="noopener">Открыть закрытый чат ➡️</a>
+    <p class="small">Уже внутри? <a href="https://t.me/IldarSagidullin/209" target="_blank" rel="noopener">Перейти в чат</a></p>
   </div>
-
-  <p>Смысл простой: заводишь <b>виртуальную карту Bybit</b> — это можно сделать <a href="https://www.bybitglobal.com/cards/?ref=WPWWBQK&source=applet_invite" target="_blank" rel="noopener" style="color:#1d4ed8;font-weight:700;background:rgba(29,78,216,0.09);padding:1px 5px;border-radius:4px;text-decoration:none;">здесь</a>, бонусом упадёт <b>$10</b> — и платишь ей за ChatGPT напрямую с официального сайта, а часть денег (при активном использовании карты и <b>все 100%</b>) возвращается кэшбэком. Плюс это просто <b>рабочий способ платить за ChatGPT из России</b>, когда родная карта не проходит.</p>
-  <p>Гайд максимально подробный — веду за руку. Регистрация карты, оплата подписки, куда какие цифры вбивать. Сохраняй и повторяй по шагам.</p>
-
-  <div class="toc">
-    <div class="toc-title">Содержание</div>
-    <a href="#s1">1. В чём фишка и что такое Bybit</a>
-    <a href="#s2">2. Что понадобится</a>
-    <a href="#s3">3. Регистрация карты Bybit — по шагам</a>
-    <a href="#s4">4. Пополнение счёта</a>
-    <a href="#s5">5. Оплата подписки ChatGPT</a>
-    <a href="#s6">6. Кэшбэк 100%: как это работает на самом деле</a>
-    <a href="#s7">7. Комиссии и лимиты</a>
-    <a href="#s8">8. Безопасность и важные оговорки</a>
-    <a href="#s9">9. С чего начать</a>
-  </div>
-
-  <!-- 1 -->
-  <h2 id="s1">1. В чём фишка и что такое Bybit</h2>
-  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <p><b>Bybit</b> — это крупная криптобиржа. Кроме торговли крипты, она выпускает свою <b>карту MasterCard</b>, которой можно платить где угодно: в интернете, в магазинах, через Apple Pay / Google Pay. Карта берёт деньги прямо со счёта твоего аккаунта Bybit.</p>
-  <p>Главная выгода — <b>кэшбэк</b>. За обычные траты возвращается 2–10%, а за подписки на популярные сервисы (ChatGPT, Netflix, Spotify, Claude, Amazon Prime и др.) при активном использовании карты — <b>вплоть до 100%</b>, то есть подписка выходит в ноль. Точные условия честно разберём в разделе 6, чтобы без сюрпризов.</p>
-  <div class="note">Даже без кэшбэка карта Bybit — один из самых стабильных способов оплачивать зарубежные сервисы из России: оформляется онлайн, работает долго, списывает регулярные платежи (для подписок это важно).</div>
-
-  <!-- 2 -->
-  <h2 id="s2">2. Что понадобится</h2>
-  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 135 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <ul class="plain">
-    <li><b>Загранпаспорт РФ</b> — подойдёт для верификации.</li>
-    <li><b>VPN</b> — включённый на устройстве (страна не Россия). Держи его включённым на всех шагах.</li>
-    <li><b>Почта и/или номер телефона не из РФ</b> — российский номер не подойдёт для привязки.</li>
-    <li><b>Немного USDT</b> (криптовалюта) или деньги на пополнение — чтобы было чем платить со счёта.</li>
-    <li><b>Казахстанский адрес</b> (можно взять любой реальный адрес в Казахстане) — вводить латиницей.</li>
-  </ul>
-  <div class="note red">Важно: карта оформляется на <b>Казахстан</b> — для России карта Bybit сейчас недоступна. Поэтому VPN и казахстанские данные обязательны.</div>
-
-  <!-- 3 -->
-  <h2 id="s3">3. Регистрация карты Bybit — по шагам</h2>
-  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <p>Оформить карту несложно — идём строго по порядку. Держи <b>включённый VPN</b> (страна не Россия) на всех шагах.</p>
-
-  <h3>Часть А. Регистрируем аккаунт Bybit</h3>
-
-  <div class="step">
-    <div class="step-n">1</div>
-    <div class="step-body">
-      <h3>Открой Bybit и нажми «Регистрация»</h3>
-      <p>На первом экране две кнопки — <b>«Вход»</b> и <b>«Регистрация»</b>. Нажимаешь оранжевую <b>«Регистрация»</b>.</p>
-      <figure class="illus"><img src="img/reg1-start.jpg" alt="Bybit: экран Вход / Регистрация"></figure>
-      <div class="note green">🎁 <b>Бонус $10 при регистрации.</b> Зарегистрируйся по <a href="https://www.bybitglobal.com/cards/?ref=WPWWBQK&source=applet_invite" target="_blank" rel="noopener" style="color:#1d4ed8;font-weight:700;">моей ссылке</a> — и получишь <b>$10 в подарок</b> на счёт.</div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-n">2</div>
-    <div class="step-body">
-      <h3>Укажи страну и почту</h3>
-      <p>Сверху выбери страну — <b>Казахстан</b>. Ниже впиши <b>почту</b> (или зарегистрируйся через Google), поставь галочку согласия и жми <b>«Зарегистрироваться»</b>. Поле «Реф. код» заполнять не нужно, если пришёл по ссылке выше.</p>
-      <figure class="illus"><img src="img/reg2-email.jpg" alt="Bybit: создание аккаунта — почта, страна, реф-код"></figure>
-      <div class="note">Совет: заведи <b>новую почту Google</b> специально под это — без личных данных и без привязки к России. Создавай её тоже <b>с включённым VPN (Казахстан)</b>. Так меньше лишних вопросов от системы.</div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-n">3</div>
-    <div class="step-body">
-      <h3>Выбери свой уровень</h3>
-      <p>Спросят, знаком ли ты с криптой: <b>«Я только знакомлюсь с криптовалютами»</b> (простая версия Lite) или <b>«Мне уже знаком мир криптовалют»</b> (Pro). Выбирай, что ближе — для оплаты подписок годится любой, новичку проще Lite.</p>
-      <figure class="illus"><img src="img/reg3-experience.jpg" alt="Bybit: выбор Lite или Pro"></figure>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-n">4</div>
-    <div class="step-body">
-      <h3>Пропусти приветствие</h3>
-      <p>Появится экран «Добро пожаловать в Bybit». Жми <b>«Пропустить»</b> в правом верхнем углу — откроется главный экран.</p>
-      <figure class="illus"><img src="img/reg4-welcome.jpg" alt="Bybit: приветствие → Пропустить"></figure>
-    </div>
-  </div>
-
-  <h3>Часть Б. Оформляем карту</h3>
-
-  <div class="step">
-    <div class="step-n">5</div>
-    <div class="step-body">
-      <h3>Оформи карту Bybit</h3>
-      <p>Заходишь в раздел карты и жмёшь <b>«Оформить карту»</b>. Тут же видно условия: кэшбэк 2–10%, мгновенная виртуальная карта, без годовых комиссий.</p>
-      <figure class="illus"><img src="img/card1-promo.jpg" alt="Bybit Card: кнопка Оформить карту"></figure>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-n">6</div>
-    <div class="step-body">
-      <h3>Подтверди личность</h3>
-      <p>Откроется «Заявление на карту». Страна проживания — <b>Казахстан</b>. Видно, какие документы принимаются (паспорт подходит). Жмёшь <b>«Подтвердить»</b>.</p>
-      <figure class="illus"><img src="img/card2-verify.jpg" alt="Bybit: заявление на карту, Казахстан, подтвердить личность"></figure>
-      <div class="note red">Для карты хватает <b>KYC первого уровня</b>. Не проходи уровень выше — иначе на этапе со страной могут быть проблемы.</div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-n">7</div>
-    <div class="step-body">
-      <h3>Выбери документ и пройди верификацию</h3>
-      <p>Выбираешь тип документа и следуешь подсказкам (фото документа + селфи). По исходной инструкции для верификации подходит <b>российский паспорт</b>.</p>
-      <figure class="illus"><img src="img/card3-doctype.jpg" alt="Bybit: выбор типа документа для верификации"></figure>
-    </div>
-  </div>
-
-  <div class="note">Дальше система попросит <b>адрес</b> и небольшую <b>анкету</b> — заполняешь по подсказкам: казахстанский адрес <b>латиницей</b>, спокойные ответы о себе (цель карты, занятость, доход). Для привязки нужны <b>не российские</b> номер/почта.</div>
-
-  <div class="note green">После этого остаётся дождаться одобрения. Официально — до нескольких дней, но <b>большинство заявок одобряют за пару минут</b>. Иногда площадка запрашивает доп. информацию через указанные контакты.</div>
-
-  <!-- 4 -->
-  <h2 id="s4">4. Пополнение счёта</h2>
-  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 135 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <p>У карты Bybit <b>нет отдельного баланса</b> — она берёт деньги со счёта твоего аккаунта. Значит, счёт надо пополнить. Способов много:</p>
-  <ul class="plain">
-    <li><b>P2P-площадка</b> — купить USDT у другого человека (часто удобнее всего).</li>
-    <li><b>Покупка крипты в один клик</b> — прямо на бирже.</li>
-    <li><b>Криптоперевод</b> — если USDT уже есть на другом кошельке.</li>
-  </ul>
-  <p>Для оплаты ChatGPT достаточно закинуть немного <b>USDT</b> — с запасом на стоимость подписки и небольшую комиссию.</p>
-  <figure class="illus"><img src="img/card4-main.jpg" alt="Bybit: экран карты, кнопка Пополнить"></figure>
-
-  <!-- 5 -->
-  <h2 id="s5">5. Оплата подписки ChatGPT</h2>
-  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <p>Карта готова, счёт пополнен. Теперь платим за подписку. VPN держим включённым.</p>
-
-  <div class="step">
-    <div class="step-n">1</div>
-    <div class="step-body">
-      <h3>Найди реквизиты своей карты</h3>
-      <p>У виртуальной карты все данные лежат в <b>личном кабинете Bybit</b> (раздел «Карта»): <b>номер карты</b>, <b>срок действия</b> и <b>CVV</b> (три цифры). Нажми на значок «глаз» на карте, чтобы показать скрытые цифры — их и будем вводить.</p>
-      <figure class="illus"><img src="img/card4-main.jpg" alt="Bybit: виртуальная карта, значок показа реквизитов"></figure>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-n">2</div>
-    <div class="step-body">
-      <h3>Открой оплату в ChatGPT</h3>
-      <p>Заходишь на <b>официальный сайт</b> chatgpt.com под своим аккаунтом → <b>Upgrade / Оформить Plus</b>. Откроется окно оплаты.</p>
-      <div class="note red">Плати <b>только на официальном сайте</b> ChatGPT. Оплата через посредников и агрегаторы не подходит — и кэшбэк на неё не начисляется.</div>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-n">3</div>
-    <div class="step-body">
-      <h3>Впиши данные карты</h3>
-      <p>В форме оплаты вводишь по полям — берёшь всё из реквизитов карты Bybit (шаг 1):</p>
-      <table class="tbl">
-        <tr><th>Поле в ChatGPT</th><th>Что вводить</th></tr>
-        <tr><td>Card number / Номер карты</td><td>16 цифр номера карты Bybit</td></tr>
-        <tr><td>Expiration / Срок (MM/YY)</td><td>месяц и год из реквизитов</td></tr>
-        <tr><td>CVC / CVV</td><td>три цифры с обратной стороны (в кабинете)</td></tr>
-        <tr><td>Name on card / Имя</td><td>имя латиницей, как на аккаунте</td></tr>
-        <tr><td>Country / Страна</td><td>Казахстан (Kazakhstan)</td></tr>
-        <tr><td>Address / Адрес, индекс</td><td>тот же казахстанский адрес латиницей</td></tr>
-      </table>
-      <figure class="illus"><img src="img/pay-form.jpg" alt="ChatGPT: форма ввода данных карты"></figure>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-n">4</div>
-    <div class="step-body">
-      <h3>Подтверди оплату</h3>
-      <p>Жмёшь оплатить. Со счёта Bybit спишется сумма подписки (плюс небольшая комиссия конвертации). Подписка активна — рядом с аккаунтом появится <b>Plus</b>.</p>
-      <div class="note">Списание проходит в валюте сервиса, Bybit конвертирует из USDT по курсу. На карте должно хватать средств и на подписку, и на комиссию — держи небольшой запас.</div>
-    </div>
-  </div>
-
-  <!-- 6 -->
-  <h2 id="s6">6. Кэшбэк 100%: как это работает на самом деле</h2>
-  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <p>Это самая важная часть — читай медленно, объясняю на пальцах. «100% кэшбэк» звучит как «всё бесплатно», но у него есть <b>два ограничителя</b>. Разберёмся, чтобы ты точно понимал, сколько реально вернётся, и не разочаровался.</p>
-
-  <h3>Что такое кэшбэк простыми словами</h3>
-  <p>Кэшбэк — это когда часть потраченных денег <b>возвращается тебе обратно</b>. Заплатил картой Bybit за подписку — часть суммы (а иногда и вся) падает обратно на твой счёт Bybit. Возвращают в <b>USDT</b> — это криптовалюта, привязанная к доллару: 1 USDT ≈ 1 $.</p>
-
-  <h3>Ограничитель №1 — уровень и оборот по карте</h3>
-  <p>У карты есть <b>уровни</b>: Base, Beta, Alpha, Apex, Omega, Infinite. Чем выше уровень — тем больше кэшбэк и тем больше можно вернуть за подписки. Уровень зависит от того, <b>сколько ты тратишь картой за месяц</b> (или от VIP-статуса на бирже). Чтобы включился 100% на подписки, нужен минимум <b>Beta</b>. Вот официальная таблица из приложения:</p>
-  <table class="tbl">
-    <tr><th>Уровень</th><th>Нужен оборот в месяц*</th><th>Кэшбэк на покупки</th></tr>
-    <tr><td>Base</td><td>$0</td><td>2%</td></tr>
-    <tr><td><b>Beta</b></td><td><b>$500</b> (или VIP 1–2)</td><td>2%</td></tr>
-    <tr><td>Alpha</td><td>$3 500 (или VIP 3)</td><td>4%</td></tr>
-    <tr><td><b>Apex</b></td><td><b>$9 500</b> (или VIP 4)</td><td>6%</td></tr>
-    <tr><td>Omega</td><td>$12 500 (или VIP 5)</td><td>8%</td></tr>
-    <tr><td>Infinite</td><td>$25 000</td><td>10%</td></tr>
-  </table>
-  <p style="font-size:14px;color:#777;margin-top:-6px;">* оборот — это сколько ты потратишь картой за месяц; он поднимает уровень на следующий месяц.</p>
-  <figure class="illus"><img src="img/cashback-tiers.jpg" alt="Bybit: официальная таблица уровней и оборотов"></figure>
-  <div class="note red">Главная ловушка: с одной подписки за $20 оборот $500 не набрать. Чтобы держать уровень и возвращать подписки, картой надо <b>платить и за обычные покупки</b>.</div>
-
-  <h3>Ограничитель №2 — месячный потолок</h3>
-  <p>Даже с Tier 2 кэшбэк не бесконечный. У каждого уровня свой <b>потолок — сколько максимум вернут за месяц</b>. И потолок этот <b>общий</b>: и на подписки, и на обычные покупки вместе.</p>
-  <table class="tbl">
-    <tr><th>Уровень</th><th>Потолок кэшбэка в месяц</th></tr>
-    <tr><td>Tier 1 (Base)</td><td>$5</td></tr>
-    <tr><td><b>Tier 2 (Beta)</b> — реально открыть новичку</td><td><b>$50</b></td></tr>
-    <tr><td>Tier 3 (Alpha)</td><td>$150</td></tr>
-    <tr><td>Tier 4 (Apex)</td><td>$250</td></tr>
-    <tr><td>Tier 5 (Omega)</td><td>$400</td></tr>
-    <tr><td>Tier 6 (Infinite)</td><td>$600</td></tr>
-  </table>
-
-  <h3>Считаем на реальных примерах</h3>
-  <table class="tbl">
-    <tr><th>Что покупаешь</th><th>Нужный уровень</th><th>Сколько вернётся</th></tr>
-    <tr><td>ChatGPT Plus — $20</td><td>Beta (потолок $50)</td><td><b>все $20</b> ✅</td></tr>
-    <tr><td>Claude Max — $200</td><td>Beta (потолок $50)</td><td>только <b>$50</b> ❌</td></tr>
-    <tr><td><b>Claude Max — $200</b></td><td><b>Apex</b> (потолок $250)</td><td><b>все $200</b> ✅</td></tr>
-  </table>
-  <div class="note red"><b>Про дорогой Claude Max ($200).</b> Чтобы вернуть все $200 кэшбэком, нужен уровень <b>Apex</b> — а для него надо показать <b>оборот по карте ~$9 500 USDT в месяц</b> (или иметь VIP 4). На стартовом уровне Beta вернётся только $50. А вот <b>ChatGPT Plus ($20)</b> и любая недорогая подписка возвращаются полностью уже на Beta.</div>
-
-  <h3>Что можно оплачивать со 100% кэшбэком</h3>
-  <p>В списке — <b>ChatGPT (OpenAI)</b> и <b>Claude</b>, а также Netflix, Spotify, Amazon Prime, TradingView и другие. Логотипы видно прямо в приложении Bybit:</p>
-  <figure class="illus"><img src="img/cashback-services.jpg" alt="Bybit: 100% кэшбэк за подписки — OpenAI, Claude, Netflix, Spotify"></figure>
-
-  <h3>Ещё важные нюансы — прочитай обязательно</h3>
-  <ul class="plain">
-    <li><b>Только официальный сайт сервиса.</b> Кэшбэк дают, если купил подписку прямо на chatgpt.com, claude.ai и т.д. Через посредников и перекупов — не считается.</li>
-    <li><b>Обычно только месячные подписки.</b> Например, у TradingView годовой план в акцию не входит, только помесячный.</li>
-    <li><b>Потолок общий на месяц.</b> Если выбрал лимит обычными покупками — на подписку кэшбэка уже не хватит.</li>
-    <li><b>Возврат в USDT</b> — не рублями, а криптой на счёт Bybit.</li>
-    <li><b>Список сервисов меняется.</b> Сейчас участвуют ChatGPT, Claude, Netflix, Spotify, Amazon Prime, TradingView и другие — перед покупкой сверься со списком на сайте.</li>
-  </ul>
-
-  <div class="note">Проверить условия у первоисточника: <a href="https://www.bybit.com/en/promo/campaign/100_percent_cashback_subscriptions" target="_blank" rel="noopener" style="color:#1d4ed8;font-weight:600;">акция «100% cashback on subscriptions»</a> и <a href="https://www.bybit.com/en/help-center/article/Introduction-to-Bybit-Card-Rewards" target="_blank" rel="noopener" style="color:#1d4ed8;font-weight:600;">справка Bybit по наградам карты</a>. Bybit меняет условия акций — перед крупной покупкой (тот же Claude Max) глянь потолок своего уровня прямо в приложении.</div>
-
-  <!-- 7 -->
-  <h2 id="s7">7. Комиссии и лимиты</h2>
-  <svg class="underline" width="220" height="10" viewBox="0 0 220 10"><path d="M3 6 C 40 3, 95 8, 135 5 S 195 3, 217 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <p>Обслуживание карты <b>бесплатное</b>, даже если ей долго не пользоваться. Основные комиссии:</p>
-  <table class="tbl">
-    <tr><th>Операция</th><th>Комиссия</th></tr>
-    <tr><td>Обмен фиата</td><td>2%</td></tr>
-    <tr><td>Перевод криптовалюты в фиат</td><td>0,9%</td></tr>
-    <tr><td>Снятие наличных (свыше $100/мес)</td><td>2%</td></tr>
-  </table>
-  <p>Лимиты по тратам: до <b>$1000</b> за операцию, до <b>$5000/день</b>, <b>$25 000/месяц</b>, <b>$150 000/год</b>. Для оплаты подписок этого с огромным запасом.</p>
-  <div class="note">Выпуск <b>виртуальной</b> карты — бесплатно, активируется сразу. Есть и физические карты (для офлайн-оплат и снятия налички в банкомате).</div>
-
-  <!-- 8 -->
-  <h2 id="s8">8. Безопасность и важные оговорки</h2>
-  <svg class="underline" width="240" height="10" viewBox="0 0 240 10"><path d="M3 6 C 44 3, 105 8, 150 5 S 215 3, 237 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <ul class="plain">
-    <li><b>Защити аккаунт Bybit.</b> Сложный уникальный пароль + <b>двухфакторная аутентификация</b> в настройках. Периодически меняй пароль.</li>
-    <li><b>Не держи крупные суммы на бирже.</b> Основные средства — на аппаратном (холодном) кошельке, а на Bybit держи только на повседневные траты.</li>
-    <li><b>Следи за актуальными условиями.</b> Bybit может менять комиссии, лимиты и правила кэшбэка. Проверяй перед крупными действиями.</li>
-  </ul>
-  <div class="note red">Оговорки. Крипта — это риск и ответственность на тебе. Регистрация по документам одной страны из другой может нарушать правила сервисов — делаешь на свой страх и риск. Вся информация актуальна на <b>август 2026</b>; условия Bybit и правил оплаты могут меняться — сверяйся с первоисточником.</div>
-
-  <!-- 9 -->
-  <h2 id="s9">9. С чего начать</h2>
-  <svg class="underline" width="180" height="10" viewBox="0 0 180 10"><path d="M3 6 C 35 3, 80 8, 115 5 S 160 3, 177 6" stroke="#dc2626" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-  <ol class="num">
-    <li>Включи VPN, зарегистрируйся на Bybit, пройди <b>KYC 1 уровня</b>.</li>
-    <li>Оформи виртуальную карту на <b>Казахстан</b> (раздел 3).</li>
-    <li>Закинь немного <b>USDT</b> на счёт.</li>
-    <li>Оплати ChatGPT на официальном сайте данными карты (раздел 5).</li>
-  </ol>
-  <p>Дальше — просто пользуешься. А если гоняешь картой активно, подписки начинают возвращаться кэшбэком.</p>
-
-  <div class="ps">
-    <b>P.S.</b> Один раз оформил карту — и забыл про пляски с оплатой зарубежных сервисов. ChatGPT, Netflix, Spotify — всё платится напрямую, да ещё и с кэшбэком. Полчаса настройки экономят тебе кучу нервов на годы вперёд.
-  </div>
-
-  <div class="footer-mascot">
-    <img class="mascot" src="bye.jpg" width="52" alt="">
-    <span>Оформил карту — открыл себе весь мир сервисов.</span>
-  </div>
-
-</div>
-
-<script>
-  document.querySelectorAll('.illus img').forEach(function (img) {
-    img.addEventListener('error', function () {
-      var fig = img.closest('figure'); if (!fig) return;
-      var ph = document.createElement('div');
-      ph.style.cssText = 'border:2px dashed #cdc6b6;border-radius:8px;background:#f7f3ea;padding:34px 20px;color:#a99f88;font-size:14px;font-weight:600';
-      ph.textContent = '📷 ' + (img.getAttribute('alt') || 'скриншот');
-      img.replaceWith(ph);
-    });
-  });
-</script>
 </body>
 </html>
