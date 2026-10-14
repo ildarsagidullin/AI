@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 VOICE=$(python3 -c "import json;print(json.load(open('timing.json'))['voice'])")
-DUR=$(python3 -c "import json;print(json.load(open('timing.json'))['anchors'][-1][0])")
+DUR=$(python3 -c "import json;c=json.load(open('timing.json'));print(c['end'] if 'end' in c else c['anchors'][-1][0])")
 "${PYTHON:-python3}" -I sound.py   # нужен numpy
 ffmpeg -v error -y -i silent.mp4 -i "$VOICE" -i sfx.wav -i music.wav -filter_complex "
 [1:a]aresample=48000,aformat=channel_layouts=stereo,asplit=2[v1][vsc];
