@@ -95,41 +95,43 @@ def put(sig, at, pan=0.0, gain=1.0):
 import json
 CFG = json.load(open('timing.json'))
 C = CFG['cues']
-L = [b - a for a, b in zip(C, C[1:] + [CFG['end']])]
-# тип входа сцены: i — удар, w — свист, h — мягкий удар
-ENTRY = 'iwwiiiwwiiwiwiihiwwwi'
-for k, t in enumerate(C):
-    e = ENTRY[k]
-    if e == 'i': put(impact(.9), t + 0.08)
-    elif e == 'h': put(impact(1.1, 120), t)
-    else: put(whoosh(.35, True, .5), t - 0.05, (k % 2) * .6 - .3)
-    if k: put(whoosh(.25, False, .45), t - 0.22, .3 - (k % 2) * .6)   # вылет прошлой сцены
-# особые моменты внутри сцен (смещения как в index.html)
-put(impact(.6, 150, 50, .4), C[0] + .24); put(impact(.7, 100), C[0] + .52)
-put(laser(.5, .2), C[1] + .2)
-put(impact(.6, 140), C[2] + L[2] * .62)                               # CLAUDE
-put(impact(.6, 150), C[3] + L[3] * .2); put(impact(1.0), C[3] + L[3] * .65)  # ПО AI
-put(impact(.9, 120), C[4] + .12)                                      # 13
-for k in range(7): put(tick(.3), C[5] + .1 + L[5] * .5 * ((k + 1) / 7) ** .5)  # счётчик
-put(impact(1.0, 130), C[5] + .1 + L[5] * .5)                          # 20
-put(zip_(), C[6] + L[6] * .5); put(impact(.5, 180, 60, .4), C[6] + L[6] * .5 + .3)
-put(impact(.7, 140), C[7] + L[7] * .62)
-for k in range(3): put(whoosh(.2, True, .35), C[8] + L[8] * .45 + k * .1)
-for k in range(7): put(tick(.25), C[9] + .25 + k * .04)
-put(whoosh(.3, True, .4), C[10] + .1); put(whoosh(.3, True, .4), C[10] + .1 + L[10] * .5)
-put(impact(.8), C[11] + .25)
-for k in range(6): put(tick(.3), C[11] + L[11] * .55 + k * .07)
-for k in range(3): put(whoosh(.25, True, .4), C[12] + .25 + k * L[12] * .28)
-put(impact(.6, 140), C[13] + L[13] * .5)
-put(riser(.6, .35), C[15] + L[15] - .6)
-put(impact(1.1, 90, 30, 1.2), C[16] + .3)                             # 0 ₽
-for k in range(12): put(tick(.22), C[17] + .55 + k * L[17] * .5 / 12)
-for k in range(22): put(tick(.22), C[18] + .6 + k * L[18] * .45 / 22)
-put(whoosh(.4, True, .4), C[19] + L[19] * .62); put(impact(.7, 140), C[19] + L[19] * .72)
-put(impact(1.0, 80, 30, 2.5), C[20] + .45)
+
+
+def wind(pre=0.45, post=0.4, amp=0.6, pan_from=-0.7, pan_to=0.7):
+    """Порыв ветра: шум с плавающим полосовым фильтром, нарастает к склейке и тает после.
+    Возвращает стерео (N, 2), пик громкости — в точке pre."""
+    n = int(SR * (pre + post)); x = rng.standard_normal(n)
+    k = int(SR * pre)
+    a = np.concatenate([np.linspace(0.015, 0.22, k), np.linspace(0.22, 0.03, n - k)])
+    lo = lp_sweep(x, 0.004, 0.02)            # медленная составляющая — «тело» ветра
+    y = np.empty(n); s1 = s2 = 0.0
+    for i, v in enumerate(x):                # двухполюсный ФНЧ с плавающей частотой
+        s1 += a[i] * (v - s1); s2 += a[i] * (s1 - s2); y[i] = s2
+    y = y - lp(y, 0.01) + lo * 0.4           # убираем гул, добавляем мягкий низ
+    env_ = np.concatenate([np.linspace(0, 1, k) ** 2.2, np.linspace(1, 0, n - k) ** 1.6])
+    flutter = 1 + 0.15 * np.sin(2 * np.pi * 7 * np.arange(n) / SR)
+    y = y * env_ * flutter
+    y = y / (np.abs(y).max() + 1e-9) * amp
+    pan = np.linspace(pan_from, pan_to, n)
+    return np.stack([y * (1 - np.clip(pan, 0, 1)), y * (1 + np.clip(pan, -1, 0))], 1)
+
+
+def put_st(sig, at):
+    i = int(at * SR); j = min(N, i + len(sig))
+    if i < 0: sig, i = sig[-i:], 0
+    sfx[i:j] += sig[:j - i]
+
+
+# только акцентные переходы — ветер с пиком ровно на склейке
+ACCENTS = CFG.get('accents', [2, 4, 8, 9, 11, 13, 16, 19, 20])
+for n_, k in enumerate(ACCENTS):
+    big = k in (16, 20)
+    d = 1 if n_ % 2 else -1
+    pre = 0.55 if big else 0.4
+    put_st(wind(pre, 0.6 if big else 0.4, 0.85 if big else 0.6, -0.7 * d, 0.7 * d), C[k] - pre)
 
 # ---------- музыка: 120 BPM, тёмный бит ----------
-BPM = 120; beat = 60 / BPM
+BPM = 128; beat = 60 / BPM
 mus = np.zeros((N, 2))
 
 
@@ -159,7 +161,7 @@ def snare():
 
 # тональность: ре минор, бас ре-ре-сиb-до
 roots = [36.71, 36.71, 29.14, 32.70]
-silent = (C[16] - 0.55, C[16])  # провал перед «Всё бесплатно»
+silent = (C[16] - 0.45, C[16])  # провал перед «Всё бесплатно»
 END = C[20] + 2.0
 b = 0
 while b * beat < END:

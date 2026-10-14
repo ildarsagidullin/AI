@@ -67,7 +67,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
   <div class="pfd" style="font-size:90px;margin-top:40px">те, кто сделал</div>
   <div style="display:flex;align-items:center;gap:30px;margin-top:30px">
     <svg class="star" width="130" height="130" viewBox="-50 -50 100 100"></svg>
-    <div class="unb" style="font-size:150px;color:var(--red)">CLAUDE</div>
+    <div class="unb" style="font-size:125px;color:var(--red)">CLAUDE</div>
   </div>
 </div></div>
 
@@ -82,14 +82,14 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
 <!-- 4 На старте было 13 курсов -->
 <div class="sc blk" id="s4"><div class="in">
   <div class="lbl" style="opacity:.7">НА СТАРТЕ</div>
-  <div class="unb glow" id="s4n" style="font-size:520px;line-height:1">13</div>
+  <div class="unb glow" id="s4n" style="font-size:430px;line-height:1">13</div>
   <div class="osw" style="font-size:120px">КУРСОВ</div>
 </div></div>
 
 <!-- 5 Сейчас уже под 20 -->
 <div class="sc blk" id="s5"><div class="in">
   <div class="lbl" style="opacity:.7">СЕЙЧАС УЖЕ ПОД</div>
-  <div class="unb rglow" id="s5n" style="font-size:520px;line-height:1">13</div>
+  <div class="unb rglow" id="s5n" style="font-size:430px;line-height:1">13</div>
   <div class="osw" style="font-size:120px">КУРСОВ</div>
 </div></div>
 
@@ -113,7 +113,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
   <div class="osw" style="font-size:72px;margin-top:40px;letter-spacing:.06em">ОТ ТЕХ, КТО СОБИРАЕТ</div>
   <div style="display:flex;align-items:center;gap:30px;margin-top:30px">
     <svg class="star" width="120" height="120" viewBox="-50 -50 100 100"></svg>
-    <div class="unb rglow" style="font-size:140px">CLAUDE</div>
+    <div class="unb rglow" style="font-size:120px">CLAUDE</div>
   </div>
 </div></div>
 
@@ -276,16 +276,16 @@ const B={}; // сцены: B[i](t, L)
 B[0]=(t,L)=>{const k=$('s0','.in > div');slam(k+':nth-child(1)',t+.02);slam(k+':nth-child(2)',t+.22);shake('#s0 .in',t+.5,20);fly(k+':nth-child(3)',t+.45,0,500);};
 B[1]=(t,L)=>{tl.fromTo('#s1play',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.5,ease:'back.out(2)',immediateRender:false},t);
   fly($('s1','.osw'),t+.1,-900);slam($('s1','.unb'),t+.3,2.5);tl.fromTo('#s1bar',{scaleX:0},{scaleX:1,duration:L*.9,ease:'power1.inOut',immediateRender:false},t+.2);};
-B[2]=(t,L)=>{drop('#s2a .ch',t,-1,.04);fly($('s2','.pfd'),t+L*.43,0,200);
-  tl.fromTo($('s2','.star'),{scale:0,rotation:-180},{scale:1,rotation:0,duration:.6,ease:'back.out(1.8)',immediateRender:false},t+L*.62);
-  slam($('s2','.in > div:last-child .unb'),t+L*.62,2);tl.to($('s2','.star'),{rotation:'+=90',duration:L*.38,ease:'none'},t+L*.62+.6);};
+B[2]=(t,L)=>{drop('#s2a .ch',t,-1,.04);fly($('s2','.pfd'),t+L*.4,0,200);
+  tl.fromTo($('s2','.star'),{scale:0,rotation:-180},{scale:1,rotation:0,duration:.6,ease:'back.out(1.8)',immediateRender:false},t+L*.7);
+  slam($('s2','.in > div:last-child .unb'),t+L*.7,2);tl.to($('s2','.star'),{rotation:'+=90',duration:L*.3,ease:'none'},t+L*.7+.6);};
 B[3]=(t,L)=>{flash(t,.5);fly($('s3','.osw'),t,0,-300);slam($('s3','.unb:nth-child(2)'),t+L*.2);drop($('s3','.split .ch'),t+L*.4,1);
   slam($('s3','.unb:last-child'),t+L*.65,3.5);shake('#s3 .in',t+L*.65+.3,22);};
 B[4]=(t,L)=>{fly($('s4','.lbl'),t,0,-150);slam('#s4n',t+.1,4);shake('#s4n',t+.4,18);fly($('s4','.osw'),t+.3,0,300);};
 B[5]=(t,L)=>{const o={v:13},el=document.getElementById('s5n');
   tl.set(o,{v:13,onUpdate(){el.textContent=Math.round(o.v)}},t);
-  tl.fromTo(o,{v:13},{v:20,duration:L*.5,ease:'power2.in',immediateRender:false,onUpdate(){el.textContent=Math.round(o.v)}},t+.1);
-  fly($('s5','.lbl'),t,0,-150);tl.fromTo('#s5n',{scale:1},{scale:1.15,duration:.12,yoyo:true,repeat:1,immediateRender:false},t+.1+L*.5);shake('#s5n',t+.1+L*.5,24,7);flash(t+.1+L*.5,.35);};
+  tl.fromTo(o,{v:13},{v:20,duration:L*.6,ease:'power2.in',immediateRender:false,onUpdate(){el.textContent=Math.round(o.v)}},t+.05);
+  fly($('s5','.lbl'),t,0,-150);tl.fromTo('#s5n',{scale:1},{scale:1.15,duration:.12,yoyo:true,repeat:1,immediateRender:false},t+.05+L*.6);shake('#s5n',t+.05+L*.6,24,7);flash(t+.05+L*.6,.35);};
 B[6]=(t,L)=>{tl.fromTo($('s6','.strip'),{x:i=>i?-800:800},{x:0,duration:.6,immediateRender:false},t);
   fly($('s6','.osw:first-child'),t+.05,-900);slam($('s6','.unb'),t+.25,2.5);
   tl.fromTo($('s6','.strike'),{scaleX:0},{scaleX:1,duration:.35,ease:'expo.inOut',immediateRender:false},t+L*.5);shake($('s6','.unb'),t+L*.5+.3,14);
@@ -301,7 +301,7 @@ B[11]=(t,L)=>{slam($('s11','.num'),t,4);fly($('s11','.osw:nth-child(2)'),t+.1,90
   fly($('s11','.osw:last-child'),t+L*.45,-900);type($('s11','.split .ch'),t+L*.55,.4);};
 B[12]=(t,L)=>{fly($('s12','.lbl'),t,0,-150);tl.fromTo($('s12','.deal'),{y:900,opacity:0},{y:0,opacity:1,stagger:L*.28,duration:.4,ease:'back.out(1.3)',immediateRender:false},t+.25);
   tl.to($('s12','.grid'),{backgroundPosition:'0 -200px',duration:L,ease:'none'},t);};
-B[13]=(t,L)=>{slam($('s13','.num'),t,4);fly($('s13','.unb:nth-child(2)'),t+.12,-900);fly($('s13','.pfd'),t+L*.4,0,150);fly($('s13','.unb:last-child'),t+L*.5,900);};
+B[13]=(t,L)=>{slam($('s13','.num'),t,4);fly($('s13','.unb:nth-child(2)'),t+.12,-900);fly($('s13','.pfd'),t+L*.3,0,150);fly($('s13','.unb:last-child'),t+L*.38,900);};
 B[14]=(t,L)=>{flash(t,.5);fly($('s14','.osw'),t,0,-300);drop($('s14','.split .ch'),t+.1,1,.05);shake('#s14 .in',t+.55,22);};
 B[15]=(t,L)=>{tl.fromTo('#s15cap',{y:-600,rotation:-30},{y:0,rotation:0,duration:.6,ease:'back.out(1.6)',immediateRender:false},t);
   fly($('s15','.osw:nth-of-type(1)'),t+.15,-900);tl.fromTo($('s15','.pfd'),{opacity:0,letterSpacing:'.5em'},{opacity:1,letterSpacing:'0em',duration:.9,ease:'power2.out',immediateRender:false},t+L*.25);
@@ -309,9 +309,9 @@ B[15]=(t,L)=>{tl.fromTo('#s15cap',{y:-600,rotation:-30},{y:0,rotation:0,duration
 B[16]=(t,L)=>{flash(t,1);fly($('s16','.osw'),t,0,-300);slam($('s16','.unb:nth-child(2)'),t+.1);slam('#s16z',t+.3,5);shake('#s16 .in',t+.62,26,8);};
 B[17]=(t,L)=>{fly($('s17','.osw'),t,-900);slam($('s17','.unb'),t+.12,2.5);tl.fromTo($('s17','.url'),{scaleX:0},{scaleX:1,duration:.4,ease:'expo.out',immediateRender:false},t+.3);type('#s17t .ch',t+.55,L*.5);
   tl.to($('s17','.caret'),{opacity:0,repeat:Math.floor(L/.25),yoyo:true,duration:.12,ease:'none'},t+.3);};
-B[18]=(t,L)=>{fly($('s18','.lbl'),t,0,-150);tl.fromTo($('s18','.url'),{scale:0},{scale:1,duration:.45,ease:'back.out(1.6)',immediateRender:false},t+.05);type('#s18t .ch',t+.6,L*.45);
+B[18]=(t,L)=>{fly($('s18','.lbl'),t,0,-150);tl.fromTo($('s18','.url'),{scale:0},{scale:1,duration:.45,ease:'back.out(1.6)',immediateRender:false},t+.05);type('#s18t .ch',t+.35,L*.55);
   tl.to($('s18','.caret'),{opacity:0,repeat:Math.floor(L/.25),yoyo:true,duration:.12,ease:'none'},t+.3);
-  fly($('s18','.osw'),t+L*.7,0,200);tl.fromTo('#s18arr',{y:-100,opacity:0},{y:0,opacity:1,duration:.4,immediateRender:false},t+L*.72);tl.to('#s18arr',{y:30,repeat:3,yoyo:true,duration:.25,ease:'sine.inOut'},t+L*.72+.4);};
+  fly($('s18','.osw'),t+L*.74,0,200);tl.fromTo('#s18arr',{y:-100,opacity:0},{y:0,opacity:1,duration:.4,immediateRender:false},t+L*.76);tl.to('#s18arr',{y:30,repeat:3,yoyo:true,duration:.2,ease:'sine.inOut'},t+L*.76+.4);};
 B[19]=(t,L)=>{fly($('s19','.osw:first-child'),t,-900);slam($('s19','.unb:nth-child(2)'),t+.15);fly($('s19','.osw:nth-child(3)'),t+.35,900);
   tl.fromTo('#s19plane',{x:-900,y:300,rotation:-30},{x:0,y:0,rotation:0,duration:.6,ease:'power3.out',immediateRender:false},t+L*.62);slam($('s19','.in > div:last-child .unb'),t+L*.72,2);};
 B[20]=(t,L)=>{flash(t,.6);tl.fromTo('#s20arr',{y:400,opacity:0},{y:0,opacity:1,duration:.5,ease:'back.out(2)',immediateRender:false},t);
@@ -323,9 +323,9 @@ for(let i=0;i<n;i++){
   const t=CUES[i],next=i+1<n?CUES[i+1]:END,L=next-t,id='s'+i;
   tl.set('#'+id,{visibility:'visible'},t);
   B[i](t,L);
-  tl.fromTo(`#${id} .in`,{scale:1},{scale:1.04,duration:L,ease:'none',immediateRender:false},t);
+  tl.fromTo(`#${id} .in`,{scale:1},{scale:1.06,duration:L,ease:'none',immediateRender:false},t);
   if(document.querySelector(`#${id} .p`))tl.to(`#${id} .p`,{y:-200,duration:L,ease:'none'},t);
-  if(i<n-1){tl.to(`#${id} .in`,{...EXITS[i%EXITS.length](),duration:.2,ease:'power3.in'},next-.2);tl.set('#'+id,{visibility:'hidden'},next);}
+  if(i<n-1){tl.to(`#${id} .in`,{...EXITS[i%EXITS.length](),duration:.15,ease:'power3.in'},next-.15);tl.set('#'+id,{visibility:'hidden'},next);}
   else tl.to(`#${id} .in`,{opacity:0,duration:.8,ease:'power1.in'},END-.8);
 }
 tl.set({},{},END);
