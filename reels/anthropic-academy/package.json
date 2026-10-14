@@ -1,0 +1,11 @@
+{
+  "name": "anthropic-academy-reel",
+  "private": true,
+  "scripts": {
+    "snap": "node render.js --snap 0.5,2,4,6,8,10,12,14,16,18",
+    "render": "node render.js && bash mix.sh"
+  },
+  "dependencies": {
+    "gsap": "3.12.5"
+  }
+}

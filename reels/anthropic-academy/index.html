@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:Osw;src:url(fonts/oswald.ttf)}
+@font-face{font-family:Unb;src:url(fonts/unbounded.ttf)}
+@font-face{font-family:Pfd;src:url(fonts/playfair.ttf);font-style:italic}
+:root{--red:#ff1f3d;--ink:#0a0a0c;--paper:#f2f0ec}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#000}
+.sc{position:absolute;inset:0;visibility:hidden;overflow:hidden}
+.in{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+.red{background:var(--red);color:var(--ink)}
+.blk{background:radial-gradient(ellipse at 50% 50%,#2a0508 0%,#050506 60%);color:#fff}
+.wht{background:var(--paper);color:var(--ink)}
+.unb,.osw{white-space:nowrap}
+.unb{font-family:Unb;font-weight:900;letter-spacing:-.02em;line-height:.95}
+.osw{font-family:Osw;font-weight:700;text-transform:uppercase;line-height:.9}
+.pfd{font-family:Pfd;font-style:italic;font-weight:500}
+.ch{display:inline-block}
+.glow{text-shadow:0 0 30px rgba(255,255,255,.55),0 0 90px rgba(255,31,61,.6)}
+.rglow{color:var(--red);text-shadow:0 0 50px rgba(255,31,61,.8)}
+.lbl{font-family:Osw;font-weight:400;font-size:46px;letter-spacing:.35em;text-transform:uppercase}
+.dot{position:absolute;border-radius:50%;background:var(--red);box-shadow:0 0 40px 12px rgba(255,31,61,.7)}
+.line{height:8px;background:var(--red);box-shadow:0 0 20px rgba(255,31,61,.9);transform-origin:left center}
+.p{position:absolute;border-radius:50%;background:var(--red);filter:blur(2px)}
+.card{width:880px;padding:46px 56px;border-radius:28px;text-align:left;margin:16px 0}
+.card.dark{background:#141418;border:2px solid #ffffff1c;color:#fff}
+.card.redc{background:var(--red);color:var(--ink)}
+.card .k{font-family:Osw;font-weight:400;font-size:34px;letter-spacing:.3em;opacity:.6}
+.card .v{font-family:Unb;font-weight:900;font-size:76px;margin-top:10px;white-space:nowrap}
+.num{font-family:Unb;font-weight:900;font-size:120px;color:var(--red);line-height:1}
+.grid{position:absolute;inset:0;background-image:radial-gradient(#ffffff22 2px,transparent 2px);background-size:40px 40px}
+.url{width:940px;padding:40px 48px;border-radius:999px;background:#fff;color:var(--ink);font-family:Osw;font-weight:700;font-size:64px;text-align:left;display:flex;align-items:center;gap:26px;box-shadow:0 0 80px rgba(255,31,61,.45)}
+.caret{display:inline-block;width:6px;height:64px;background:var(--red);vertical-align:middle}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:50}
+#grain{position:absolute;inset:-50%;z-index:60;pointer-events:none;opacity:.07;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+#vig{position:absolute;inset:0;z-index:55;pointer-events:none;box-shadow:inset 0 0 260px rgba(0,0,0,.5)}
+.strip{position:absolute;left:-100px;width:1280px;height:150px;background:#0a0a0c;display:flex;gap:18px;padding:18px}
+.strip i{flex:0 0 190px;border-radius:12px;background:linear-gradient(135deg,#333,#111)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- 0 Лучшее вложение в себя -->
+<div class="sc red" id="s0"><div class="in">
+  <div class="unb" style="font-size:150px">ЛУЧШЕЕ</div>
+  <div class="unb" style="font-size:150px">ВЛОЖЕНИЕ</div>
+  <div class="osw" style="font-size:150px;margin-top:20px;color:#fff">В СЕБЯ</div>
+</div></div>
+
+<!-- 1 посмотреть это видео -->
+<div class="sc blk" id="s1"><div class="in">
+  <svg id="s1play" width="260" height="260" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#ff1f3d" stroke-width="3"/><path d="M40 30 L72 50 L40 70Z" fill="#ff1f3d"/></svg>
+  <div class="osw" style="font-size:70px;margin-top:50px;letter-spacing:.1em;opacity:.8">ПОСМОТРЕТЬ</div>
+  <div class="unb glow" style="font-size:170px;margin-top:10px">ЭТО ВИДЕО</div>
+  <div style="width:820px;height:10px;background:#ffffff22;border-radius:9px;margin-top:60px"><div id="s1bar" class="line" style="height:10px;border-radius:9px;width:100%"></div></div>
+</div></div>
+
+<!-- 2 Anthropic — те, кто сделал Claude -->
+<div class="sc wht" id="s2"><div class="in">
+  <div class="unb split" id="s2a" style="font-size:140px">ANTHROPIC</div>
+  <div class="pfd" style="font-size:90px;margin-top:40px">те, кто сделал</div>
+  <div style="display:flex;align-items:center;gap:30px;margin-top:30px">
+    <svg class="star" width="130" height="130" viewBox="-50 -50 100 100"></svg>
+    <div class="unb" style="font-size:150px;color:var(--red)">CLAUDE</div>
+  </div>
+</div></div>
+
+<!-- 3 открыли бесплатную академию по AI -->
+<div class="sc red" id="s3"><div class="in">
+  <div class="osw" style="font-size:80px;letter-spacing:.12em;color:#fff">ОТКРЫЛИ</div>
+  <div class="unb" style="font-size:140px;margin-top:20px">БЕСПЛАТНУЮ</div>
+  <div class="unb split" style="font-size:150px">АКАДЕМИЮ</div>
+  <div class="unb" style="font-size:240px;margin-top:20px;color:#fff">ПО AI</div>
+</div></div>
+
+<!-- 4 На старте было 13 курсов -->
+<div class="sc blk" id="s4"><div class="in">
+  <div class="lbl" style="opacity:.7">НА СТАРТЕ</div>
+  <div class="unb glow" id="s4n" style="font-size:520px;line-height:1">13</div>
+  <div class="osw" style="font-size:120px">КУРСОВ</div>
+</div></div>
+
+<!-- 5 Сейчас уже под 20 -->
+<div class="sc blk" id="s5"><div class="in">
+  <div class="lbl" style="opacity:.7">СЕЙЧАС УЖЕ ПОД</div>
+  <div class="unb rglow" id="s5n" style="font-size:520px;line-height:1">13</div>
+  <div class="osw" style="font-size:120px">КУРСОВ</div>
+</div></div>
+
+<!-- 6 И это не нарезка роликов с YouTube -->
+<div class="sc wht" id="s6">
+  <div class="strip" style="top:330px;transform:rotate(-6deg)"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="strip" style="top:1440px;transform:rotate(-6deg)"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="in">
+  <div class="osw" style="font-size:110px">ЭТО НЕ</div>
+  <div style="position:relative">
+    <div class="unb" style="font-size:150px">НАРЕЗКА</div>
+    <div class="line strike" style="position:absolute;left:-30px;right:-30px;top:45%;height:22px"></div>
+  </div>
+  <div class="osw" style="font-size:110px;margin-top:20px">РОЛИКОВ С YOUTUBE</div>
+</div></div>
+
+<!-- 7 А обучение от тех, кто собирает Claude -->
+<div class="sc blk" id="s7"><div class="grid"></div><div class="in">
+  <div class="pfd" style="font-size:100px;opacity:.85">а</div>
+  <div class="unb glow split" style="font-size:150px">ОБУЧЕНИЕ</div>
+  <div class="osw" style="font-size:72px;margin-top:40px;letter-spacing:.06em">ОТ ТЕХ, КТО СОБИРАЕТ</div>
+  <div style="display:flex;align-items:center;gap:30px;margin-top:30px">
+    <svg class="star" width="120" height="120" viewBox="-50 -50 100 100"></svg>
+    <div class="unb rglow" style="font-size:140px">CLAUDE</div>
+  </div>
+</div></div>
+
+<!-- 8 Сейчас разложу, что проходить -->
+<div class="sc red" id="s8"><div class="in">
+  <div class="osw" style="font-size:90px;color:#fff;letter-spacing:.08em">РАЗЛОЖУ,</div>
+  <div class="unb" style="font-size:170px;margin-top:20px">ЧТО</div>
+  <div class="unb" style="font-size:150px">ПРОХОДИТЬ</div>
+  <div style="display:flex;gap:30px;margin-top:70px">
+    <div class="deal card dark" style="width:200px;padding:30px;text-align:center"><div class="num" style="font-size:90px">01</div></div>
+    <div class="deal card dark" style="width:200px;padding:30px;text-align:center"><div class="num" style="font-size:90px">02</div></div>
+    <div class="deal card dark" style="width:200px;padding:30px;text-align:center"><div class="num" style="font-size:90px">03</div></div>
+  </div>
+</div></div>
+
+<!-- 9 Если ты совсем новичок, Claude в глаза не видел -->
+<div class="sc wht" id="s9"><div class="in">
+  <div class="num" style="font-size:200px">01</div>
+  <div class="osw" style="font-size:80px;margin-top:20px;letter-spacing:.06em">ЕСЛИ ТЫ СОВСЕМ</div>
+  <div class="unb split" style="font-size:170px">НОВИЧОК</div>
+  <div class="pfd" style="font-size:80px;margin-top:40px;opacity:.75">и Claude в глаза не видел</div>
+</div></div>
+
+<!-- 10 начни с AI Fluency и Claude 101 -->
+<div class="sc blk" id="s10"><div class="in">
+  <div class="lbl" style="opacity:.7;margin-bottom:40px">НАЧНИ С</div>
+  <div class="card redc deal"><div class="k">КУРС</div><div class="v">AI FLUENCY</div></div>
+  <div class="card dark deal"><div class="k">КУРС</div><div class="v">CLAUDE 101</div></div>
+</div></div>
+
+<!-- 11 Работаешь в IT или пишешь код -->
+<div class="sc wht" id="s11"><div class="in">
+  <div class="num" style="font-size:200px">02</div>
+  <div class="osw" style="font-size:90px;margin-top:20px">РАБОТАЕШЬ В</div>
+  <div class="unb" style="font-size:300px">IT</div>
+  <div class="osw" style="font-size:90px">ИЛИ ПИШЕШЬ <span style="color:var(--red)" class="split">&lt;/КОД&gt;</span></div>
+</div></div>
+
+<!-- 12 тебе в Claude API, MCP и Claude Code -->
+<div class="sc blk" id="s12"><div class="grid"></div><div class="in">
+  <div class="lbl" style="opacity:.7;margin-bottom:40px">ТЕБЕ В</div>
+  <div class="card dark deal"><div class="k">01</div><div class="v">CLAUDE API</div></div>
+  <div class="card dark deal"><div class="k">02</div><div class="v">MCP</div></div>
+  <div class="card redc deal"><div class="k">03</div><div class="v">CLAUDE CODE</div></div>
+</div></div>
+
+<!-- 13 Студент или преподаватель -->
+<div class="sc wht" id="s13"><div class="in">
+  <div class="num" style="font-size:200px">03</div>
+  <div class="unb" style="font-size:160px;margin-top:20px">СТУДЕНТ</div>
+  <div class="pfd" style="font-size:90px;margin:20px 0">или</div>
+  <div class="unb" style="font-size:120px">ПРЕПОДАВАТЕЛЬ</div>
+</div></div>
+
+<!-- 14 бери AI Fluency -->
+<div class="sc red" id="s14"><div class="in">
+  <div class="osw" style="font-size:100px;color:#fff;letter-spacing:.12em">БЕРИ</div>
+  <div class="unb split" style="font-size:180px;margin-top:20px">AI</div>
+  <div class="unb split" style="font-size:150px">FLUENCY</div>
+</div></div>
+
+<!-- 15 собрали вместе с профессорами под академическую среду -->
+<div class="sc blk" id="s15"><div class="in">
+  <svg id="s15cap" width="300" height="200" viewBox="0 0 120 80"><path d="M60 8 L116 30 L60 52 L4 30Z" fill="#ff1f3d"/><path d="M28 40 V60 Q60 78 92 60 V40 L60 53Z" fill="#ff1f3d" opacity=".75"/><path d="M108 33 V58" stroke="#ff1f3d" stroke-width="3"/></svg>
+  <div class="osw" style="font-size:72px;margin-top:40px;letter-spacing:.06em">СОБРАЛИ ВМЕСТЕ</div>
+  <div class="pfd" style="font-size:130px;margin-top:10px">с профессорами</div>
+  <div class="osw" style="font-size:72px;margin-top:40px;color:var(--red);letter-spacing:.06em">ПОД АКАДЕМИЧЕСКУЮ СРЕДУ</div>
+</div></div>
+
+<!-- 16 Всё бесплатно -->
+<div class="sc red" id="s16"><div class="in">
+  <div class="osw" style="font-size:110px;color:#fff">ВСЁ</div>
+  <div class="unb" style="font-size:150px">БЕСПЛАТНО</div>
+  <div class="unb" id="s16z" style="font-size:330px;color:#fff;margin-top:20px">0 ₽</div>
+</div></div>
+
+<!-- 17 нужна только почта -->
+<div class="sc wht" id="s17"><div class="in">
+  <div class="osw" style="font-size:90px">НУЖНА ТОЛЬКО</div>
+  <div class="unb" style="font-size:180px;margin-top:10px">ПОЧТА</div>
+  <div class="url" style="margin-top:70px;background:#0a0a0c;color:#fff;box-shadow:none"><span style="color:var(--red);font-size:80px">@</span><span class="split" id="s17t">you@mail.com</span><span class="caret"></span></div>
+</div></div>
+
+<!-- 18 Сайт — anthropic.skilljar.com, оставлю в описании -->
+<div class="sc blk" id="s18"><div class="in">
+  <div class="lbl" style="opacity:.7;margin-bottom:50px">САЙТ</div>
+  <div class="url"><svg width="56" height="56" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="#ff1f3d" stroke-width="2.4"/><path d="M2 12h20M12 2c3 3 3 17 0 20M12 2c-3 3-3 17 0 20" fill="none" stroke="#ff1f3d" stroke-width="1.6"/></svg><span class="split" id="s18t">anthropic.skilljar.com</span><span class="caret"></span></div>
+  <div class="osw" style="font-size:80px;margin-top:90px">ССЫЛКА В ОПИСАНИИ</div>
+  <svg id="s18arr" width="120" height="160" viewBox="0 0 60 80" style="margin-top:30px"><path d="M30 4 V70 M8 48 L30 72 L52 48" fill="none" stroke="#ff1f3d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div></div>
+
+<!-- 19 Мои конспекты — в Телеграме -->
+<div class="sc wht" id="s19"><div class="in">
+  <div class="osw" style="font-size:80px;letter-spacing:.06em">А МОИ</div>
+  <div class="unb" style="font-size:140px">КОНСПЕКТЫ</div>
+  <div class="osw" style="font-size:64px;margin-top:20px;opacity:.6">ПО ОСНОВНЫМ КУРСАМ</div>
+  <div style="display:flex;align-items:center;gap:30px;margin-top:70px">
+    <svg id="s19plane" width="170" height="170" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#ff1f3d"/><path d="M22 49 L76 27 L67 74 L50 62 L42 72 L41 58 L68 35 L36 55Z" fill="#fff"/></svg>
+    <div class="unb" style="font-size:110px;color:var(--red)">TELEGRAM</div>
+  </div>
+</div></div>
+
+<!-- 20 Ссылка — в шапке профиля -->
+<div class="sc blk" id="s20"><div class="in">
+  <svg id="s20arr" width="160" height="220" viewBox="0 0 60 80"><path d="M30 76 V10 M8 32 L30 8 L52 32" fill="none" stroke="#ff1f3d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="osw" style="font-size:90px;margin-top:50px;letter-spacing:.08em">ССЫЛКА —</div>
+  <div class="unb glow" style="font-size:160px;margin-top:20px">В ШАПКЕ</div>
+  <div class="unb rglow" style="font-size:150px">ПРОФИЛЯ</div>
+</div></div>
+
+<div id="flash"></div>
+<div id="vig"></div>
+<div id="grain"></div>
+</div>
+
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+// звезда Claude
+document.querySelectorAll('svg.star').forEach(s=>{
+  s.innerHTML='<g fill="#ff1f3d">'+[0,45,90,135,180,225,270,315].map(a=>`<rect x="-4" y="-46" width="8" height="40" rx="4" transform="rotate(${a})"/>`).join('')+'</g>';
+});
+// автоподгонка ширины
+document.querySelectorAll('.unb,.osw').forEach(el=>{
+  let fs=parseFloat(getComputedStyle(el).fontSize);const d=el.style.display;el.style.display='inline-block';
+  while(el.scrollWidth>960&&fs>20){fs-=4;el.style.fontSize=fs+'px';}
+  el.style.display=d;
+});
+document.querySelectorAll('.split').forEach(el=>{
+  el.innerHTML=[...el.textContent].map(c=>`<span class="ch">${c===' '?'&nbsp;':c.replace('<','&lt;').replace('>','&gt;')}</span>`).join('');
+});
+// частицы на тёмных сценах
+let seed=5;const rnd=()=>(seed=(seed*9301+49297)%233280)/233280;
+document.querySelectorAll('.sc.blk').forEach(sc=>{
+  for(let i=0;i<22;i++){const p=document.createElement('div');p.className='p';const z=4+rnd()*12;
+    p.style.cssText=`left:${rnd()*1080}px;top:${rnd()*1920}px;width:${z}px;height:${z}px;opacity:${.2+rnd()*.5}`;sc.prepend(p);}
+});
+
+// ---- тайминги сцен: стартовые точки (сек). render.js подставляет window.CUES из timing.json ----
+const DEFAULT=[1.4,1.4,2.2,2.2,1.6,1.6,2.0,2.4,1.9,2.6,2.3,1.9,2.5,1.6,1.1,3.0,1.2,1.3,3.2,3.0,2.6];
+const CUES=window.CUES||DEFAULT.reduce((a,d)=>(a.push(a.at(-1)+d),a),[0]).slice(0,DEFAULT.length);
+const END=window.END||(CUES.at(-1)+DEFAULT.at(-1)+1.5);
+
+const tl=gsap.timeline({paused:true,defaults:{ease:'power4.out'}});
+tl.set('#flash',{opacity:0},0);
+const $=(id,s)=>`#${id} ${s}`;
+const flash=(t,o=.8)=>tl.fromTo('#flash',{opacity:o},{opacity:0,duration:.25,ease:'power2.out',immediateRender:false},t);
+const shake=(sel,t,amp=18,n=6)=>{for(let i=0;i<n;i++)tl.to(sel,{x:(i%2?1:-1)*amp*(1-i/n),y:(i%3-1)*amp*.5*(1-i/n),duration:.03,ease:'none'},t+i*.03);tl.to(sel,{x:0,y:0,duration:.03},t+n*.03);};
+const slam=(sel,t,s=3)=>tl.fromTo(sel,{scale:s,opacity:0,filter:'blur(25px)'},{scale:1,opacity:1,filter:'blur(0px)',duration:.32,ease:'expo.out',immediateRender:false},t);
+const fly=(sel,t,x=900,y=0)=>tl.fromTo(sel,{x,y,opacity:0,filter:'blur(30px)'},{x:0,y:0,opacity:1,filter:'blur(0px)',duration:.38,immediateRender:false},t);
+const drop=(sel,t,dir=-1,st=.035)=>tl.fromTo(sel,{y:700*dir,scaleY:3,filter:'blur(12px)'},{y:0,scaleY:1,filter:'blur(0px)',stagger:st,duration:.4,ease:'back.out(1.6)',immediateRender:false},t);
+const type=(sel,t,dur)=>tl.fromTo(sel,{opacity:0},{opacity:1,duration:.01,stagger:dur/document.querySelectorAll(sel).length,ease:'none',immediateRender:false},t);
+const EXITS=[
+  sel=>({x:-1300,filter:'blur(40px)'}), sel=>({y:-1900,filter:'blur(30px)'}),
+  sel=>({scale:1.5,opacity:0,filter:'blur(20px)'}), sel=>({x:1300,filter:'blur(40px)'}),
+  sel=>({scaleY:.02,scaleX:1.4,opacity:0})];
+
+const B={}; // сцены: B[i](t, L)
+B[0]=(t,L)=>{const k=$('s0','.in > div');slam(k+':nth-child(1)',t+.02);slam(k+':nth-child(2)',t+.22);shake('#s0 .in',t+.5,20);fly(k+':nth-child(3)',t+.45,0,500);};
+B[1]=(t,L)=>{tl.fromTo('#s1play',{scale:0,rotation:-90},{scale:1,rotation:0,duration:.5,ease:'back.out(2)',immediateRender:false},t);
+  fly($('s1','.osw'),t+.1,-900);slam($('s1','.unb'),t+.3,2.5);tl.fromTo('#s1bar',{scaleX:0},{scaleX:1,duration:L*.9,ease:'power1.inOut',immediateRender:false},t+.2);};
+B[2]=(t,L)=>{drop('#s2a .ch',t,-1,.04);fly($('s2','.pfd'),t+L*.43,0,200);
+  tl.fromTo($('s2','.star'),{scale:0,rotation:-180},{scale:1,rotation:0,duration:.6,ease:'back.out(1.8)',immediateRender:false},t+L*.62);
+  slam($('s2','.in > div:last-child .unb'),t+L*.62,2);tl.to($('s2','.star'),{rotation:'+=90',duration:L*.38,ease:'none'},t+L*.62+.6);};
+B[3]=(t,L)=>{flash(t,.5);fly($('s3','.osw'),t,0,-300);slam($('s3','.unb:nth-child(2)'),t+L*.2);drop($('s3','.split .ch'),t+L*.4,1);
+  slam($('s3','.unb:last-child'),t+L*.65,3.5);shake('#s3 .in',t+L*.65+.3,22);};
+B[4]=(t,L)=>{fly($('s4','.lbl'),t,0,-150);slam('#s4n',t+.1,4);shake('#s4n',t+.4,18);fly($('s4','.osw'),t+.3,0,300);};
+B[5]=(t,L)=>{const o={v:13},el=document.getElementById('s5n');
+  tl.set(o,{v:13,onUpdate(){el.textContent=Math.round(o.v)}},t);
+  tl.fromTo(o,{v:13},{v:20,duration:L*.5,ease:'power2.in',immediateRender:false,onUpdate(){el.textContent=Math.round(o.v)}},t+.1);
+  fly($('s5','.lbl'),t,0,-150);tl.fromTo('#s5n',{scale:1},{scale:1.15,duration:.12,yoyo:true,repeat:1,immediateRender:false},t+.1+L*.5);shake('#s5n',t+.1+L*.5,24,7);flash(t+.1+L*.5,.35);};
+B[6]=(t,L)=>{tl.fromTo($('s6','.strip'),{x:i=>i?-800:800},{x:0,duration:.6,immediateRender:false},t);
+  fly($('s6','.osw:first-child'),t+.05,-900);slam($('s6','.unb'),t+.25,2.5);
+  tl.fromTo($('s6','.strike'),{scaleX:0},{scaleX:1,duration:.35,ease:'expo.inOut',immediateRender:false},t+L*.5);shake($('s6','.unb'),t+L*.5+.3,14);
+  fly($('s6','.osw:last-child'),t+L*.35,900);tl.to($('s6','.strip'),{x:i=>i?300:-300,duration:L,ease:'none'},t+.6);};
+B[7]=(t,L)=>{fly($('s7','.pfd'),t,0,-150);tl.fromTo($('s7','.split .ch'),{opacity:0,y:200,rotation:-20,filter:'blur(14px)'},{opacity:1,y:0,rotation:0,filter:'blur(0px)',stagger:.05,duration:.6,ease:'elastic.out(1,.6)',immediateRender:false},t+.08);
+  fly($('s7','.osw'),t+L*.4,0,200);slam($('s7','.in > div:last-child'),t+L*.62,2);tl.to($('s7','.grid'),{backgroundPosition:'0 -200px',duration:L,ease:'none'},t);};
+B[8]=(t,L)=>{flash(t,.6);fly($('s8','.osw'),t,-900);slam($('s8','.unb:nth-child(2)'),t+.18);slam($('s8','.unb:nth-child(3)'),t+.32);
+  tl.fromTo($('s8','.deal'),{y:900,rotation:i=>(i-1)*25},{y:0,rotation:i=>(i-1)*-4,stagger:.1,duration:.5,ease:'back.out(1.4)',immediateRender:false},t+L*.45);};
+B[9]=(t,L)=>{slam($('s9','.num'),t,4);fly($('s9','.osw'),t+.12,-900);drop($('s9','.split .ch'),t+.25,-1,.04);fly($('s9','.pfd'),t+L*.5,0,200);};
+B[10]=(t,L)=>{fly($('s10','.lbl'),t,0,-150);tl.fromTo($('s10','.deal'),{x:i=>i?1200:-1200,rotation:i=>i?8:-8},{x:0,rotation:0,stagger:L*.5,duration:.45,ease:'back.out(1.3)',immediateRender:false},t+.1);
+  shake($('s10','.deal:nth-child(2)'),t+.55,14);shake($('s10','.deal:nth-child(3)'),t+.55+L*.5,14);};
+B[11]=(t,L)=>{slam($('s11','.num'),t,4);fly($('s11','.osw:nth-child(2)'),t+.1,900);slam($('s11','.unb'),t+.25,3);shake($('s11','.unb'),t+.55,20);
+  fly($('s11','.osw:last-child'),t+L*.45,-900);type($('s11','.split .ch'),t+L*.55,.4);};
+B[12]=(t,L)=>{fly($('s12','.lbl'),t,0,-150);tl.fromTo($('s12','.deal'),{y:900,opacity:0},{y:0,opacity:1,stagger:L*.28,duration:.4,ease:'back.out(1.3)',immediateRender:false},t+.25);
+  tl.to($('s12','.grid'),{backgroundPosition:'0 -200px',duration:L,ease:'none'},t);};
+B[13]=(t,L)=>{slam($('s13','.num'),t,4);fly($('s13','.unb:nth-child(2)'),t+.12,-900);fly($('s13','.pfd'),t+L*.4,0,150);fly($('s13','.unb:last-child'),t+L*.5,900);};
+B[14]=(t,L)=>{flash(t,.5);fly($('s14','.osw'),t,0,-300);drop($('s14','.split .ch'),t+.1,1,.05);shake('#s14 .in',t+.55,22);};
+B[15]=(t,L)=>{tl.fromTo('#s15cap',{y:-600,rotation:-30},{y:0,rotation:0,duration:.6,ease:'back.out(1.6)',immediateRender:false},t);
+  fly($('s15','.osw:nth-of-type(1)'),t+.15,-900);tl.fromTo($('s15','.pfd'),{opacity:0,letterSpacing:'.5em'},{opacity:1,letterSpacing:'0em',duration:.9,ease:'power2.out',immediateRender:false},t+L*.25);
+  fly($('s15','.osw:last-child'),t+L*.55,0,200);tl.to('#s15cap',{y:-20,duration:.6,yoyo:true,repeat:Math.max(1,Math.floor(L/.6)-2),ease:'sine.inOut'},t+.6);};
+B[16]=(t,L)=>{flash(t,1);fly($('s16','.osw'),t,0,-300);slam($('s16','.unb:nth-child(2)'),t+.1);slam('#s16z',t+.3,5);shake('#s16 .in',t+.62,26,8);};
+B[17]=(t,L)=>{fly($('s17','.osw'),t,-900);slam($('s17','.unb'),t+.12,2.5);tl.fromTo($('s17','.url'),{scaleX:0},{scaleX:1,duration:.4,ease:'expo.out',immediateRender:false},t+.3);type('#s17t .ch',t+.55,L*.5);
+  tl.to($('s17','.caret'),{opacity:0,repeat:Math.floor(L/.25),yoyo:true,duration:.12,ease:'none'},t+.3);};
+B[18]=(t,L)=>{fly($('s18','.lbl'),t,0,-150);tl.fromTo($('s18','.url'),{scale:0},{scale:1,duration:.45,ease:'back.out(1.6)',immediateRender:false},t+.05);type('#s18t .ch',t+.6,L*.45);
+  tl.to($('s18','.caret'),{opacity:0,repeat:Math.floor(L/.25),yoyo:true,duration:.12,ease:'none'},t+.3);
+  fly($('s18','.osw'),t+L*.7,0,200);tl.fromTo('#s18arr',{y:-100,opacity:0},{y:0,opacity:1,duration:.4,immediateRender:false},t+L*.72);tl.to('#s18arr',{y:30,repeat:3,yoyo:true,duration:.25,ease:'sine.inOut'},t+L*.72+.4);};
+B[19]=(t,L)=>{fly($('s19','.osw:first-child'),t,-900);slam($('s19','.unb:nth-child(2)'),t+.15);fly($('s19','.osw:nth-child(3)'),t+.35,900);
+  tl.fromTo('#s19plane',{x:-900,y:300,rotation:-30},{x:0,y:0,rotation:0,duration:.6,ease:'power3.out',immediateRender:false},t+L*.62);slam($('s19','.in > div:last-child .unb'),t+L*.72,2);};
+B[20]=(t,L)=>{flash(t,.6);tl.fromTo('#s20arr',{y:400,opacity:0},{y:0,opacity:1,duration:.5,ease:'back.out(2)',immediateRender:false},t);
+  tl.to('#s20arr',{y:-40,repeat:Math.max(1,Math.floor((L-.5)/.3)),yoyo:true,duration:.3,ease:'sine.inOut'},t+.5);
+  fly($('s20','.osw'),t+.1,-900);slam($('s20','.unb:nth-child(3)'),t+.25);slam($('s20','.unb:nth-child(4)'),t+.45);shake('#s20 .in',t+.75,18);};
+
+const n=Object.keys(B).length;
+for(let i=0;i<n;i++){
+  const t=CUES[i],next=i+1<n?CUES[i+1]:END,L=next-t,id='s'+i;
+  tl.set('#'+id,{visibility:'visible'},t);
+  B[i](t,L);
+  tl.fromTo(`#${id} .in`,{scale:1},{scale:1.04,duration:L,ease:'none',immediateRender:false},t);
+  if(document.querySelector(`#${id} .p`))tl.to(`#${id} .p`,{y:-200,duration:L,ease:'none'},t);
+  if(i<n-1){tl.to(`#${id} .in`,{...EXITS[i%EXITS.length](),duration:.2,ease:'power3.in'},next-.2);tl.set('#'+id,{visibility:'hidden'},next);}
+  else tl.to(`#${id} .in`,{opacity:0,duration:.8,ease:'power1.in'},END-.8);
+}
+tl.set({},{},END);
+window.DURATION=END;
+window.seek=t=>{tl.seek(t,false);};
+document.fonts.ready.then(()=>{window.READY=true;});
+</script>
+</body>
+</html>
