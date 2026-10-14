@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:Osw;src:url(fonts/oswald.ttf)}
+@font-face{font-family:Unb;src:url(fonts/unbounded.ttf)}
+@font-face{font-family:Pfd;src:url(fonts/playfair.ttf);font-style:italic}
+:root{--red:#ff1f3d;--ink:#0a0a0c;--paper:#f2f0ec}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#000}
+.sc{position:absolute;inset:0;visibility:hidden;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.red{background:var(--red);color:var(--ink)}
+.blk{background:radial-gradient(ellipse at 50% 50%,#2a0508 0%,#050506 60%);color:#fff}
+.wht{background:var(--paper);color:var(--ink)}
+.unb,.osw{white-space:nowrap}
+.unb{font-family:Unb;font-weight:900;letter-spacing:-.02em;line-height:.9}
+.osw{font-family:Osw;font-weight:700;text-transform:uppercase;line-height:.88}
+.pfd{font-family:Pfd;font-style:italic;font-weight:500}
+.ch{display:inline-block;will-change:transform,filter}
+.glow{text-shadow:0 0 30px rgba(255,255,255,.55),0 0 90px rgba(255,31,61,.6)}
+.dot{position:absolute;border-radius:50%;background:var(--red);box-shadow:0 0 40px 12px rgba(255,31,61,.7)}
+.line{position:absolute;height:4px;background:var(--red);box-shadow:0 0 20px rgba(255,31,61,.9);transform-origin:left center}
+.p{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--red);filter:blur(2px);opacity:.7}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:50}
+#grain{position:absolute;inset:-50%;z-index:60;pointer-events:none;opacity:.07;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+#vig{position:absolute;inset:0;z-index:55;pointer-events:none;box-shadow:inset 0 0 260px rgba(0,0,0,.55)}
+.speed{position:absolute;left:50%;top:50%;width:3px;height:420px;background:linear-gradient(#fff0,#fff);transform-origin:50% 0}
+.kf{position:absolute;width:30px;height:30px;background:var(--ink);transform:rotate(45deg)}
+.track{position:absolute;left:90px;right:90px;height:2px;background:#0002}
+.grid{position:absolute;inset:0;background-image:radial-gradient(#ffffff22 2px,transparent 2px);background-size:40px 40px}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- S1 ОКЕЙ -->
+<div class="sc red" id="s1"><div class="unb" id="s1t" style="font-size:250px">ОКЕЙ</div></div>
+
+<!-- S2 ЭТО СДЕЛАЛ НЕ Я -->
+<div class="sc blk" id="s2">
+  <div class="unb glow" id="s2a" style="font-size:170px">ЭТО</div>
+  <div class="unb glow" id="s2b" style="font-size:150px;margin-top:20px">СДЕЛАЛ</div>
+  <div class="unb" id="s2c" style="font-size:230px;color:var(--red);margin-top:30px;text-shadow:0 0 60px rgba(255,31,61,.8)">НЕ Я.</div>
+</div>
+
+<!-- S3 И НЕ AFTER EFFECTS -->
+<div class="sc wht" id="s3">
+  <div class="osw" id="s3a" style="font-size:160px">И НЕ</div>
+  <div class="osw" id="s3b" style="font-size:250px;position:relative">AFTER<br>EFFECTS<div class="line" id="s3l" style="left:-40px;top:48%;width:calc(100% + 80px);height:22px"></div></div>
+</div>
+
+<!-- S4 laser -->
+<div class="sc" id="s4" style="background:#050506">
+  <div class="line" id="s4l" style="left:0;top:960px;width:1080px;height:3px"></div>
+  <div class="dot" id="s4d" style="width:44px;height:44px;left:-60px;top:940px"></div>
+</div>
+
+<!-- S5 КИНЕТИЧЕСКАЯ ТИПОГРАФИКА -->
+<div class="sc red" id="s5">
+  <div class="osw split" id="s5a" style="font-size:190px">КИНЕТИЧЕСКАЯ</div>
+  <div class="osw split" id="s5b" style="font-size:205px">ТИПОГРАФИКА</div>
+</div>
+
+<!-- S6 ПЛАВНАЯ -->
+<div class="sc blk" id="s6">
+  <div class="unb glow split" id="s6a" style="font-size:180px;font-style:italic">ПЛАВНАЯ</div>
+  <div class="pfd" id="s6b" style="font-size:90px;color:#ffffffaa;margin-top:30px">как жидкость</div>
+</div>
+
+<!-- S7 БУКВА ЗА БУКВОЙ -->
+<div class="sc wht" id="s7">
+  <div style="width:860px">
+    <div class="osw" id="s7a" style="font-size:110px">БУКВА ЗА</div>
+    <div class="osw split" id="s7b" style="font-size:300px">БУКВОЙ</div>
+    <div class="line" id="s7l" style="position:relative;width:860px;height:8px;margin-top:20px"></div>
+  </div>
+</div>
+
+<!-- S8 БЕЗ speed lines -->
+<div class="sc" id="s8" style="background:#050506;color:#fff">
+  <div id="s8lines" style="position:absolute;inset:0"></div>
+  <div class="unb glow" id="s8t" style="font-size:330px;position:relative">БЕЗ</div>
+</div>
+
+<!-- S9 КЕЙФРЕЙМОВ -->
+<div class="sc wht" id="s9">
+  <div class="unb" id="s9t" style="font-size:118px;position:absolute;top:520px">КЕЙФРЕЙМОВ.</div>
+  <div id="s9tl" style="position:absolute;left:0;right:0;top:800px;height:600px"></div>
+</div>
+
+<!-- S10 target pulse -->
+<div class="sc" id="s10" style="background:radial-gradient(circle at 50% 50%,#7a0612 0%,#1a0204 55%,#050506 100%);color:#fff">
+  <svg id="s10svg" width="700" height="700" viewBox="0 0 700 700" style="position:absolute">
+    <circle id="s10r1" cx="350" cy="350" r="240" fill="none" stroke="#ff1f3d" stroke-width="4" stroke-dasharray="1508" stroke-dashoffset="1508"/>
+    <circle id="s10r2" cx="350" cy="350" r="290" fill="none" stroke="#ff1f3d55" stroke-width="2" stroke-dasharray="6 14"/>
+  </svg>
+  <div class="dot" id="s10d" style="width:70px;height:70px;background:#fff;box-shadow:0 0 60px 20px var(--red)"></div>
+  <div class="osw" id="s10t" style="position:absolute;top:1320px;font-size:64px;font-weight:400;letter-spacing:.12em;text-transform:none">и не ждёшь рендер&nbsp;—</div>
+</div>
+
+<!-- S11 ПОДУМАЙ -->
+<div class="sc" id="s11" style="background:#0b0b0e;color:#fff">
+  <div class="grid"></div>
+  <div class="unb" id="s11a" style="font-size:170px;position:relative">ПОДУМАЙ,</div>
+  <div class="osw" id="s11b" style="font-size:80px;position:relative;margin-top:30px;letter-spacing:.04em">СКОЛЬКО ЭТО СТОИТ</div>
+  <div class="pfd" id="s11c" style="font-size:110px;position:relative;margin-top:40px;color:#ffffffcc">обычно…</div>
+</div>
+
+<!-- S12 А ТЕПЕРЬ -->
+<div class="sc wht" id="s12">
+  <div class="unb" id="s12a" style="font-size:240px">А</div>
+  <div class="unb" id="s12b" style="font-size:200px">ТЕПЕРЬ</div>
+  <div class="unb" id="s12c" style="font-size:200px;color:var(--red)">. . .</div>
+</div>
+
+<!-- S13 ОДНИМ ПРОМПТОМ -->
+<div class="sc red" id="s13">
+  <div style="width:900px">
+    <div class="osw" id="s13l" style="font-size:48px;letter-spacing:.35em;display:flex;align-items:center;gap:24px">СДЕЛАНО<span id="s13rule" style="flex:1;height:4px;background:var(--ink);transform-origin:left"></span></div>
+    <div class="unb" id="s13a" style="font-size:250px;margin-top:20px">ОДНИМ</div>
+    <div class="unb" id="s13b" style="font-size:168px">ПРОМПТОМ.</div>
+  </div>
+</div>
+
+<!-- S14 CLAUDE -->
+<div class="sc blk" id="s14">
+  <div id="s14p" style="position:absolute;inset:0"></div>
+  <div class="line" id="s14l" style="left:0;top:950px;width:1080px;height:3px"></div>
+  <svg id="s14star" width="140" height="140" viewBox="-50 -50 100 100" style="position:relative;margin-bottom:40px">
+    <g fill="#ff1f3d">
+      <rect x="-4" y="-46" width="8" height="40" rx="4"/><rect x="-4" y="-46" width="8" height="40" rx="4" transform="rotate(45)"/>
+      <rect x="-4" y="-46" width="8" height="40" rx="4" transform="rotate(90)"/><rect x="-4" y="-46" width="8" height="40" rx="4" transform="rotate(135)"/>
+      <rect x="-4" y="-46" width="8" height="40" rx="4" transform="rotate(180)"/><rect x="-4" y="-46" width="8" height="40" rx="4" transform="rotate(225)"/>
+      <rect x="-4" y="-46" width="8" height="40" rx="4" transform="rotate(270)"/><rect x="-4" y="-46" width="8" height="40" rx="4" transform="rotate(315)"/>
+    </g>
+  </svg>
+  <div class="unb glow split" id="s14t" style="font-size:190px;position:relative">CLAUDE</div>
+  <div class="osw" id="s14s" style="font-size:52px;letter-spacing:.5em;margin-top:40px;color:#ffffffbb;position:relative;font-weight:400">MOTION · PROMPT</div>
+</div>
+
+<div id="flash"></div>
+<div id="vig"></div>
+<div id="grain"></div>
+</div>
+
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+// автоподгонка ширины (макс. 960px)
+document.querySelectorAll('.unb,.osw').forEach(el=>{
+  if(el.id==='s3b'||el.id==='s13l')return;
+  let fs=parseFloat(getComputedStyle(el).fontSize);el.style.display='inline-block';
+  while(el.scrollWidth>940&&fs>20){fs-=4;el.style.fontSize=fs+'px';}
+  el.style.display='';
+});
+// разбивка на буквы
+document.querySelectorAll('.split').forEach(el=>{
+  el.innerHTML=[...el.textContent].map(c=>`<span class="ch">${c===' '?'&nbsp;':c}</span>`).join('');
+});
+// частицы
+function particles(host,n,seed){
+  let s=seed;const r=()=>(s=(s*9301+49297)%233280)/233280;
+  for(let i=0;i<n;i++){const p=document.createElement('div');p.className='p';
+    const sz=4+r()*14;p.style.cssText=`left:${r()*1080}px;top:${r()*1920}px;width:${sz}px;height:${sz}px;opacity:${.2+r()*.6}`;
+    p.dataset.dy=(-80-r()*200).toFixed(0);host.appendChild(p);}
+}
+particles(document.getElementById('s2'),26,7);
+particles(document.getElementById('s6'),22,3);
+particles(document.getElementById('s14p'),40,11);
+// линии скорости
+const L=document.getElementById('s8lines');
+for(let i=0;i<48;i++){const d=document.createElement('div');d.className='speed';
+  d.style.transform=`rotate(${i*7.5}deg) translateY(260px)`;d.style.opacity=.3+((i*37)%10)/14;L.appendChild(d);}
+// таймлайн кейфреймов
+const TL=document.getElementById('s9tl');
+for(let r=0;r<6;r++){const t=document.createElement('div');t.className='track';t.style.top=(r*95+30)+'px';TL.appendChild(t);
+  for(let k=0;k<5;k++){const kf=document.createElement('div');kf.className='kf';
+    kf.style.left=(110+((k*163+r*71)%820))+'px';kf.style.top=(r*95+16)+'px';TL.appendChild(kf);}}
+
+const tl=gsap.timeline({paused:true,defaults:{ease:'power4.out'}});
+const show=(id,t,len)=>{tl.set('#'+id,{visibility:'visible'},t);if(len)tl.set('#'+id,{visibility:'hidden'},t+len);};
+tl.set('#flash',{opacity:0},0);
+const flash=(t,o=.9)=>tl.fromTo('#flash',{opacity:o},{opacity:0,duration:.25,ease:'power2.out',immediateRender:false},t);
+const shake=(sel,t,amp=18,n=6)=>{for(let i=0;i<n;i++)tl.to(sel,{x:(i%2?1:-1)*amp*(1-i/n),y:(i%3-1)*amp*.5*(1-i/n),duration:.03,ease:'none'},t+i*.03);tl.to(sel,{x:0,y:0,duration:.03},t+n*.03);};
+
+// S1 0.0–1.1
+show('s1',0,1.1);
+tl.fromTo('#s1t',{scale:3.2,filter:'blur(30px)',opacity:0},{scale:1,filter:'blur(0px)',opacity:1,duration:.35,ease:'expo.out'},0.05);
+shake('#s1t',.4,22);
+tl.to('#s1t',{scaleX:1.15,duration:.6,ease:'none'},.5);
+tl.to('#s1t',{x:-1400,filter:'blur(40px)',duration:.2,ease:'power3.in'},.9);
+
+// S2 1.1–3.0
+show('s2',1.1,1.9);flash(1.1,.5);
+tl.fromTo('#s2a',{x:900,filter:'blur(30px)'},{x:0,filter:'blur(0px)',duration:.4},1.12);
+tl.fromTo('#s2b',{x:-900,filter:'blur(30px)'},{x:0,filter:'blur(0px)',duration:.4},1.3);
+tl.fromTo('#s2c',{scale:4,opacity:0,filter:'blur(25px)'},{scale:1,opacity:1,filter:'blur(0px)',duration:.35,ease:'expo.out'},1.95);
+shake('#s2c',2.25,16);
+tl.to('#s2 .p',{y:(i,el)=>+el.dataset.dy,duration:1.9,ease:'none'},1.1);
+tl.to('#s2a,#s2b,#s2c',{y:-1500,filter:'blur(30px)',stagger:.03,duration:.22,ease:'power3.in'},2.75);
+
+// S3 3.0–4.4
+show('s3',3.0,1.4);
+tl.fromTo('#s3a',{y:-300,opacity:0},{y:0,opacity:1,duration:.3},3.02);
+tl.fromTo('#s3b',{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)',duration:.45,ease:'power2.inOut'},3.15);
+tl.fromTo('#s3l',{scaleX:0},{scaleX:1,duration:.35,ease:'expo.inOut'},3.7);
+shake('#s3b',4.02,14,5);
+tl.to('#s3',{scale:1.4,filter:'blur(20px)',opacity:0,duration:.25,ease:'power2.in'},4.15);
+
+// S4 4.4–5.2 лазер
+show('s4',4.4,.8);
+tl.fromTo('#s4l',{scaleX:0},{scaleX:1,duration:.55,ease:'power2.inOut'},4.42);
+tl.fromTo('#s4d',{x:0},{x:1160,duration:.55,ease:'power2.inOut'},4.42);
+tl.to('#s4l',{scaleY:500,opacity:1,duration:.2,ease:'power4.in'},5.0);
+
+// S5 5.2–7.0
+show('s5',5.2,1.8);flash(5.2,.6);
+tl.fromTo('#s5a .ch',{y:-700,scaleY:3,filter:'blur(12px)'},{y:0,scaleY:1,filter:'blur(0px)',stagger:.035,duration:.4,ease:'back.out(1.6)'},5.22);
+tl.fromTo('#s5b .ch',{y:700,scaleY:3,filter:'blur(12px)'},{y:0,scaleY:1,filter:'blur(0px)',stagger:.035,duration:.4,ease:'back.out(1.6)'},5.5);
+tl.to('#s5a',{x:-60,duration:1.2,ease:'none'},5.6);tl.to('#s5b',{x:60,duration:1.2,ease:'none'},5.6);
+tl.to('#s5a .ch,#s5b .ch',{y:(i)=>i%2?-1900:1900,stagger:.012,duration:.3,ease:'power3.in'},6.68);
+
+// S6 7.0–8.6
+show('s6',7.0,1.6);
+tl.fromTo('#s6a .ch',{y:200,rotation:-25,skewX:-30,opacity:0,filter:'blur(16px)'},{y:0,rotation:0,skewX:0,opacity:1,filter:'blur(0px)',stagger:.06,duration:.6,ease:'elastic.out(1,.6)'},7.02);
+tl.to('#s6a .ch',{y:-30,stagger:{each:.06,repeat:1,yoyo:true},duration:.3,ease:'sine.inOut'},7.65);
+tl.fromTo('#s6b',{opacity:0,letterSpacing:'.6em'},{opacity:1,letterSpacing:'0em',duration:.8,ease:'power2.out'},7.5);
+tl.to('#s6 .p',{y:(i,el)=>+el.dataset.dy,duration:1.6,ease:'none'},7.0);
+tl.to('#s6a,#s6b',{scaleY:.02,scaleX:1.4,opacity:0,duration:.2,ease:'power3.in'},8.4);
+
+// S7 8.6–10.2
+show('s7',8.6,1.6);
+tl.fromTo('#s7a',{opacity:0,x:-100},{opacity:1,x:0,duration:.3},8.62);
+tl.fromTo('#s7b .ch',{opacity:0,scale:1.8,filter:'blur(10px)'},{opacity:1,scale:1,filter:'blur(0px)',stagger:.1,duration:.18,ease:'power2.out'},8.85);
+tl.fromTo('#s7l',{scaleX:0},{scaleX:1,duration:.7,ease:'power2.inOut'},9.2);
+tl.to('#s7',{x:-1100,filter:'blur(30px)',duration:.22,ease:'power3.in'},9.98);
+
+// S8 10.2–11.2
+show('s8',10.2,1.0);flash(10.2,.8);
+tl.fromTo('#s8lines',{scale:.4,rotation:0},{scale:2.2,rotation:12,duration:1,ease:'power2.in'},10.2);
+tl.fromTo('#s8t',{scale:.1,filter:'blur(20px)'},{scale:1,filter:'blur(0px)',duration:.4,ease:'expo.out'},10.22);
+tl.to('#s8t',{scale:9,opacity:0,duration:.3,ease:'power3.in'},10.9);
+
+// S9 11.2–13.0
+show('s9',11.2,1.8);
+tl.fromTo('#s9t',{y:-500,filter:'blur(20px)'},{y:0,filter:'blur(0px)',duration:.4,ease:'expo.out'},11.22);
+shake('#s9t',11.55,12,4);
+tl.fromTo('#s9tl .track',{scaleX:0,transformOrigin:'left'},{scaleX:1,stagger:.05,duration:.4,ease:'power2.out'},11.3);
+tl.fromTo('#s9tl .kf',{scale:0},{scale:1,stagger:.012,duration:.2,ease:'back.out(3)'},11.5);
+tl.to('#s9tl .kf',{y:()=>gsap.utils.random(600,1100,1),x:()=>gsap.utils.random(-200,200,1),rotation:()=>gsap.utils.random(-400,400,1),opacity:0,stagger:{each:.01,from:'random'},duration:.6,ease:'power2.in'},12.1);
+tl.to('#s9tl .track',{opacity:0,duration:.3},12.4);
+tl.to('#s9t',{y:-1500,filter:'blur(30px)',duration:.25,ease:'power3.in'},12.75);
+
+// S10 13.0–14.6
+show('s10',13.0,1.6);
+tl.fromTo('#s10d',{scale:0},{scale:1,duration:.4,ease:'back.out(2.5)'},13.02);
+tl.to('#s10r1',{attr:{'stroke-dashoffset':0},duration:1.1,ease:'power2.inOut'},13.1);
+tl.fromTo('#s10r2',{rotation:0,transformOrigin:'50% 50%'},{rotation:90,duration:1.6,ease:'none'},13.0);
+tl.to('#s10d',{scale:1.3,repeat:3,yoyo:true,duration:.15,ease:'sine.inOut'},13.4);
+tl.fromTo('#s10t',{opacity:0,y:30},{opacity:1,y:0,duration:.4},13.4);
+tl.to('#s10d',{scale:40,duration:.3,ease:'power4.in'},14.3);
+
+// S11 14.6–16.4
+show('s11',14.6,1.8);flash(14.6,.7);
+tl.fromTo('#s11a',{scale:1.6,opacity:0,filter:'blur(18px)'},{scale:1,opacity:1,filter:'blur(0px)',duration:.4,ease:'expo.out'},14.62);
+tl.fromTo('#s11b',{clipPath:'inset(0 50% 0 50%)'},{clipPath:'inset(0 0% 0 0%)',duration:.4,ease:'power3.out'},14.95);
+tl.fromTo('#s11c',{opacity:0,x:80},{opacity:1,x:0,duration:.6,ease:'power2.out'},15.3);
+tl.to('#s11 .grid',{backgroundPosition:'0 -200px',duration:1.8,ease:'none'},14.6);
+tl.to('#s11a,#s11b,#s11c',{x:1300,filter:'blur(30px)',stagger:.04,duration:.22,ease:'power3.in'},16.15);
+
+// S12 16.4–17.6
+show('s12',16.4,1.2);
+tl.fromTo('#s12a',{y:-600},{y:0,duration:.3,ease:'back.out(1.5)'},16.42);
+tl.fromTo('#s12b',{y:600},{y:0,duration:.3,ease:'back.out(1.5)'},16.55);
+tl.fromTo('#s12c',{opacity:0},{opacity:1,duration:.15,ease:'none'},16.9);
+tl.to('#s12c',{opacity:.2,repeat:2,yoyo:true,duration:.1,ease:'none'},17.05);
+
+// S13 17.6–19.6
+show('s13',17.6,2.0);flash(17.6,1);
+tl.fromTo('#s13rule',{scaleX:0},{scaleX:1,duration:.5,ease:'power2.out'},17.65);
+tl.fromTo('#s13l',{opacity:0},{opacity:1,duration:.2},17.62);
+tl.fromTo('#s13a',{scale:3,opacity:0,filter:'blur(25px)'},{scale:1,opacity:1,filter:'blur(0px)',duration:.3,ease:'expo.out',transformOrigin:'left center'},17.8);
+shake('#s13a',18.08,20);
+tl.fromTo('#s13b',{scale:3,opacity:0,filter:'blur(25px)'},{scale:1,opacity:1,filter:'blur(0px)',duration:.3,ease:'expo.out',transformOrigin:'left center'},18.3);
+shake('#s13b',18.58,24,8);
+tl.to('#s13 > div',{scale:1.06,duration:.9,ease:'none'},18.6);
+tl.to('#s13',{clipPath:'inset(50% 0 50% 0)',duration:.25,ease:'power3.in'},19.35);
+
+// S14 19.6–22.5
+show('s14',19.6);
+tl.fromTo('#s14l',{scaleX:0},{scaleX:1,duration:.5,ease:'expo.out'},19.62);
+tl.to('#s14l',{opacity:.25,duration:.6},20.2);
+tl.fromTo('#s14star',{scale:0,rotation:-180},{scale:1,rotation:0,duration:.8,ease:'back.out(1.8)'},19.75);
+tl.to('#s14star',{rotation:90,duration:2.5,ease:'none'},20.55);
+tl.fromTo('#s14t .ch',{opacity:0,y:60,filter:'blur(14px)'},{opacity:1,y:0,filter:'blur(0px)',stagger:.06,duration:.5},20.0);
+tl.fromTo('#s14s',{opacity:0,letterSpacing:'1.2em'},{opacity:1,letterSpacing:'.5em',duration:1,ease:'power2.out'},20.5);
+tl.to('#s14p .p',{y:(i,el)=>+el.dataset.dy,duration:2.9,ease:'none'},19.6);
+tl.to('#flash',{opacity:0,duration:.01},22.4);
+tl.set({},{},22.5);
+
+window.DURATION=tl.duration();
+window.seek=t=>{tl.seek(t,false);};
+document.fonts.ready.then(()=>{window.READY=true;});
+</script>
+</body>
+</html>
